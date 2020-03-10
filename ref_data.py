@@ -90,6 +90,7 @@ from helpers import wgs84_to_ecef, TEC
 
 lon = np.radians(np.array(dataDict["Gps_long"]["data"]))
 lat = np.radians(np.array(dataDict["Gps_lat"]["data"]))
+alt = np.array(dataDict["Dadc1_alt"]["data"])
 x,y,z = [], [], []
 for lo,la,al in zip(lon,lat,alt):
     x_ecef = wgs84_to_ecef(np.array([lo, la, al]))
