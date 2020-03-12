@@ -28,7 +28,6 @@ for key in dataDict.keys():
     print("[\""+key+"\"] = "+dataDict[key]["name"]+ " - " + dataDict[key]["unit"])
 
 units = [dataDict[key]["unit"] for key in dataDict.keys()]
-print(set(units))
 from scipy.integrate import cumtrapz
 
 plt.figure(dpi=150)
