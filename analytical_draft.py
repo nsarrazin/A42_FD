@@ -113,53 +113,29 @@ Cndr   =  -0.0939
 
 import numpy as np
 
-# Symmetric EOM
+#Short period
+A=-2*muc*KY2
+B=Cma+Cmq
+C=Cma
 
-Dc = c / V0
+eigval_short1=complex(-B/2/A,np.sqrt(4*A*C-B**2)/2/A)
+eigval_short2=complex(-B/2/A,-np.sqrt(4*A*C-B**2)/2/A)
+print("eigenvalues for short period motion are:",eigval_short1,eigval_short2)
 
-C1s = np.array([[-2 * muc * Dc / V0,                      0,      0,                        0],
-                [0,                 (CZadot - 2 * muc) * Dc,      0,                        0],
-                [0,                                       0,    -Dc,                        0],
-                [0,                             Cmadot * Dc,      0, -2 * muc * KY2 * Dc * Dc]])
+#Phugoid oscillation
+A=-4*muc**2
+B=2*muc*CXu
+C=-CZu*CZ0
 
-C2s = np.array([[CXu / V0, CXa,  CZ0,               CXq * Dc],
-                [CZu / V0, CZa, -CX0,   (CZq + 2 * muc) * Dc],
-                [       0,   0,    0,                     Dc],
-                [Cmu / V0, Cma,    0,               Cmq * Dc]])
+eigval_phu1=complex(-B/2/A,np.sqrt(4*A*C-B**2)/2/A)
+eigval_phu2=complex(-B/2/A,-np.sqrt(4*A*C-B**2)/2/A)
+print("eigenvalues for phugoid motion are:", eigval_phu1,eigval_phu2)
 
-C3s = np.array([[CXde], [CZde], [0], [Cmde]])
+#Dutch roll
+A=-2*mub*KZ2
+B=0.5*Cnr
+C=-Cnb
 
-C1sinv = np.linalg.inv(C1s)
-
-As = -1 * np.dot(C1sinv, C2s)
-Bs = -1 * np.dot(C1sinv, C3s)
-
-print(As)
-print(Bs)
-
-# Asymmetric EOM
-
-Db = b / V0
-
-C1a = np.array([[(CYbdot - 2 * mub) * Db,         0,                        0,                        0],
-                [                      0, -0.5 * Db,                        0,                        0],
-                [                      0,         0, -2 * mub * KX2 * Db * Db,  2 * mub * KXZ * Db * Db],
-                [            Cnbdot * Db,         0,  2 * mub * KXZ * Db * Db, -2 * mub * KZ2 * Db * Db]])
-
-C2a = np.array([[CYb,   CL, CYp * Db / 2, (CYr - 4 * mub) * Db / 2],
-                [  0,    0,       Db / 2,                        0],
-                [Clb,    0, Clp * Db / 2,             Clr * Db / 2],
-                [Cnb,    0, Cnp * Db / 2,             Cnr * Db / 2]])
-
-C3a = np.array([[CYda, CYdr],
-                [   0,    0],
-                [Clda, Cldr],
-                [Cnda, Cndr]])
-
-C1ainv = np.linalg.inv(C1a)
-
-Aa = -1 * np.dot(C1ainv, C2a)
-Ba = -1 * np.dot(C1ainv, C3a)
-
-print(Aa)
-print(Ba)
+eigval_roll1=complex(-B/2/A,np.sqrt(4*A*C-B**2)/2/A)
+eigval_roll2=complex(-B/2/A,-np.sqrt(4*A*C-B**2)/2/A)
+print("eigenvalues for Dutch Roll are:", eigval_roll1,eigval_roll2)
