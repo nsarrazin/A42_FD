@@ -6,10 +6,10 @@ from math import pi, sin, cos
 
 # Stationary flight condition
 
-hp0    =   1          # pressure altitude in the stationary flight condition [m]
-V0     =   1          # true airspeed in the stationary flight condition [m/sec]
-alpha0 =   1          # angle of attack in the stationary flight condition [rad]
-th0    =   1          # pitch angle in the stationary flight condition [rad]
+hp0    =   1000          # pressure altitude in the stationary flight condition [m]
+V0     =   60          # true airspeed in the stationary flight condition [m/sec]
+alpha0 =   0          # angle of attack in the stationary flight condition [rad]
+th0    =   0          # pitch angle in the stationary flight condition [rad]
 
 # Aircraft mass
 m      =   6000          # mass [kg]
@@ -73,7 +73,7 @@ CD = CD0 + (CLa * alpha0) ** 2 / (pi * A * e) # Drag coefficient [ ]
 
 CX0    = W * sin(th0) / (0.5 * rho * V0 ** 2 * S)
 CXu    = -0.02792
-CXa    = +0.47966		# Positive! (has been erroneously negative since 1993) 
+CXa    = -0.47966		# Positive! (has been erroneously negative since 1993)
 CXadot = +0.08330
 CXq    = -0.28170
 CXde   = -0.03728
@@ -134,8 +134,9 @@ C1sinv = np.linalg.inv(C1s)
 As = -1 * np.dot(C1sinv, C2s)
 Bs = -1 * np.dot(C1sinv, C3s)
 
-print(As)
-print(Bs)
+if __name__ == '__main__':
+    print(As)
+    print(Bs)
 
 # Asymmetric EOM
 
@@ -161,5 +162,6 @@ C1ainv = np.linalg.inv(C1a)
 Aa = -1 * np.dot(C1ainv, C2a)
 Ba = -1 * np.dot(C1ainv, C3a)
 
-print(Aa)
-print(Ba)
+if __name__ == '__main__':
+    print(Aa)
+    print(Ba)
