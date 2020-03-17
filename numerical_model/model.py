@@ -36,17 +36,17 @@ B_s = -1 * np.linalg.inv(C1_s) @ C3_s
 C_s = np.eye(4)
 D_s = np.zeros((4, 1))
 
-# if __name__== '__main__':
-# T = np.linspace(0, 10, 1000)
-# sys_s = control.ss(A_s, B_s, C_s, D_s)
-# T, yout = control.impulse_response(sys_s, T)
-#
-# print(np.linalg.eig(A_s)[0])
-# print(A_s)
-#
-# plt.plot(T, yout[1])
-# plt.xlim(0,10)
-# plt.show()
+if __name__== '__main__':
+    T = np.linspace(0, 10, 1000)
+    sys_s = control.ss(A_s, B_s, C_s, D_s)
+    T, yout = control.impulse_response(sys_s, T)
+
+    print(f'symmetric eigenvalues: {np.linalg.eig(A_s)[0]}')
+    # print(A_s)
+
+    plt.plot(T, yout[1])
+    plt.xlim(0,10)
+    plt.show()
 
 
 C1_a = np.zeros((4, 4))
@@ -56,6 +56,7 @@ C1_a[2, 2] = -2 * mub * KX2 * (b / V0) ** 2
 C1_a[3, 3] = -2 * mub * KZ2 * (b / V0) ** 2
 C1_a[2, 3] = 2 * mub * KXZ * (b / V0) ** 2
 C1_a[3, 2] = 2 * mub * KXZ * (b / V0) ** 2
+C1_a[3, 0] = Cnbdot * (b / V0)
 
 C2_a = np.zeros((4, 4))
 C2_a[0, 0] = CYb
@@ -83,8 +84,8 @@ if __name__ == '__main__':
     T = np.linspace(0, 10, 1000)
     T, yout = control.impulse_response(sys_a, T)
 
-    print(np.linalg.eig(A_a)[0])
-    print(A_a)
+    print(f'asymmetric eigenvalues: {np.linalg.eig(A_a)[0]}')
+    # print(A_a)
 
     plt.plot(T, yout[1])
     plt.xlim(0, 10)
