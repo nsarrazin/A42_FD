@@ -12,7 +12,44 @@ alpha0 =   1          # angle of attack in the stationary flight condition [rad]
 th0    =   1          # pitch angle in the stationary flight condition [rad]
 
 # Aircraft mass
-m      =   6000          # mass [kg]
+m = [165.347,165.347,165.347,165.347,165.347,165.347,165.347,165.347,165.347,0,0,220]
+
+M_payload = np.sum(m)
+BEW = 9165 # basic empty weight [lbs]
+ZFW = BEW + M_payload
+fuel = 750 # [lbs]
+M_ramp = fuel + ZFW
+
+m_flow_l = 50 
+m_flow_r = 40
+m_flow = m_flow_l + m_flow_r
+
+t = []
+for i in t:
+    W = M_ramp - np.trapz(m_flow,t)
+
+# cg calculation
+x_datum = [131,131,214,214,251,251,288,288,170,74,321,338]
+pay = []
+mom_tot = 0
+for i in pay:
+    i += 1 
+    mom = m[i]*x_datum[i]
+    mom_pay_tot += mom 
+
+nose = 1080     #jackpads
+main_r = 4430   #jackpads
+main_l = 4405   #jackpads
+x_cg_jack = 315.5 - (221.8*nose)/(nose+main_r+main_l)
+
+mom_bew = BEW * x_cg_jack
+mom_pay = mom_pay_tot
+mom_zfw = mom_bew + mom_pay
+x_cg_zfw = mom_zfw/ZFW
+x_cg_fuel = 297.58 
+mom_fuel = fuel*x_cg_fuel
+mom_ramp = mom_fuel + mom_zfw
+x_cg_ramp = mom_ramp/M_ramp
 
 # aerodynamic properties
 e      = 0.8         # Oswald factor [ ]
