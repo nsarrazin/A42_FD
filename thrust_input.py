@@ -1,6 +1,8 @@
 from math import *
 import numpy as np
-from ambiance import Atmosphere
+from ambiance import Atmosphere   #need to install this package
+
+"""It returns the input data matrix for thrust.exe"""
 
 gamma=1.4   #specific heat ratio
 R=287       #gas constant
