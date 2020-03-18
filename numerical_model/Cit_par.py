@@ -1,8 +1,8 @@
 # Citation 550 - Linear simulation
 
-# xcg = 0.25 * c
-
+import numpy as np
 from math import pi, sin, cos
+# from .validation.fuelmass import FFl, FFr
 
 # Stationary flight condition
 
@@ -12,16 +12,18 @@ alpha0 =   1          # angle of attack in the stationary flight condition [rad]
 th0    =   1          # pitch angle in the stationary flight condition [rad]
 
 # Aircraft mass
-m = [165.347,165.347,165.347,165.347,165.347,165.347,165.347,165.347,165.347,0,0,220]
+m = [95,102,89,82,66,81,69,85,96] #[kg] 
+m_pax = np.array(m, dtype=int)*2.2046  #[lbs]
+print(m_pax)
 
-M_payload = np.sum(m)
+M_payload = np.sum(m_pax)
 BEW = 9165 # basic empty weight [lbs]
 ZFW = BEW + M_payload
-fuel = 750 # [lbs]
+fuel = 2640 # [lbs]
 M_ramp = fuel + ZFW
 
-m_flow_l = 50 
-m_flow_r = 40
+m_flow_l = FFl 
+m_flow_r = FFr
 m_flow = m_flow_l + m_flow_r
 
 t = []
@@ -147,8 +149,6 @@ Cnda   =  -0.0120
 Cndr   =  -0.0939
 
 #Matrix form (vague)
-
-import numpy as np
 
 # Symmetric EOM
 
