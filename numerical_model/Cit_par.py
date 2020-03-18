@@ -1,8 +1,8 @@
 # Citation 550 - Linear simulation
 
-# xcg = 0.25 * c
-
+import numpy as np
 from math import pi, sin, cos
+# from .validation.fuelmass import FFl, FFr
 
 # Stationary flight condition
 
@@ -12,7 +12,46 @@ alpha0 =   1          # angle of attack in the stationary flight condition [rad]
 th0    =   1          # pitch angle in the stationary flight condition [rad]
 
 # Aircraft mass
-m      =   6000          # mass [kg]
+m = [95,102,89,82,66,81,69,85,96] #[kg] 
+m_pax = np.array(m, dtype=int)*2.2046  #[lbs]
+print(m_pax)
+
+M_payload = np.sum(m_pax)
+BEW = 9165 # basic empty weight [lbs]
+ZFW = BEW + M_payload
+fuel = 2640 # [lbs]
+M_ramp = fuel + ZFW
+
+m_flow_l = FFl 
+m_flow_r = FFr
+m_flow = m_flow_l + m_flow_r
+
+t = []
+for i in t:
+    W = M_ramp - np.trapz(m_flow,t)
+
+# cg calculation
+x_datum = [131,131,214,214,251,251,288,288,170,74,321,338]
+pay = []
+mom_tot = 0
+for i in pay:
+    i += 1 
+    mom = m[i]*x_datum[i]
+    mom_pay_tot += mom 
+
+nose = 1080     #jackpads
+main_r = 4430   #jackpads
+main_l = 4405   #jackpads
+x_cg_jack = 315.5 - (221.8*nose)/(nose+main_r+main_l)
+
+mom_bew = BEW * x_cg_jack
+mom_pay = mom_pay_tot
+mom_zfw = mom_bew + mom_pay
+x_cg_zfw = mom_zfw/ZFW
+x_cg_fuel = 297.58 
+mom_fuel = fuel*x_cg_fuel
+mom_ramp = mom_fuel + mom_zfw
+x_cg_ramp = mom_ramp/M_ramp
 
 # aerodynamic properties
 e      = 0.8         # Oswald factor [ ]
@@ -110,8 +149,6 @@ Cnda   =  -0.0120
 Cndr   =  -0.0939
 
 #Matrix form (vague)
-
-import numpy as np
 
 # Symmetric EOM
 
