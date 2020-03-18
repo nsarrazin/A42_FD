@@ -44,5 +44,23 @@ plt.xlabel('angle of attack [deg]')
 plt.ylabel('lift coefficient [-]')
 plt.show()
 
-#print CL_alpha 
+#print CL_alpha
+print('Cl_a =') 
 print(CL_alpha_rad)     # 0.3522578695587925   [1/radian]
+
+
+
+#20200306_V2
+
+de_deg = np.array([0,-0.3,-0.7,-1.3,0.4,0.7,1])
+alpha_deg_2 = np.array([5.3,6.1,6.8,8.3,4.2,3.8,3.3]) 
+
+plt.plot(alpha_deg_2,de_deg,'x')
+plt.xlabel('angle of attack [deg]')
+plt.ylabel('elevator deflection [deg]')
+plt.show()
+
+de_da = (max(de_deg)-min(de_deg))/(max(alpha_deg_2)-min(alpha_deg_2))        #0.46 [-]
+
+print('de/dalpha =')
+print(de_da)
