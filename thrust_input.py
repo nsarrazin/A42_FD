@@ -10,7 +10,7 @@ rho0=1.225  #sea level air density
 p0=101325   #sea level pressure
 T0=288.15   #sea level temperature
 g0=9.81     #gravitational acceleration
-lamb=-0.0065       #bypass ratio
+lamb=-0.0065       #lapse rate
 
 #coversions
 ft=0.3048  #ft to m
