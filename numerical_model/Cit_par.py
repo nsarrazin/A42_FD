@@ -26,9 +26,10 @@ m_flow_l = FFl
 m_flow_r = FFr
 m_flow = m_flow_l + m_flow_r
 
+m_fuel_used = []
 t = []
 for i in t:
-    W = M_ramp - np.trapz(m_flow,t)
+    W = M_ramp - m_fuel_used[i]
 
 # cg calculation
 x_datum = [131,131,214,214,251,251,288,288,170,74,321,338]
