@@ -114,28 +114,28 @@ Cndr   =  -0.0939
 import numpy as np
 
 #Short period
-A=-2*muc*KY2
-B=Cmadot+Cmq
-C=Cma
+Asp=-2*muc*KY2
+Bsp=Cmadot+Cmq
+Csp=Cma
 
-eigval_short1=complex(-B/2/A,np.sqrt(4*A*C-B**2)/2/A)
-eigval_short2=complex(-B/2/A,-np.sqrt(4*A*C-B**2)/2/A)
+eigval_short1=complex(-Bsp/2/Asp,np.sqrt(4*Asp*Csp-Bsp**2)/2/Asp)
+eigval_short2=complex(-Bsp/2/Asp,-np.sqrt(4*Asp*Csp-Bsp**2)/2/Asp)
 print("eigenvalues for short period motion are:",eigval_short1,eigval_short2)
 
 #Phugoid oscillation
-A=-4*muc**2
-B=2*muc*CXu
-C=-CZu*CZ0
+Aph=-4*muc**2
+Bph=2*muc*CXu
+Cph=-CZu*CZ0
 
-eigval_phu1=complex(-B/2/A,np.sqrt(4*A*C-B**2)/2/A)
-eigval_phu2=complex(-B/2/A,-np.sqrt(4*A*C-B**2)/2/A)
+eigval_phu1=complex(-Bph/2/Aph,np.sqrt(4*Aph*Cph-Bph**2)/2/Aph)
+eigval_phu2=complex(-Bph/2/Aph,-np.sqrt(4*Aph*Cph-Bph**2)/2/Aph)
 print("eigenvalues for phugoid motion are:", eigval_phu1,eigval_phu2)
 
 #Dutch roll
-A=-2*mub*KZ2
-B=0.5*Cnr
-C=-Cnb
+Adr=-2*mub*KZ2
+Bdr=0.5*Cnr
+Cdr=-Cnb
 
-eigval_roll1=complex(-B/2/A,np.sqrt(4*A*C-B**2)/2/A)
-eigval_roll2=complex(-B/2/A,-np.sqrt(4*A*C-B**2)/2/A)
+eigval_roll1=complex(-Bdr/2/Adr,np.sqrt(4*Adr*Cdr-Bdr**2)/2/Adr)
+eigval_roll2=complex(-Bdr/2/Adr,-np.sqrt(4*Adr*Cdr-Bdr**2)/2/Adr)
 print("eigenvalues for Dutch Roll are:", eigval_roll1,eigval_roll2)
