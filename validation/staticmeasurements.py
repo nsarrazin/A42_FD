@@ -11,7 +11,7 @@ hp_ft = np.array([5030,5030,5020,5040,5040,5030])               #ft
 fuelburnt_lbs = np.array([387,417,439,469,496,521])             #lbs
 
 #this one should change, but took the 'fixed' value from the report
-mramp_lbs = 11623.123 #lbs
+mramp_lbs = 11623.123   #lbs
 
 #fixed values
 rho0 = 1.225            #kg/m^3
@@ -39,7 +39,7 @@ CL_alpha_rad = (CL[-1] - CL[0])/(alpha_rad[-1]-alpha_rad[0])        # in 1/radia
 
 #CL-alpha plot
 
-plt.plot(alpha_deg,CL)
+plt.plot(alpha_deg,CL,'x-')
 plt.xlabel('angle of attack [deg]')
 plt.ylabel('lift coefficient [-]')
 plt.show()
