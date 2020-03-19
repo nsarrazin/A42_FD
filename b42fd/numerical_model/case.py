@@ -44,7 +44,7 @@ class Case:
         inputs = self.thrust_input
         thrust = compute_thrust(inputs)
         return thrust
-        
+
 if __name__ == "__main__":
     h=np.array([18060, 18360, 18940, 18350, 18090, 17680, 18360])*ft
     V=np.array([156, 147, 134, 168, 176, 186, 156])*kt
@@ -52,6 +52,9 @@ if __name__ == "__main__":
     MFl=np.array([409,407,404,410,416,420, 480])*lbshr
     MFr=np.array([470, 466, 455, 471, 448, 484, 469])*lbshr
 
+    thrusts = []
     for i in range(len(h)):
         case = Case(h[i], V[i], TAT[i], MFl[i], MFr[i])
-        print(case.thrust)
+        thrusts.append(case.thrust)
+
+    print(thrusts)
