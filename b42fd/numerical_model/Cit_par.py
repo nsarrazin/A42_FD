@@ -2,7 +2,7 @@
 
 import numpy as np
 from math import pi, sin, cos
-# from .validation.fuelmass import FFl, FFr
+from b42fd.validation.fuelmass import FFl, FFr
 
 # Stationary flight condition
 
