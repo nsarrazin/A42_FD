@@ -1,6 +1,6 @@
 import control
 import numpy as np
-from numerical_model.Cit_par import *
+from b42fd.numerical_model.Cit_par import *
 import matplotlib.pyplot as plt
 import scipy.signal as signal
 
