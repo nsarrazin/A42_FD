@@ -3,10 +3,13 @@
 
 import json
 import numpy as np
+from b42fd.helpers import load_data
+from pathlib import Path
+import os
 
-with open('data.json') as f:
-  data = json.load(f)
-  
+path = "data/flight_data/flight_data.json"
+
+data = load_data(path)
 FFl=data["lh_engine_FMF"]["data"]
 FFr=data["lh_engine_FMF"]["data"]
 
