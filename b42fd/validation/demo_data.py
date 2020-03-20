@@ -91,7 +91,7 @@ if has_cartopy:
 # sick 3d trajectory plot
 # conda install -c conda-forge mayavi
 
-from helpers import wgs84_to_ecef, TEC
+from b42fd.helpers import wgs84_to_ecef, TEC
 
 x,y,z = [], [], []
 for lo,la,al in zip(lon,lat,alt):
