@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from ambiance import Atmosphere
+from b42fd.numerical_model.Cit_par import M_ramp, c
 
 #CL-CD and CL-a curves for flight test 20200306_V2
 
@@ -11,7 +12,7 @@ hp_ft = np.array([5030,5030,5020,5040,5040,5030])               #ft
 fuelburnt_lbs = np.array([387,417,439,469,496,521])             #lbs
 
 #this one should change, but took the 'fixed' value from the report
-mramp_lbs = 11623.123   #lbs
+mramp_lbs = M_ramp   #lbs
 
 #fixed values
 rho0 = 1.225            #kg/m^3
@@ -64,3 +65,26 @@ de_da = (max(de_deg)-min(de_deg))/(max(alpha_deg_2)-min(alpha_deg_2))        #0.
 
 print('de/dalpha =')
 print(de_da)
+
+#Cm_delta, Cm_alpha, 20200310
+#shift in center of gravity 
+
+de_deg = [-0.2,-0.8]
+fuel_used = [940,989]
+fuel_used_kg = fuel_used*0.45359237
+mass = mramp_kg - fuel_used_kg
+xnose_inch = [288,131]
+xnose_m = xnose_inch * 0.0254
+mom = mass *xnose_m
+mom_tot = np.sum(mom)
+x_cg_after = mom_tot/mass[1]
+x_cg_before = mom[0]/mass[0]
+
+change_de = de_deg[1]-de_deg[0]
+change_xcg = x_cg_after-x_cg_before
+C_N = mass[0]/(0.5*rho[0]*V_TAS_ms[0]**2*S) #for steady horizontal flight
+c_bar = c #MAC
+
+Cm_delta = -1/change_de * C_N * change_xcg/c_bar
+Cm_alpha = -Cm_delta*de_da
+print(Cm_delta,Cm_alpha) 
