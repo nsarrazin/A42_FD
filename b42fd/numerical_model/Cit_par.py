@@ -27,14 +27,17 @@ m_flow_r = FFr
 m_flow = m_flow_l + m_flow_r
 
 m_fuel_used = [538,569,634,665,688,729,811,840,865,888,901,912,940,989]
-for i in length(m_fuel_used):
-    W = M_ramp - m_fuel_used[i]
+
+for m_fuel_used_i in m_fuel_used:
+    W = M_ramp - m_fuel_used_i
     print(W)
 
 # cg calculation
 x_datum = [131,131,170,214,214,251,251,288,288]
 pay = []
 mom_tot = 0
+mom_pay_tot = 0 
+
 for i in pay:
     i += 1 
     mom = m_pax[i]*x_datum[i]
