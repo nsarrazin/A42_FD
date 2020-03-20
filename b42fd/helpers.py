@@ -1,5 +1,7 @@
 import numba as nb
 import numpy as np
+from pathlib import Path
+import json
 
 @nb.jit(nopython=True, cache=True)
 def wgs84_to_ecef(lla):
@@ -36,3 +38,12 @@ def TEC(tau: float, delta: float):
     return np.array([[-sang[1]*cang[0], -sang[1]*sang[0], cang[1]],
                      [-sang[0], cang[0], 0.],
                      [-cang[1]*cang[0], -cang[1]*sang[0], -sang[1]]])
+
+
+def load_data(path):
+    BASE_DIR = Path(__file__).resolve().parent
+
+    with open(BASE_DIR / path, "r") as f:
+        raw = f.read()
+        dataDict = json.loads(raw)
+    return dataDict
