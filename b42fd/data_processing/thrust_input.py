@@ -87,7 +87,7 @@ def Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0):
 ======================================================================================"""
 
 #input data for stationary measurements Cl-Cd    
-thrust_input= Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
+input0= Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
     
 #stationary measurements elevator trim curve
 h=np.array([18060, 18360, 18940, 18350, 18090, 17680, 18360])*ft
@@ -97,7 +97,7 @@ MFl=np.array([409,407,404,410,416,420, 480])*lbshr
 MFr=np.array([470, 466, 455, 471, 448, 484, 469])*lbshr
 
 #input thrust data elevator trim curve
-thrust_input1= Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
+input1= Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
 
 """======================================================================================
                              FOR REFERENCE DATA 
@@ -111,7 +111,7 @@ MFl=np.array([798,673,561,463,443,474])*lbshr
 MFr=np.array([813,682,579,484,467,499])*lbshr
 
 
-thrust_input2=Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
+input2=Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
 
 #For elevator trim curve
 h=np.array([6060, 6350, 6550, 6880, 6160, 5810, 5310])*ft
@@ -121,4 +121,4 @@ MFl=np.array([462,458,454,449,465,472, 482])*lbshr
 MFr=np.array([486,482,477,473,489,496,505])*lbshr
 
 
-thrust_input3=Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
+input3=Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
