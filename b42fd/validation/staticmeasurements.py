@@ -71,10 +71,10 @@ print(de_da)
 
 de_deg = [-0.2,-0.8]
 fuel_used = [940,989]
-fuel_used_kg = fuel_used*0.45359237
+fuel_used_kg = np.array(fuel_used, dtype=int)*0.45359237
 mass = mramp_kg - fuel_used_kg
 xnose_inch = [288,131]
-xnose_m = xnose_inch * 0.0254
+xnose_m = np.array(xnose_inch, dtype=int) * 0.0254
 mom = mass *xnose_m
 mom_tot = np.sum(mom)
 x_cg_after = mom_tot/mass[1]
