@@ -11,16 +11,19 @@ V0     =   1          # true airspeed in the stationary flight condition [m/sec]
 alpha0 =   1          # angle of attack in the stationary flight condition [rad]
 th0    =   1          # pitch angle in the stationary flight condition [rad]
 
-# Aircraft mass
+# Aircraft mass, 20200310
+
 m = [95,102,89,82,66,81,69,85,96] #[kg] 
 m_pax = np.array(m, dtype=int)*2.2046  #[lbs]
-print(m_pax)
+# print(m_pax)
 
 M_payload = np.sum(m_pax)
+# print(M_payload)
 BEW = 9165 # basic empty weight [lbs]
 ZFW = BEW + M_payload
 fuel = 2640 # [lbs]
 M_ramp = fuel + ZFW
+# print(M_ramp)
 
 m_flow_l = FFl 
 m_flow_r = FFr
@@ -30,18 +33,17 @@ m_fuel_used = [538,569,634,665,688,729,811,840,865,888,901,912,940,989]
 
 for m_fuel_used_i in m_fuel_used:
     W = M_ramp - m_fuel_used_i
-    print(W)
+    # print(W)
 
 # cg calculation
-x_datum = [131,131,170,214,214,251,251,288,288]
-pay = []
+x_datum = [131,131,170,214,214,251,251,288,288]     #fixed for ac
 mom_tot = 0
 mom_pay_tot = 0 
 
-for i in pay:
-    i += 1 
+for i in range(len(x_datum)):
     mom = m_pax[i]*x_datum[i]
-    mom_pay_tot += mom 
+    mom_pay_tot += mom
+    # print(mom_pay_tot) 
 
 nose = 1080     #jackpads
 main_r = 4430   #jackpads
@@ -56,6 +58,8 @@ x_cg_fuel = 297.58
 mom_fuel = fuel*x_cg_fuel
 mom_ramp = mom_fuel + mom_zfw
 x_cg_ramp = mom_ramp/M_ramp
+# print(x_cg_ramp)
+
 
 # aerodynamic properties
 e      = 0.8         # Oswald factor [ ]
@@ -89,12 +93,12 @@ g      = 9.81            # [m/sec^2] (gravity constant)
 
 # air density [kg/m^3]  
 rho    = rho0 * pow( ((1+(lambd * hp0 / Temp0))), (-((g / (lambd*R)) + 1)))   
-W      = m * g            # [N]       (aircraft weight)
+# W      = m * g            # [N]       (aircraft weight)
 
 # Constant values concerning aircraft inertia
 
-muc    = m / (rho * S * c)
-mub    = m / (rho * S * b)
+muc    = m[0] / (rho * S * c)
+mub    = m[0] / (rho * S * b)
 KX2    = 0.019
 KZ2    = 0.042
 KXZ    = 0.002
