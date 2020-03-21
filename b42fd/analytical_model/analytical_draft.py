@@ -23,6 +23,9 @@ CLa    = 5.084       # Slope of CL-alpha curve [ ]
 Cma    = -0.5626     # longitudinal stabilty [ ]
 Cmde   = -1.1642     # elevator effectiveness [ ]
 
+# coefficients above need to be extracted from the flight data
+
+
 # Aircraft geometry
 S      = 30.00	         # wing area [m^2]
 Sh     = 0.2 * S         # stabiliser area [m^2]
@@ -110,32 +113,52 @@ Cnda   =  -0.0120
 Cndr   =  -0.0939
 
 #Matrix form (vague)
-
+    
 import numpy as np
 
-#Short period
-Asp=-2*muc*KY2
-Bsp=Cmadot+Cmq
-Csp=Cma
+def cal_eigenvalues(A,B,C):
+    return (complex(-B/2/A,np.sqrt(4*A*C-B**2)/2/A),complex(-B/2/A,-np.sqrt(4*A*C-B**2)/2/A) )
 
-eigval_short1=complex(-Bsp/2/Asp,np.sqrt(4*Asp*Csp-Bsp**2)/2/Asp)
-eigval_short2=complex(-Bsp/2/Asp,-np.sqrt(4*Asp*Csp-Bsp**2)/2/Asp)
-print("eigenvalues for short period motion are:",eigval_short1,eigval_short2)
+#Short period
+"""Asp=-2*muc*KY2
+Bsp=Cmadot+Cmq
+Csp=Cma"""
+
+Asp=2*muc*KY2*(2*muc-CZadot)
+Bsp=-2*muc*KY2*CZa-(2*muc+CZq)*Cmadot-(2*muc-CZadot)*Cmq
+Csp=CZa*Cmq-(2*muc+CZq)*Cma
+
+print("eigenvalues for short period motion are:", cal_eigenvalues(Asp, Bsp, Csp))
 
 #Phugoid oscillation
-Aph=-4*muc**2
+"""Aph=-4*muc**2
 Bph=2*muc*CXu
-Cph=-CZu*CZ0
+Cph=-CZu*CZ0"""
 
-eigval_phu1=complex(-Bph/2/Aph,np.sqrt(4*Aph*Cph-Bph**2)/2/Aph)
-eigval_phu2=complex(-Bph/2/Aph,-np.sqrt(4*Aph*Cph-Bph**2)/2/Aph)
-print("eigenvalues for phugoid motion are:", eigval_phu1,eigval_phu2)
+Aph=2*muc*(CZa*Cmq-2*muc*Cma)
+Bph=2*muc*(CXu*Cma-Cmu*CXa)+Cmq*(CZu*CXa-CXu*CZa)
+Cph=CZ0*(Cmu*CZa-Cma*CZu)
+
+print("eigenvalues for phugoid motion are:", cal_eigenvalues(Aph, Bph, Cph))
 
 #Dutch roll
-Adr=-2*mub*KZ2
+"""Adr=-2*mub*KZ2
 Bdr=0.5*Cnr
-Cdr=-Cnb
+Cdr=-Cnb"""
 
-eigval_roll1=complex(-Bdr/2/Adr,np.sqrt(4*Adr*Cdr-Bdr**2)/2/Adr)
-eigval_roll2=complex(-Bdr/2/Adr,-np.sqrt(4*Adr*Cdr-Bdr**2)/2/Adr)
-print("eigenvalues for Dutch Roll are:", eigval_roll1,eigval_roll2)
+Aro=8*mub**2*KZ2
+Bro=-2*mub*(Cnr+2*KZ2*CYb)
+Cro=4*mub*Cnb+CYb*Cnr
+
+print("eigenvalues for Dutch Roll are:", cal_eigenvalues(Aro, Bro, Cro))
+
+#aperiodic rolling motion
+
+eig1=Clp/(4*mub*KX2)
+print("eigenvalues for aperiodic rolling motion are:", eig1)
+      
+#aperiodic spiral motion
+
+eig2=(2*CL*(Clb*Cnr-Cnb*Clr))/(Clp*(CYb*Cnr+4*mub*Cnb)-Cnp*(CYb*Clr+4*mub*Clb))
+print("eigenvalues for aperiodic spiral motion are:", eig2)
+
