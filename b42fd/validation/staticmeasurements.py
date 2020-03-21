@@ -12,7 +12,7 @@ hp_ft = np.array([18000,17990,18020,17990,18000,18010])               #ft
 fuelburnt_lbs = np.array([583,569,634,665,688,729])             #lbs
 
 #this one should change, but took the 'fixed' value from the report
-mramp_lbs = M_ramp   #lbs
+mramp_lbs = M_ramp   #lbs, from flight data 20200310
 
 #fixed values
 rho0 = 1.225            #kg/m^3
