@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 from ambiance import Atmosphere
 from b42fd.numerical_model.Cit_par import M_ramp, c
 
-#CL-CD and CL-a curves for flight test 20200306_V2
+#CL-CD and CL-a curves for flight test 20200310_V2
 
 #these change per test flight
-alpha_deg = np.array([1.6,2.4,3.7,5.6,8.5,10.4])                #degrees
-V_IAS_kts = np.array([251.,221.,190.,161.,134.,121.])           #kts
-hp_ft = np.array([5030,5030,5020,5040,5040,5030])               #ft
-fuelburnt_lbs = np.array([387,417,439,469,496,521])             #lbs
+alpha_deg = np.array([5,8.1,2.0,2.9,3.6,10.7])                #degrees
+V_IAS_kts = np.array([161,131,222,200,182,114])           #kts
+hp_ft = np.array([18000,17990,18020,17990,18000,18010])               #ft
+fuelburnt_lbs = np.array([583,569,634,665,688,729])             #lbs
 
 #this one should change, but took the 'fixed' value from the report
 mramp_lbs = M_ramp   #lbs
@@ -51,10 +51,10 @@ print(CL_alpha_rad)     # 0.3522578695587925   [1/radian]
 
 
 
-#20200306_V2
+#20200310_V2
 
-de_deg = np.array([0,-0.3,-0.7,-1.3,0.4,0.7,1])
-alpha_deg_2 = np.array([5.3,6.1,6.8,8.3,4.2,3.8,3.3]) 
+de_deg = np.array([-0.3,-0.7,-1.2,0.1,0.4,0.7,-0.2])
+alpha_deg_2 = np.array([5.2,6.3,7.5,4.4,3.8,3.3,5.2]) 
 
 plt.plot(alpha_deg_2,de_deg,'x')
 plt.xlabel('angle of attack [deg]')
