@@ -1,8 +1,62 @@
 # Citation 550 - Linear simulation
 
-# xcg = 0.25 * c
-
 from math import pi, sin, cos
+from pathlib import Path
+import numpy as np
+
+path = "data/ref_data/ref_data.json"
+# data = load_data(path)
+
+
+# Aircraft mass, post_flight_datasheet 
+# FFl=data["lh_engine_FMF"]["data"]
+m = [95,92,74,66,61,75,78,86,68] #[kg] 
+m_pax = np.array(m, dtype=int)*2.2046  #[lbs]
+# print(m_pax)
+
+M_payload = np.sum(m_pax)
+# print(M_payload)
+BEW = 9165 # basic empty weight [lbs]
+ZFW = BEW + M_payload
+fuel = 4050 # [lbs]
+M_ramp = fuel + ZFW
+# print(M_ramp)
+
+# m_flow_l = FFl 
+# m_flow_r = FFr
+# m_flow = m_flow_l + m_flow_r
+
+m_fuel_used = [360,412,447,478,532,570,664,694,730,755,798,825,846,881,910]
+
+for m_fuel_used_i in m_fuel_used:
+    W = M_ramp - m_fuel_used_i
+    # print(W)
+
+# cg calculation
+x_datum = [131,131,170,214,214,251,251,288,288]     #fixed for ac
+mom_tot = 0
+mom_pay_tot = 0 
+
+for i in range(len(x_datum)):
+    mom = m_pax[i]*x_datum[i]
+    mom_pay_tot += mom
+    # print(mom_pay_tot) 
+
+nose = 1080     #jackpads
+main_r = 4430   #jackpads
+main_l = 4405   #jackpads
+x_cg_jack = 315.5 - (221.8*nose)/(nose+main_r+main_l)
+
+mom_bew = BEW * x_cg_jack
+mom_pay = mom_pay_tot
+mom_zfw = mom_bew + mom_pay
+x_cg_zfw = mom_zfw/ZFW
+x_cg_fuel = 297.58 
+mom_fuel = fuel*x_cg_fuel
+mom_ramp = mom_fuel + mom_zfw
+x_cg_ramp = mom_ramp/M_ramp
+# print(x_cg_ramp)
+
 
 # Stationary flight condition
 
