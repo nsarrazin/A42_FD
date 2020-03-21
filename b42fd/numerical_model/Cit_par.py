@@ -29,7 +29,7 @@ m_flow_l = FFl
 m_flow_r = FFr
 m_flow = m_flow_l + m_flow_r
 
-m_fuel_used = [538,569,634,665,688,729,811,840,865,888,901,912,940,989]
+m_fuel_used = [538,569,634,665,688,729,811,840,865,888,901,912,940,940,989]
 
 for m_fuel_used_i in m_fuel_used:
     W = M_ramp - m_fuel_used_i
