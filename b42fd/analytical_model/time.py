@@ -16,26 +16,11 @@ class TimeTool:
         self.data=data    #flight data
         #sefl.data=load_data("data/ref_data/ref_data.json")
         self.time=self.data["time"]["data"]
-        self.mtime_flat = self.time.flatten()
-        self.mtime_list = self.mtime_flat.tolist()
-        self.mtime_list_rounded = [round(t, 1) for t in self.mtime_list]
-        
-    def get_mdat_tstep_list_idx_for_matching_pdat_tstep(self, pdat_t):
-        idx = self.mtime_list_rounded.index(round(pdat_t,1))
-        return idx
+        self.altitude=self.data["Dadc1_alt"]["data"]
+        self.rh_fu=self.data["rh_engine_FU"]["data"]
+        self.rh_fu=self.data["rh_engine_FU"]["data"]
+        self.lf_fu=self.data["lh_engine_FU"]["data"]
+        self.V_TAS=self.data['Dadc_tas']["data"]
+        self.alpha=self.data['']["data"]
 
-    def get_t_specific_mdat_values(self, pdat_t):
-        pdat_t_idx = self.get_mdat_tstep_list_idx_for_matching_pdat_tstep(pdat_t)
-        vars_keys_list = list(self.mdat.keys())
-        t_specific_mdat = {}
-        for var_key in vars_keys_list:
-            t_specific_mdat[var_key] = self.mdat[var_key][pdat_t_idx]
-        print("At t= {0} the corresponding recorded 'black-box' data is:\n {1}".format(pdat_t, t_specific_mdat))
-        return t_specific_mdat
     
-if __name__ == "__main__":
-      ts_tool = TimeTool()
-      t = 5171
-      specific_t_mdat_vals = ts_tool.get_t_specific_mdat_values(t)
-      print("At t= {0} the corresponding recorded 'black-box' data is:\n {1}".format(t, specific_t_mdat_vals))
-    # print(ts_tool.get_t_specific_mdat_values(1665))
