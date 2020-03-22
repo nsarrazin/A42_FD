@@ -4,6 +4,7 @@ from ambiance import Atmosphere
 from b42fd.numerical_model.Cit_par import c
 from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
 from b42fd.consts import gamma,T0,lamb,g0,R,p0, rho0
+from b42fd.numerical_model.case import Case
 
 print("Ref test data")
 """
@@ -174,3 +175,18 @@ print("Cm_delta:")
 print(Cm_delta)
 print("Cm_alpha:")
 print(Cm_alpha) 
+
+MFl=np.array([798, 673, 561, 463, 443, 474])/7936.64
+MFr=np.array([813, 682, 579, 484, 467, 499])/7936.64
+
+thrusts = []
+for i in range(6):
+    case = Case(h_m[i], V_ms[i], TAT_K[i], MFl[i], MFr[i])
+    thrusts.append(case.thrust)
+
+CD = thrusts/(0.5*rho[0:6]*V_TAS_ms_1[0:6]**2*S)
+
+plt.plot(CL,CD,'x')
+plt.xlabel('CL [-]')
+plt.ylabel('CD [-]')
+plt.show()
