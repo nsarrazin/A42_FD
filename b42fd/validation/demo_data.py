@@ -1,12 +1,13 @@
 import json
 import numpy as np
 import matplotlib.pyplot as plt
+from b42fd.helpers import load_data
 
 # load the formatted data into a dictionary
-with open("data.json", "r") as f:
-    raw = f.read()
-    dataDict = json.loads(raw)
-
+# with open("data.json", "r") as f:
+#     raw = f.read()
+#     dataDict = json.loads(raw)
+dataDict = load_data("data/flight_data/flight_data.json")
 # structure is as follow
 # you have a dictionary whose keys represent a dataset each
 #
