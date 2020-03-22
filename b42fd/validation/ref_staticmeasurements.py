@@ -1,18 +1,34 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from ambiance import Atmosphere
-from b42fd.numerical_model.Cit_par import M_ramp, c
+from b42fd.numerical_model.Cit_par import c
 from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
 from b42fd.consts import gamma,T0,lamb,g0,R,p0, rho0
+
+
+"""
+mass calculation for ref data
+"""
+m = np.array([95,92,74,66,61,75,78,86,68]) #[kg] 
+m_pax = m*2.2046  #[lbs]
+# print(m_pax)
+
+M_payload = np.sum(m_pax)
+# print(M_payload)
+BEW = 9165 # basic empty weight [lbs]
+ZFW = BEW + M_payload
+fuel = 4050 # [lbs]
+M_ramp = fuel + ZFW
+# print(M_ramp)
 
 #from ref data
 h = np.array([5010,5020,5020,5030,5020,5110,6060,6350,6550,6880,6160,5810,5310,5730,5790]) #altitude 
 V = np.array([249,221,192,163,130,118,161,150,140,130,173,179,192,161,161])#indicated airspeed
-TAT_C = np.array([12.5,10.5,8.8,7.2,6,5.2,5.5,4.5,3.5,2.5,5.0,-7.8,-11.2,-11.2,-11.2]) #temp
-alpha_deg = np.array([5,8.1,2.0,2.9,3.6,10.7,5.2,6.3,7.5,4.4,3.8,3.3,5.2,5.2,5.2])  #aoa deg
-fuelburnt_lbs = np.array([583,569,634,665,688,729,811,840,865,888,901,912,940,940,989]) #fuel burnt lbs
+TAT_C = np.array([12.5,10.5,8.8,7.2,6,5.2,5.5,4.5,3.5,2.5,5.0,6.2,8.2,5,5]) #temp
+alpha_deg = np.array([1.7,2.4,3.6,5.4,8.7,10.6,5.3,6.3,7.3,8.5,4.5,4.1,3.4,5.3,5.3])  #aoa deg
+fuelburnt_lbs = np.array([360,412,447,478,532,570,664,694,730,755,798,825,846,881,910]) #fuel burnt lbs
 # print(len(h),len(V),len(TAT),len(alpha_deg),len(fuelburnt_lbs)) #, first 6 = CL-CD series, middle 7 = elevator trim curve, last 2 = shift in center of gravity
-mramp_lbs = M_ramp
+mramp_lbs = M_ramp  #remember to change for reference data
 
 #conversions 
 h_m = h*0.3048
@@ -39,7 +55,7 @@ for i in range(len(h)):
     a=sound_speed(gamma,R,T)
     V_TAS[i]=true_airspeed(M,a)
 
-print(V_TAS)
+# print(V_TAS)
 """
 CL-CD and CL-a curves 
 1st set of values
@@ -88,7 +104,7 @@ indices = [6,7,8,9,10,11,12]
 alpha_deg_2 = np.take(alpha_deg,indices)
 
 #take value from excel
-de_deg_2 = np.array([-0.3,-0.7,-1.2,0.1,0.4,0.7,-0.2]) 
+de_deg_2 = np.array([0,-0.4,-0.9,-1.5,0.4,0.6,1]) 
 
 #plot trim curve
 plt.plot(alpha_deg_2,de_deg_2,'x')
@@ -110,7 +126,7 @@ indices = [13,14]
 hp_m_3 = np.take(h_m,indices)
 V_TAS_ms_3 = np.take(V_TAS,indices)
 # print(V_TAS_ms_3)
-de_deg_3 = [-0.2,-0.8]
+de_deg_3 = [0,-0.5]
 fuelburnt_kg_3 = np.take(fuelburnt_kg,indices)
 xnose_inch = np.array([288,131])
 rho_3 = np.take(rho,indices)
@@ -131,9 +147,12 @@ V_EAS_ms = V_TAS_ms_3*np.sqrt(rho_3/rho0)
 change_de = de_deg_3[1]-de_deg_3[0]
 change_xcg = x_cg_2-x_cg_1
 C_N = (mass_3[0]*9.81)/(0.5*rho_3[0]*V_EAS_ms[0]**2*S) #for steady horizontal flight
-print(C_N)
+# print(C_N)
 c_bar = c #MAC
 
 Cm_delta = -1/change_de * C_N * change_xcg/c_bar    # -1.1642 
 Cm_alpha = Cm_delta*de_da
-print(Cm_delta,Cm_alpha) 
+print("Cm_delta:")
+print(Cm_delta)
+print("Cm_alpha:")
+print(Cm_alpha) 
