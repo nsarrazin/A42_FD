@@ -115,10 +115,10 @@ hp_m_3 = np.take(h_m,indices)
 V_TAS_ms_3 = np.take(V_TAS,indices)
 # print(V_TAS_ms_3)
 de_deg_3 = [-0.2,-0.8]
-fuelburnt_kg_3 = np.take(fuelburnt_kg,indices)
+
 xnose_inch = np.array([288,131])
 rho_3 = np.take(rho,indices)
-
+fuelburnt_kg_3 = np.take(fuelburnt_kg,indices)
 #conversion
 xnose_m = xnose_inch* 0.0254
 
