@@ -2,6 +2,7 @@ import numba as nb
 import numpy as np
 from pathlib import Path
 import json
+import math
 
 @nb.jit(nopython=True, cache=True)
 def wgs84_to_ecef(lla):
@@ -47,3 +48,10 @@ def load_data(path):
         raw = f.read()
         dataDict = json.loads(raw)
     return dataDict
+
+def find_nearest(array,value):
+    idx = np.searchsorted(array, value, side="left")
+    if idx > 0 and (idx == len(array) or math.fabs(value - array[idx-1]) < math.fabs(value - array[idx])):
+        return array[idx-1]
+    else:
+        return array[idx]
