@@ -11,7 +11,7 @@ V0     =   1          # true airspeed in the stationary flight condition [m/sec]
 alpha0 =   1          # angle of attack in the stationary flight condition [rad]
 th0    =   1          # pitch angle in the stationary flight condition [rad]
 
-# Aircraft mass, 20200310
+# Aircraft mass, 20200310, inches, and lbs
 
 m = [95,102,89,82,66,81,69,85,96] #[kg] 
 m_pax = np.array(m, dtype=int)*2.2046  #[lbs]
@@ -29,14 +29,14 @@ m_flow_l = FFl
 m_flow_r = FFr
 m_flow = m_flow_l + m_flow_r
 
-m_fuel_used = [538,569,634,665,688,729,811,840,865,888,901,912,940,940,989]
+m_fuel_used = [538,569,634,665,688,729,811,840,865,888,901,912,940,940,989]  #lbs
 
 for m_fuel_used_i in m_fuel_used:
-    W = (M_ramp - m_fuel_used_i)*9.81
+    W = (M_ramp - m_fuel_used_i)*4.45       #N   
     # print(W)
 
 # cg calculation
-x_datum = [131,131,170,214,214,251,251,288,288]     #fixed for ac
+x_datum = [131,131,170,214,214,251,251,288,288]     #fixed for ac, inches
 mom_tot = 0
 mom_pay_tot = 0 
 
@@ -49,12 +49,12 @@ nose = 1080     #jackpads
 main_r = 4430   #jackpads
 main_l = 4405   #jackpads
 x_cg_jack = 315.5 - (221.8*nose)/(nose+main_r+main_l)
-
+# print(x_cg_jack)
 mom_bew = BEW * x_cg_jack
 mom_pay = mom_pay_tot
 mom_zfw = mom_bew + mom_pay
 x_cg_zfw = mom_zfw/ZFW
-x_cg_fuel = 297.58 
+x_cg_fuel = 287.58  #inches, from mass and balance report 
 mom_fuel = fuel*x_cg_fuel
 mom_ramp = mom_fuel + mom_zfw
 x_cg_ramp = mom_ramp/M_ramp
