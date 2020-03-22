@@ -103,7 +103,7 @@ plt.show()
 de_da = -(max(de_deg_2)-min(de_deg_2))/(max(alpha_deg_2)-min(alpha_deg_2))        #0.46 [-]
 
 print('de/dalpha =')
-print(de_da)
+print(de_da, de_da_rad)
 
 """
 Cm_delta, Cm_alpha
@@ -115,6 +115,7 @@ hp_m_3 = np.take(h_m,indices)
 V_TAS_ms_3 = np.take(V_TAS,indices)
 # print(V_TAS_ms_3)
 de_deg_3 = [-0.2,-0.8]
+de_rad_3 = np.radians(de_deg_3)
 
 xnose_inch = np.array([288,131])
 rho_3 = np.take(rho,indices)
@@ -149,13 +150,13 @@ V_EAS_ms = V_TAS_ms_3*np.sqrt(rho_3/rho0)
 # print(V_EAS_ms)
 Vej = V_EAS_ms[0]*np.sqrt(W[1]/W[0])
 
-change_de = de_deg_3[1]-de_deg_3[0]
+change_de = de_rad_3[1]-de_rad_3[0]
 x_cg_1,x_cg_2 = cg_shift(x_cg_fuel_m, xnose_m, mass_3, m_shift)
 change_xcg = x_cg_2-x_cg_1
 print("change_xcg")
 print(change_xcg)
 C_N = W[1]/(0.5*rho0*Vej**2*S) #for steady horizontal flight
-print("C_N:",C_N)
+print("C_N:", C_N)
 c_bar = c #MAC
 
 Cm_delta = -C_N/change_de * change_xcg/c_bar    # -1.1642 
@@ -202,7 +203,7 @@ W_4 = mass_4*g0 #N
 
 V_hat_e_ms = V_EAS_ms_4 * np.sqrt(W_s/W_4)
 
-plt.plot(V_hat_e_ms,Fe_N)
+plt.plot(V_hat_e_ms,Fe_N,'x')
 plt.xlabel("Reduced equivalent airspeed [m/s]")
 plt.ylabel("Measured elevator control force [N]")
 plt.show()
