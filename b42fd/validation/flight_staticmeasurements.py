@@ -39,7 +39,7 @@ for i in range(len(h)):
     a=sound_speed(gamma,R,T)
     V_TAS[i]=true_airspeed(M,a)
 
-print(V_TAS)
+# print(V_TAS)
 """
 CL-CD and CL-a curves 
 1st set of values
@@ -96,7 +96,7 @@ plt.xlabel('angle of attack [deg]')
 plt.ylabel('elevator deflection [deg]')
 plt.show()
 
-de_da = (max(de_deg_2)-min(de_deg_2))/(max(alpha_deg_2)-min(alpha_deg_2))        #0.46 [-]
+de_da = -(max(de_deg_2)-min(de_deg_2))/(max(alpha_deg_2)-min(alpha_deg_2))        #0.46 [-]
 
 print('de/dalpha =')
 print(de_da)
@@ -131,9 +131,12 @@ V_EAS_ms = V_TAS_ms_3*np.sqrt(rho_3/rho0)
 change_de = de_deg_3[1]-de_deg_3[0]
 change_xcg = x_cg_2-x_cg_1
 C_N = (mass_3[0]*9.81)/(0.5*rho_3[0]*V_EAS_ms[0]**2*S) #for steady horizontal flight
-print(C_N)
+# print(C_N)
 c_bar = c #MAC
 
 Cm_delta = -1/change_de * C_N * change_xcg/c_bar    # -1.1642 
-Cm_alpha = Cm_delta*de_da
-print(Cm_delta,Cm_alpha) 
+Cm_alpha = -Cm_delta*de_da
+print("Cm_delta:")
+print(Cm_delta)
+print("Cm_alpha:")
+print(Cm_alpha) 

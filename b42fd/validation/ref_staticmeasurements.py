@@ -112,7 +112,7 @@ plt.xlabel('angle of attack [deg]')
 plt.ylabel('elevator deflection [deg]')
 plt.show()
 
-de_da = (max(de_deg_2)-min(de_deg_2))/(max(alpha_deg_2)-min(alpha_deg_2))        #0.46 [-]
+de_da = -(max(de_deg_2)-min(de_deg_2))/(max(alpha_deg_2)-min(alpha_deg_2))        #0.46 [-]
 
 print('de/dalpha =')
 print(de_da)
@@ -151,7 +151,7 @@ C_N = (mass_3[0]*9.81)/(0.5*rho_3[0]*V_EAS_ms[0]**2*S) #for steady horizontal fl
 c_bar = c #MAC
 
 Cm_delta = -1/change_de * C_N * change_xcg/c_bar    # -1.1642 
-Cm_alpha = Cm_delta*de_da
+Cm_alpha = -Cm_delta*de_da
 print("Cm_delta:")
 print(Cm_delta)
 print("Cm_alpha:")
