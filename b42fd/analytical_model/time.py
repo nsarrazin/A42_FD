@@ -122,8 +122,15 @@ class TimeTool:
         return hp0, V0, alpha0, th0, W, rho, mub, muc, CL, CD, CX0, CZ0
     
 if __name__ == "__main__":
-    eig=TimeTool(t=2000)
     
-    print(eig.altitude, eig.true_airspeed, eig.angle_of_attack, eig.theta, eig.weight, eig.rho, eig.mub, eig.muc, eig.CL, eig.CD, eig.CX0, eig.CZ0)
+    #Flight Data 
+    #all in seconds
+    t_phugoid=53*60
+    t_spm    =58*60
+    t_dutchroll=60*60
+    
+    short_period=TimeTool(t=t_phugoid)
+    
+    print(short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0)
             
     
