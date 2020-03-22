@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import pi, sin, cos
 import scipy.signal as signal
-import case
 
 
 # Stationary flight condition
@@ -115,42 +114,44 @@ Cndr   =  -0.0939
 
 # symm
 
-C1_s = np.zeros((4, 4))
-C1_s[0, 0] = -2 * muc * (c / (V0))
-C1_s[1, 1] = (CZadot - 2 * muc) * (c / V0)
-C1_s[2, 2] = -c / V0
-C1_s[3, 3] = -2 * muc * KY2 * (c / V0)
-C1_s[3, 1] = Cmadot * c / V0
+# dimensionLess
 
-C2_s = np.zeros((4, 4))
-C2_s[0, 0] = CXu
-C2_s[0, 1] = CXa
-C2_s[0, 2] = CZ0
-C2_s[0, 3] = CXq    #comment this line out to match the FD reader version, but we should include it in our model
-C2_s[1, 0] = CZu
-C2_s[1, 1] = CZa
-C2_s[1, 2] = -CX0
-C2_s[1, 3] = (CZq + 2 * muc)
-C2_s[2, 3] = 1
-C2_s[3, 0] = Cmu
-C2_s[3, 1] = Cma
-C2_s[3, 3] = Cmq
+C1_s_l = np.zeros((4, 4))
+C1_s_l[0, 0] = -2 * muc * (c / (V0))
+C1_s_l[1, 1] = (CZadot - 2 * muc) * (c / V0)
+C1_s_l[2, 2] = -c / V0
+C1_s_l[3, 3] = -2 * muc * KY2 * (c / V0)
+C1_s_l[3, 1] = Cmadot * c / V0
 
-C3_s = np.array([[CXde], [CZde], [0], [Cmde]])
+C2_s_l = np.zeros((4, 4))
+C2_s_l[0, 0] = CXu
+C2_s_l[0, 1] = CXa
+C2_s_l[0, 2] = CZ0
+C2_s_l[0, 3] = CXq    #comment this line out to match the FD reader version, but we should include it in our model
+C2_s_l[1, 0] = CZu
+C2_s_l[1, 1] = CZa
+C2_s_l[1, 2] = -CX0
+C2_s_l[1, 3] = (CZq + 2 * muc)
+C2_s_l[2, 3] = 1
+C2_s_l[3, 0] = Cmu
+C2_s_l[3, 1] = Cma
+C2_s_l[3, 3] = Cmq
 
-A_s = -1 * np.linalg.inv(C1_s) @ C2_s
-B_s = -1 * np.linalg.inv(C1_s) @ C3_s
+C3_s_l = np.array([[CXde], [CZde], [0], [Cmde]])
+
+A_s_l = -1 * np.linalg.inv(C1_s_l) @ C2_s_l
+B_s_l = -1 * np.linalg.inv(C1_s_l) @ C3_s_l
 # print(A_s)
 # print(np.linalg.eig(A_s)[0])
-C_s = np.eye(4)
-D_s = np.zeros((4, 1))
+C_s_l = np.eye(4)
+D_s_l = np.zeros((4, 1))
 
 # if __name__== '__main__':
 #     T = np.linspace(0, 10, 1000)
-#     sys_s = control.ss(A_s, B_s, C_s, D_s)
+#     sys_s = control.ss(A_s_l, B_s_l, C_s_l, D_s_l)
 #     T, yout = control.impulse_response(sys_s, T)
 #
-#     print(f'{np.linalg.eig(A_s)[0]}')
+#     print(f'{np.linalg.eig(A_s_l)[0]}')
 #     # print(A_s)
 #
 #     plt.plot(T, yout[1])
@@ -158,34 +159,78 @@ D_s = np.zeros((4, 1))
     # plt.show()
 
 
-C1_a = np.zeros((4, 4))
-C1_a[0, 0] = (CYbdot - 2 * mub) * (b / V0)
-C1_a[1, 1] = -.5 * b / V0
-C1_a[2, 2] = -4 * mub * KX2 * (b / V0)
-C1_a[3, 3] = -4 * mub * KZ2 * (b / V0)
-C1_a[2, 3] = 4 * mub * KXZ * (b / V0)
-C1_a[3, 2] = 4 * mub * KXZ * (b / V0)
-C1_a[3, 0] = Cnbdot * (b / V0)
+# dimensionHaving
 
-C2_a = np.zeros((4, 4))
-C2_a[0, 0] = CYb
-C2_a[0, 1] = CL
-C2_a[0, 2] = CYp
-C2_a[0, 3] = (CYr - 4 * mub)
-C2_a[1, 2] = 1
-C2_a[2, 0] = Clb
-C2_a[2, 2] = Clp
-C2_a[2, 3] = Clr
-C2_a[3, 0] = Cnb
-C2_a[3, 2] = Cnp
-C2_a[3, 3] = Cnr
+C1_s_h = np.zeros((4, 4))
+C1_s_h[0, 0] = -2 * muc * (c / (V0**2))
+C1_s_h[1, 1] = (CZadot - 2 * muc) * (c / V0)
+C1_s_h[2, 2] = -c / V0
+C1_s_h[3, 3] = -2 * muc * KY2 * (c / V0)**2
+C1_s_h[3, 1] = Cmadot * c / V0
 
-C3_a = np.array([[CYda, CYdr], [0, 0], [Clda, Cldr], [Cnda, Cndr]])
+C2_s_h = np.zeros((4, 4))
+C2_s_h[0, 0] = CXu / V0
+C2_s_h[0, 1] = CXa
+C2_s_h[0, 2] = CZ0
+C2_s_h[0, 3] = CXq * (c/V0)    #comment this line out to match the FD reader version, but we should include it in our model
+C2_s_h[1, 0] = CZu / V0
+C2_s_h[1, 1] = CZa
+C2_s_h[1, 2] = -CX0
+C2_s_h[1, 3] = (CZq + 2 * muc) * (c/V0)
+C2_s_h[2, 3] = 1 * (c/V0)
+C2_s_h[3, 0] = Cmu / V0
+C2_s_h[3, 1] = Cma
+C2_s_h[3, 3] = Cmq * (c/V0)
 
-A_a = -1 * np.linalg.inv(C1_a) @ C2_a
-B_a = -1 * np.linalg.inv(C1_a) @ C3_a
-C_a = np.eye(4)
-D_a = np.zeros((4, 2))
+C3_s_h = np.array([[CXde], [CZde], [0], [Cmde]])
+
+A_s_h = -1 * np.linalg.inv(C1_s_l) @ C2_s_l
+B_s_h = -1 * np.linalg.inv(C1_s_l) @ C3_s_l
+# print(A_s)
+# print(np.linalg.eig(A_s)[0])
+C_s_h = np.eye(4)
+D_s_h = np.zeros((4, 1))
+
+
+
+
+
+####################################################
+
+
+# asymm
+
+
+# dimensionLess
+
+C1_a_l = np.zeros((4, 4))
+C1_a_l[0, 0] = (CYbdot - 2 * mub) * (b / V0)
+C1_a_l[1, 1] = -.5 * b / V0
+C1_a_l[2, 2] = -4 * mub * KX2 * (b / V0)
+C1_a_l[3, 3] = -4 * mub * KZ2 * (b / V0)
+C1_a_l[2, 3] = 4 * mub * KXZ * (b / V0)
+C1_a_l[3, 2] = 4 * mub * KXZ * (b / V0)
+C1_a_l[3, 0] = Cnbdot * (b / V0)
+
+C2_a_l = np.zeros((4, 4))
+C2_a_l[0, 0] = CYb
+C2_a_l[0, 1] = CL
+C2_a_l[0, 2] = CYp
+C2_a_l[0, 3] = (CYr - 4 * mub)
+C2_a_l[1, 2] = 1
+C2_a_l[2, 0] = Clb
+C2_a_l[2, 2] = Clp
+C2_a_l[2, 3] = Clr
+C2_a_l[3, 0] = Cnb
+C2_a_l[3, 2] = Cnp
+C2_a_l[3, 3] = Cnr
+
+C3_a_l = np.array([[CYda, CYdr], [0, 0], [Clda, Cldr], [Cnda, Cndr]])
+
+A_a_l = -1 * np.linalg.inv(C1_a_l) @ C2_a_l
+B_a_l = -1 * np.linalg.inv(C1_a_l) @ C3_a_l
+C_a_l = np.eye(4)
+D_a_l = np.zeros((4, 2))
 
 # if __name__ == '__main__':
 #     sys_a = control.ss(A_a, B_a, C_a, D_a)
@@ -201,61 +246,98 @@ D_a = np.zeros((4, 2))
 #     plt.show()
 
 
+# dimensionHaving
+
+C1_a_h = np.zeros((4, 4))
+C1_a_h[0, 0] = (CYbdot - 2 * mub) * (b / V0)
+C1_a_h[1, 1] = -.5 * b / V0
+C1_a_h[2, 2] = -2 * mub * KX2 * (b / V0)**2
+C1_a_h[3, 3] = -2 * mub * KZ2 * (b / V0)**2
+C1_a_h[2, 3] = 2 * mub * KXZ * (b / V0)**2
+C1_a_h[3, 2] = 2 * mub * KXZ * (b / V0)**2
+C1_a_h[3, 0] = Cnbdot * (b / V0)
+
+C2_a_h = np.zeros((4, 4))
+C2_a_h[0, 0] = CYb
+C2_a_h[0, 1] = CL
+C2_a_h[0, 2] = CYp * (b / (2*V0))
+C2_a_h[0, 3] = (CYr - 4 * mub) * (b / (2*V0))
+C2_a_h[1, 2] = 1 * (b / (2*V0))
+C2_a_h[2, 0] = Clb
+C2_a_h[2, 2] = Clp * (b / (2*V0))
+C2_a_h[2, 3] = Clr * (b / (2*V0))
+C2_a_h[3, 0] = Cnb
+C2_a_h[3, 2] = Cnp * (b / (2*V0))
+C2_a_h[3, 3] = Cnr * (b / (2*V0))
+
+C3_a_h = np.array([[CYda, CYdr], [0, 0], [Clda, Cldr], [Cnda, Cndr]])
+
+A_a_h = -1 * np.linalg.inv(C1_a_h) @ C2_a_h
+B_a_h = -1 * np.linalg.inv(C1_a_h) @ C3_a_h
+C_a_h = np.eye(4)
+D_a_h = np.zeros((4, 2))
+
+
+
 
 ###### These are form the FD reader, difference being they assume CXq = 0
 
-T = np.zeros((4,4))
 
-T[0,0] = (V0/c)*(CXu/(2*muc))
-T[0,1] = (V0/c)*(CXa/(2*muc))
-T[0,2] = (V0/c)*(CZ0/(2*muc))
-
-T[1,0] = (V0/c)*(CZu/(2*muc - CZadot))
-T[1,1] = (V0/c)*(CZa/(2*muc - CZadot))
-T[1,2] = -1*(V0/c)*(CX0/(2*muc-CZadot))
-T[1,3] = (V0/c)*(2*muc+CZq)/(2*muc - CZadot)
-
-T[2,3] = (V0/c)
-
-T[3,0] = (V0/c)*(Cmu + CZu*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-T[3,1] = (V0/c)*(Cma + CZa*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-T[3,2] = -1*(V0/c)*(CX0*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-T[3,3] = (V0/c)*(Cmq + Cmadot*(2*muc+CZq)/(2*muc-CZadot))/(2*muc*KY2)
-
-
-
-P = np.zeros((4,4))
-
-P[0,0] = (V0/b)*(CYb/(2*mub))
-P[0,1] = (V0/b)*(CL/(2*mub))
-P[0,2] = (V0/b)*(CYp/(2*mub))
-P[0,3] = (V0/b)*(CYr - 4*mub)/(2*mub)
-
-P[1,2] = 2*V0/b
-
-P[2,0] = (V0/b)*(Clb*KZ2 + Cnb*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-P[2,2] = (V0/b)*(Clp*KZ2 + Cnp*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-P[2,3] = (V0/b)*(Clr*KZ2 + Cnr*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-
-P[3,0] = (V0/b)*(Clb*KXZ + Cnb*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
-P[3,2] = (V0/b)*(Clp*KXZ + Cnp*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
-P[3,3] = (V0/b)*(Clr*KXZ + Cnr*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
-
-########
-
-print(np.linalg.eig(A_s)[0])
-
-print(np.linalg.eig(T)[0])
-
-print(T)
-print('')
-print(A_s)
-print('')
-print(np.where(np.abs(T-A_s)<.01, True, False))
-
-print(P)
-print('')
-print(A_a)
-print('')
-print(np.where(np.abs(P-A_a)<.01, True, False))
+# T = np.zeros((4,4))
+#
+# T[0,0] = (V0/c)*(CXu/(2*muc))
+# T[0,1] = (V0/c)*(CXa/(2*muc))
+# T[0,2] = (V0/c)*(CZ0/(2*muc))
+# T[0,3] = (V0/c)*(CXq/(2*muc))
+#
+# T[1,0] = (V0/c)*(CZu/(2*muc - CZadot))
+# T[1,1] = (V0/c)*(CZa/(2*muc - CZadot))
+# T[1,2] = -1*(V0/c)*(CX0/(2*muc-CZadot))
+# T[1,3] = (V0/c)*(2*muc+CZq)/(2*muc - CZadot)
+#
+# T[2,3] = (V0/c)
+#
+# T[3,0] = (V0/c)*(Cmu + CZu*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+# T[3,1] = (V0/c)*(Cma + CZa*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+# T[3,2] = -1*(V0/c)*(CX0*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+# T[3,3] = (V0/c)*(Cmq + Cmadot*(2*muc+CZq)/(2*muc-CZadot))/(2*muc*KY2)
+#
+#
+#
+# P = np.zeros((4,4))
+#
+# P[0,0] = (V0/b)*(CYb/(2*mub))
+# P[0,1] = (V0/b)*(CL/(2*mub))
+# P[0,2] = (V0/b)*(CYp/(2*mub))
+# P[0,3] = (V0/b)*(CYr - 4*mub)/(2*mub)
+#
+# P[1,2] = 2*V0/b
+#
+# P[2,0] = (V0/b)*(Clb*KZ2 + Cnb*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+# P[2,2] = (V0/b)*(Clp*KZ2 + Cnp*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+# P[2,3] = (V0/b)*(Clr*KZ2 + Cnr*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+#
+# P[3,0] = (V0/b)*(Clb*KXZ + Cnb*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+# P[3,2] = (V0/b)*(Clp*KXZ + Cnp*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+# P[3,3] = (V0/b)*(Clr*KXZ + Cnr*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+#
+# ########
+#
+# if __name__ == '__main__':
+#
+#     print(np.linalg.eig(A_s)[0])
+#
+#     print(np.linalg.eig(T)[0])
+#
+#     print(T)
+#     print('')
+#     print(A_s)
+#     print('')
+#     print(np.where(np.abs(T-A_s)<.001, True, False))
+#
+#     print(P)
+#     print('')
+#     print(A_a)
+#     print('')
+#     print(np.where(np.abs(P-A_a)<.001, True, False))
 
