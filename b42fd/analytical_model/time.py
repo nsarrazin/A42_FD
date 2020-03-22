@@ -127,10 +127,19 @@ if __name__ == "__main__":
     #all in seconds
     t_phugoid=53*60
     t_spm    =58*60
-    t_dutchroll=60*60
+    t_dutchroll=60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
     
-    short_period=TimeTool(t=t_phugoid)
+    t_ape_roll=57*60
+    t_ape_spiral=62*60
     
-    print(short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0)
-            
+    short_period=TimeTool(t=t_spm)
+    phugoid     =TimeTool(t=t_phugoid)
+    dutch_roll  =TimeTool(t=t_dutchroll)
+    aperiodic_roll =TimeTool(t=t_ape_roll)
+    aperiodic_spiral=TimeTool(t=t_ape_spiral)
     
+    print("for short period motion:", short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0)
+    print("for phugoid oscillation:", phugoid.altitude, phugoid.true_airspeed, phugoid.angle_of_attack, phugoid.theta, phugoid.weight, phugoid.rho, phugoid.mub, phugoid.muc, phugoid.CL, phugoid.CD, phugoid.CX0, phugoid.CZ0 )
+    print("for Dutch Roll:", dutch_roll.altitude, dutch_roll.true_airspeed,  dutch_roll.angle_of_attack,  dutch_roll.theta,  dutch_roll.weight,  dutch_roll.rho,  dutch_roll.mub,  dutch_roll.muc,  dutch_roll.CL,  dutch_roll.CD,  dutch_roll.CX0,  dutch_roll.CZ0)        
+    print("for aperiodic roll motion", aperiodic_roll.altitude, aperiodic_roll.true_airspeed,  aperiodic_roll.angle_of_attack,  aperiodic_roll.theta,  aperiodic_roll.weight,  aperiodic_roll.rho,  aperiodic_roll.mub,  aperiodic_roll.muc,  aperiodic_roll.CL,  aperiodic_roll.CD,  aperiodic_roll.CX0,  aperiodic_roll.CZ0)
+    print("for aperiodic roll motion", aperiodic_spiral.altitude, aperiodic_spiral.true_airspeed,  aperiodic_spiral.angle_of_attack,  aperiodic_spiral.theta,  aperiodic_spiral.weight,  aperiodic_spiral.rho,  aperiodic_spiral.mub,  aperiodic_spiral.muc,  aperiodic_spiral.CL,  aperiodic_spiral.CD,  aperiodic_spiral.CX0,  aperiodic_spiral.CZ0)
