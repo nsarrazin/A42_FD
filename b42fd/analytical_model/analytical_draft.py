@@ -10,7 +10,6 @@ path = "data/ref_data/ref_data.json"
 
 # Aircraft mass, post_flight_datasheet 
 # FFl=data["lh_engine_FMF"]["data"]
-m = 6000 
 """[95,92,74,66,61,75,78,86,68] #[kg] 
 m_pax = np.array(m, dtype=int)*2.2046  #[lbs]
 # print(m_pax)
