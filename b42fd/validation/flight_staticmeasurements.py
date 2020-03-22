@@ -124,29 +124,41 @@ xnose_m = xnose_inch* 0.0254
 
 mass_3 = mramp_kg - fuelburnt_kg_3
 W = mass_3*g0
-print(W)
-mom = mass_3 *xnose_m   #kgm
-x_cg = mom/mass_3     #m
-x_cg_1 = x_cg[0]
-x_cg_2 = x_cg[1]
+# print(W)
 
-print(x_cg)
-print(x_cg_1,x_cg_2) 
+x_cg_fuel = 287.58 #inches
+x_cg_fuel_m = x_cg_fuel*0.0254
+m_shift = 96 #kg
+
+def cg_shift(x_cg_fuel_m, xnose_m, mass_3, m_shift):
+    mom = []
+    mom = np.append(mom, mass_3[0]*x_cg_fuel_m)
+    mom = np.append(mom, -m_shift*xnose_m[0])
+    mom_tot = np.sum(mom)
+    x_cg = []
+    # print(mom_tot/(mass_3[0]-m_shift))
+    x_cg = np.append(x_cg, mom_tot/(mass_3[0]-m_shift))
+
+    mom = np.append(mom, m_shift*xnose_m[1])
+    mom_tot = np.sum(mom)
+    x_cg = np.append(x_cg, mom_tot/mass_3[1])
+    return x_cg[0],x_cg[1]
+
 
 V_EAS_ms = V_TAS_ms_3*np.sqrt(rho_3/rho0)
 # print(V_EAS_ms)
 Vej = V_EAS_ms[0]*np.sqrt(W[1]/W[0])
 
 change_de = de_deg_3[1]-de_deg_3[0]
+x_cg_1,x_cg_2 = cg_shift(x_cg_fuel_m, xnose_m, mass_3, m_shift)
 change_xcg = x_cg_2-x_cg_1
+print("change_xcg")
+print(change_xcg)
 C_N = W[1]/(0.5*rho0*Vej**2*S) #for steady horizontal flight
-print(C_N)
+print("C_N:",C_N)
 c_bar = c #MAC
 
-print('mac')
-print(c_bar)
-
-Cm_delta = -1/change_de * C_N * change_xcg/c_bar    # -1.1642 
+Cm_delta = -C_N/change_de * change_xcg/c_bar    # -1.1642 
 Cm_alpha = -Cm_delta*de_da
 print("Cm_delta:")
 print(Cm_delta)
