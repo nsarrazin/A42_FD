@@ -68,7 +68,7 @@ CL_alpha_rad = (CL[-1] - CL[0])/(alpha_rad_1[-1]-alpha_rad_1[0])        # in 1/r
 
 #CL-alpha plot
 
-plt.plot(alpha_deg_1,CL,'x-')
+plt.plot(alpha_deg_1,CL,'x')
 plt.xlabel('angle of attack [deg]')
 plt.ylabel('lift coefficient [-]')
 plt.show()
