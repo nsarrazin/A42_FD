@@ -4,8 +4,7 @@ from ambiance import Atmosphere
 from b42fd.numerical_model.Cit_par import M_ramp, c
 from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
 from b42fd.consts import gamma,T0,lamb,g0,R,p0, rho0
-
-
+from b42fd.numerical_model.case import Case
 print("Flight test data")
 
 #from 20200310_V2
@@ -24,6 +23,8 @@ alpha_rad = np.radians(alpha_deg)
 mramp_kg = mramp_lbs*0.45359237
 fuelburnt_kg = fuelburnt_lbs*0.45359237
 TAT_K = TAT_C+273.15
+
+print(TAT_K)
 
 #density from ambiance package (not a standard package so install)
 atmospheres = Atmosphere(h_m)
@@ -128,7 +129,9 @@ mom = mass_3 *xnose_m   #kgm
 x_cg = mom/mass_3     #m
 x_cg_1 = x_cg[0]
 x_cg_2 = x_cg[1]
-# print(x_cg_1,x_cg_2) 
+
+print(x_cg)
+print(x_cg_1,x_cg_2) 
 
 V_EAS_ms = V_TAS_ms_3*np.sqrt(rho_3/rho0)
 # print(V_EAS_ms)
@@ -140,7 +143,8 @@ C_N = W[1]/(0.5*rho0*Vej**2*S) #for steady horizontal flight
 print(C_N)
 c_bar = c #MAC
 
-
+print('mac')
+print(c_bar)
 
 Cm_delta = -1/change_de * C_N * change_xcg/c_bar    # -1.1642 
 Cm_alpha = -Cm_delta*de_da
@@ -148,3 +152,15 @@ print("Cm_delta:")
 print(Cm_delta)
 print("Cm_alpha:")
 print(Cm_alpha) 
+
+
+MFl=np.array([392,369,608,508,453,431])/7936.64
+MFr=np.array([450, 378,668, 548, 488, 480])/7936.64
+
+thrusts = []
+for i in range(len(h_m)):
+    case = Case(h_m[i], V_ms[i], TAT_K[i], MFl[i], MFr[i])
+    thrusts.append(case.thrust)
+
+
+CD = thrusts/(0.5*rho*V_TAS_ms_1**2*S)
