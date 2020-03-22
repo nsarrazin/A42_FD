@@ -22,7 +22,7 @@ M_payload = np.sum(m_pax)
 BEW = 9165 # basic empty weight [lbs]
 ZFW = BEW + M_payload
 fuel = 2640 # [lbs]
-M_ramp = fuel + ZFW
+M_ramp = fuel + ZFW     #lbs
 # print(M_ramp)
 
 m_flow_l = FFl 

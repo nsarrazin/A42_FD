@@ -68,23 +68,33 @@ print(de_da)
 
 #Cm_delta, Cm_alpha, 20200310
 #shift in center of gravity 
-
+hp_ft = np.array([18360,18550])               #ft
+V_IAS_kts = np.array([156,156])
 de_deg = [-0.2,-0.8]
-fuel_used = [940,989]
-fuel_used_kg = np.array(fuel_used, dtype=int)*0.45359237
+fuel_used_lbs = np.array([940,989])
+xnose_inch = np.array([288,131])
+
+hp_mt = hp_ft*0.3048
+V_IAS_ms  = V_IAS_kts*0.5144
+fuel_used_kg = fuel_used_lbs*0.45359237
+xnose_m = xnose_inch* 0.0254
+
+atmospheres = Atmosphere(hp_mt)
+rho = atmospheres.density
+V_TAS_ms = V_IAS_ms * np.sqrt(rho0/rho)
 mass = mramp_kg - fuel_used_kg
-xnose_inch = [288,131]
-xnose_m = np.array(xnose_inch, dtype=int) * 0.0254
-mom = mass *xnose_m
-mom_tot = np.sum(mom)
-x_cg_after = mom_tot/mass[1]
-x_cg_before = mom[0]/mass[0]
+mom = mass *xnose_m   #kgm
+x_cg = mom/mass     #m
+x_cg_1 = x_cg[0]
+x_cg_2 = x_cg[1]
+print(x_cg_1,x_cg_2) 
 
 change_de = de_deg[1]-de_deg[0]
-change_xcg = x_cg_after-x_cg_before
-C_N = mass[0]/(0.5*rho[0]*V_TAS_ms[0]**2*S) #for steady horizontal flight
+change_xcg = x_cg_2-x_cg_1
+C_N = (mass[0]*9.81)/(0.5*rho[0]*V_TAS_ms[0]**2*S) #for steady horizontal flight
 c_bar = c #MAC
 
 Cm_delta = -1/change_de * C_N * change_xcg/c_bar
-Cm_alpha = -Cm_delta*de_da
+# Cm_delta = -1.1642 
+Cm_alpha = Cm_delta*de_da
 print(Cm_delta,Cm_alpha) 
