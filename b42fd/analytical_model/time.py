@@ -32,7 +32,7 @@ class TimeTool:
         self.theta=data["Ahrs1_Pitch"]["data"]
                         
         if t !=0:
-            self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0 =self.get_flight_conditions(t)
+            self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0, self.fuel_mass_used=self.get_flight_conditions(t)
         
     def get_flight_conditions(self,t):
         """
@@ -75,11 +75,12 @@ class TimeTool:
         lh_FU=self.lf_FU
         
         weight=np.zeros(len(rh_FU))
+        m_fuel=np.zeros(len(rh_FU))
         
         #get an array of weight at all instance of time
         for i in range(len(rh_FU)):
-                m_fuel=rh_FU[i]+lh_FU[i]
-                weight[i]=(W0-m_fuel)*g
+                m_fuel[i]=rh_FU[i]+lh_FU[i]
+                weight[i]=(W0-m_fuel[i])*g
         
         for idx, t_i in enumerate(time):
             if time[idx] < t <= time[idx+1]:
@@ -107,7 +108,7 @@ class TimeTool:
         CX0    = W * np.sin(th0) / (0.5 * rho * V0 ** 2 * S)
         CZ0    = -W * np.cos(th0) / (0.5 * rho * V0 ** 2 * S)
         
-        return hp0, V0, alpha0, th0, W, rho, mub, muc, CL, CD, CX0, CZ0
+        return hp0, V0, alpha0, th0, W, rho, mub, muc, CL, CD, CX0, CZ0, m_fuel[idx]
     
 if __name__ == "__main__":
     
@@ -129,7 +130,7 @@ if __name__ == "__main__":
     print("\n---------------------FOR FLIGHT DATA----------------------------")
     
     
-    print("for short period motion:", short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0)
+    print("for short period motion:", short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0, short_period.fuel_mass_used)
     print("\nfor phugoid oscillation:", phugoid.altitude, phugoid.true_airspeed, phugoid.angle_of_attack, phugoid.theta, phugoid.weight, phugoid.rho, phugoid.mub, phugoid.muc, phugoid.CL, phugoid.CD, phugoid.CX0, phugoid.CZ0 )
     print("\nfor Dutch Roll:", dutch_roll.altitude, dutch_roll.true_airspeed,  dutch_roll.angle_of_attack,  dutch_roll.theta,  dutch_roll.weight,  dutch_roll.rho,  dutch_roll.mub,  dutch_roll.muc,  dutch_roll.CL,  dutch_roll.CD,  dutch_roll.CX0,  dutch_roll.CZ0)        
     print("\nfor aperiodic roll motion", aperiodic_roll.altitude, aperiodic_roll.true_airspeed,  aperiodic_roll.angle_of_attack,  aperiodic_roll.theta,  aperiodic_roll.weight,  aperiodic_roll.rho,  aperiodic_roll.mub,  aperiodic_roll.muc,  aperiodic_roll.CL,  aperiodic_roll.CD,  aperiodic_roll.CX0,  aperiodic_roll.CZ0)
