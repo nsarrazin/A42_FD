@@ -190,3 +190,28 @@ plt.plot(CL,CD,'x')
 plt.xlabel('CL [-]')
 plt.ylabel('CD [-]')
 plt.show()
+
+"""
+Elevator control force curve
+ref data
+4th set of data
+"""
+
+Fe_N = np.array([0,-23, -29, -46, 26, 40, 83])
+indices = [6,7,8,9,10,11,12]
+V_TAS_ms_4 = np.take(V_TAS,indices)
+rho_4 = np.take(rho,indices)
+fuelburnt_kg_4 = np.take(fuelburnt_kg,indices)
+
+mass_4 = mramp_kg - fuelburnt_kg_4
+V_EAS_ms_4 = V_TAS_ms_4 * np.sqrt(rho_4/rho0)
+
+W_s = 60500 #N
+W_4 = mass_4*g0 #N
+
+V_hat_e_ms = V_EAS_ms_4 * np.sqrt(W_s/W_4)
+
+plt.plot(V_hat_e_ms,Fe_N)
+plt.xlabel("Reduced equivalent airspeed [m/s]")
+plt.ylabel("Measured elevator control force [N]")
+plt.show()
