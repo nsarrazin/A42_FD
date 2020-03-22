@@ -8,6 +8,7 @@ Created on Sat Mar 21 16:45:39 2020
 
 from b42fd.validation.fuelmass import data
 import numpy as np
+from b42fd.numerical_model.Cit_par import *
 
 #from b42fd.helpers import load_data
 #from pathlib import Path
@@ -29,15 +30,7 @@ class TimeTool:
         self.m_pax=np.array([95,92,74,66,61,75,78,86,68])    #passenger weights in kg
         self.M_e=9165*0.453592                     #empty aircraft weight in kg
         self.M_u=4050*0.453592                     #mass of fuel
-        
-        #to be changed
-        self.e=0.8
-        self.CD0=0.04
-        self.CLa=5.084
-        self.Cma=-0.5626
-        self.Cmde=1.1642
-        
-        
+                        
         if t !=0:
             self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0 =self.get_flight_conditions(t)
         
@@ -63,7 +56,7 @@ class TimeTool:
         CL : Drag coefficient 
 
         """
-        # Constant values concerning atmosphere and gravity
+        """# Constant values concerning atmosphere and gravity
         rho0   = 1.2250          # air density at sea level [kg/m^3] 
         lambd = -0.0065         # temperature gradient in ISA [K/m]
         Temp0  = 288.15          # temperature at sea level in ISA [K]
@@ -74,11 +67,7 @@ class TimeTool:
         S      = 30.00	         # wing area [m^2]
         c      = 2.0569	         # mean aerodynamic cord [m]
         b      = 15.911	         # wing span [m]
-        A      = b ** 2 / S      # wing aspect ratio [ ]
-        
-        e=self.e
-        CD0=self.CD0
-        CLa=self.CLa
+        A      = b ** 2 / S      # wing aspect ratio [ ]"""
         
         time=self.time
         W0=self.M_e+self.M_u+np.sum(self.m_pax)
@@ -92,7 +81,6 @@ class TimeTool:
                 m_fuel=rh_FU[i]+lh_FU[i]
                 weight[i]=(W0-m_fuel)*g
         
-        print(len(time))
         for idx, t_i in enumerate(time):
             if time[idx] < t <= time[idx+1]:
                 break
