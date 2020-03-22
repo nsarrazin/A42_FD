@@ -5,6 +5,9 @@ from b42fd.numerical_model.Cit_par import M_ramp, c
 from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
 from b42fd.consts import gamma,T0,lamb,g0,R,p0, rho0
 
+
+print("Flight test data")
+
 #from 20200310_V2
 h = np.array([18000,17990,18020,17990,18000,18010,18060,18360,18940,18350,18090,17680,18360,18369,18550]) #altitude 
 V = np.array([161,131,222,200,182,114,156,147,134,168,176,186,156,156,156])#indicated airspeed
@@ -119,6 +122,8 @@ rho_3 = np.take(rho,indices)
 xnose_m = xnose_inch* 0.0254
 
 mass_3 = mramp_kg - fuelburnt_kg_3
+W = mass_3*g0
+print(W)
 mom = mass_3 *xnose_m   #kgm
 x_cg = mom/mass_3     #m
 x_cg_1 = x_cg[0]
@@ -127,12 +132,15 @@ x_cg_2 = x_cg[1]
 
 V_EAS_ms = V_TAS_ms_3*np.sqrt(rho_3/rho0)
 # print(V_EAS_ms)
+Vej = V_EAS_ms[0]*np.sqrt(W[1]/W[0])
 
 change_de = de_deg_3[1]-de_deg_3[0]
 change_xcg = x_cg_2-x_cg_1
-C_N = (mass_3[0]*9.81)/(0.5*rho_3[0]*V_EAS_ms[0]**2*S) #for steady horizontal flight
-# print(C_N)
+C_N = W[1]/(0.5*rho0*Vej**2*S) #for steady horizontal flight
+print(C_N)
 c_bar = c #MAC
+
+
 
 Cm_delta = -1/change_de * C_N * change_xcg/c_bar    # -1.1642 
 Cm_alpha = -Cm_delta*de_da
