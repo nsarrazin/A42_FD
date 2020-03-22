@@ -97,8 +97,8 @@ class TimeTool:
         
         m=W/g
         
-        mub=m/(rho*V0*S*b)
-        muc=m/(rho*V0*S*c)
+        mub=m/(rho*S*b)
+        muc=m/(rho*S*c)
         
         CL = 2 * W / (rho * V0 ** 2 * S)              # Lift coefficient [ ]
         CD = CD0 + (CLa * alpha0) ** 2 / (np.pi * A * e) # Drag coefficient [ ]
