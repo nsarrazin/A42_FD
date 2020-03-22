@@ -17,12 +17,6 @@ ft=0.3048  #ft to m
 kt=0.51444 #kts to m/s
 lbshr=0.000125998 #lbs/hr to kg/s
 
-#stationary measurement Cl-Cd
-h=np.array([18000, 17990, 18020, 17990,18000, 18010])*ft
-V=np.array([161,131, 222,200, 182, 114])*kt
-TAT=np.array([-9.5,-11.5,-4.8,-6.8,-8.2,-12.8])+273.15
-MFl=np.array([450, 378, 668, 548, 488, 480])*lbshr
-MFr=np.array([538, 569, 634, 665, 688, 729])*lbshr
     
 def Mach(Vc, hp, gamma, rho0,p0, p):
     """input: Vc: caliberated airspeed
@@ -56,6 +50,12 @@ def pressure(hp, gamma,T0,lamb,g0,R,p0):
 def temp_diff(T,T_isa):
     return T-T_isa
 
+def sound_speed(gamma,R,T):
+    return gamma*R*T
+
+def true_airspeed(M,a):
+    return M*a
+
 def Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0):
     "it returns a matrix of input data for computing thrust"
     
@@ -82,11 +82,37 @@ def Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0):
         
     return thrust_input
 
+
+"""
+From b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
+
+#To find true airspeed
+V_TAS=np.zeros(len(h))
+
+for i in range(len(h)):
+    Vc=V[i]
+    hp=h[i]
+    Tm=TAT[i]
+    p=pressure(hp, gamma,T0,lamb,g0,R,p0)
+    M=Mach(Vc,hp, gamma, rho0,p0, p)
+    T=corrected_temp(Tm,M,gamma)
+    a=sound_speed(gamma,R,T)
+    V_TAS[i]=true_airspeed(M,a)
+
+""""
+
 """======================================================================================
                              FOR FLIGHT DATA 
 ======================================================================================"""
 
-#input data for stationary measurements Cl-Cd    
+#stationary measurement Cl-Cd
+h=np.array([18000, 17990, 18020, 17990,18000, 18010])*ft
+V=np.array([161,131, 222,200, 182, 114])*kt
+TAT=np.array([-9.5,-11.5,-4.8,-6.8,-8.2,-12.8])+273.15
+MFl=np.array([450, 378, 668, 548, 488, 480])*lbshr
+MFr=np.array([538, 569, 634, 665, 688, 729])*lbshr
+
+#input data for stationary measurements Cl-Cd   
 input0= Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
     
 #stationary measurements elevator trim curve
