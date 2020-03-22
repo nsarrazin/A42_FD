@@ -10,8 +10,12 @@ from b42fd.validation.fuelmass import data
 import numpy as np
 from b42fd.numerical_model.Cit_par import *
 
-#from b42fd.helpers import load_data
-#from pathlib import Path
+from b42fd.helpers import load_data
+from pathlib import Path
+
+m_pax=np.array([95,102,89,82,66,81,69,85,96])    #passenger weights in kg
+M_e=9165*0.453592                     #empty aircraft weight in kg
+M_u=2640*0.453592                     #mass of fuel
 
 class TimeTool:
     
@@ -26,10 +30,6 @@ class TimeTool:
         self.V_TAS=data['Dadc1_tas']["data"]
         self.alpha=data['vane_AOA']["data"]
         self.theta=data["Ahrs1_Pitch"]["data"]
-        
-        self.m_pax=np.array([95,92,74,66,61,75,78,86,68])    #passenger weights in kg
-        self.M_e=9165*0.453592                     #empty aircraft weight in kg
-        self.M_u=4050*0.453592                     #mass of fuel
                         
         if t !=0:
             self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0 =self.get_flight_conditions(t)
@@ -70,7 +70,7 @@ class TimeTool:
         A      = b ** 2 / S      # wing aspect ratio [ ]"""
         
         time=self.time
-        W0=self.M_e+self.M_u+np.sum(self.m_pax)
+        W0=M_e+M_u+np.sum(m_pax)
         rh_FU=self.rh_FU
         lh_FU=self.lf_FU
         
@@ -119,15 +119,34 @@ if __name__ == "__main__":
     
     t_ape_roll=57*60
     t_ape_spiral=62*60
+        
+    short_period=TimeTool(t=t_spm)
+    phugoid     =TimeTool(t=t_phugoid)
+    dutch_roll  =TimeTool(t=t_dutchroll)
+    aperiodic_roll =TimeTool(t=t_ape_roll)
+    aperiodic_spiral=TimeTool(t=t_ape_spiral)
     
-    """Reference data
+    print("\n---------------------FOR FLIGHT DATA----------------------------")
+    
+    
+    print("for short period motion:", short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0)
+    print("\nfor phugoid oscillation:", phugoid.altitude, phugoid.true_airspeed, phugoid.angle_of_attack, phugoid.theta, phugoid.weight, phugoid.rho, phugoid.mub, phugoid.muc, phugoid.CL, phugoid.CD, phugoid.CX0, phugoid.CZ0 )
+    print("\nfor Dutch Roll:", dutch_roll.altitude, dutch_roll.true_airspeed,  dutch_roll.angle_of_attack,  dutch_roll.theta,  dutch_roll.weight,  dutch_roll.rho,  dutch_roll.mub,  dutch_roll.muc,  dutch_roll.CL,  dutch_roll.CD,  dutch_roll.CX0,  dutch_roll.CZ0)        
+    print("\nfor aperiodic roll motion", aperiodic_roll.altitude, aperiodic_roll.true_airspeed,  aperiodic_roll.angle_of_attack,  aperiodic_roll.theta,  aperiodic_roll.weight,  aperiodic_roll.rho,  aperiodic_roll.mub,  aperiodic_roll.muc,  aperiodic_roll.CL,  aperiodic_roll.CD,  aperiodic_roll.CX0,  aperiodic_roll.CZ0)
+    print("\nfor aperiodic roll motion", aperiodic_spiral.altitude, aperiodic_spiral.true_airspeed,  aperiodic_spiral.angle_of_attack,  aperiodic_spiral.theta,  aperiodic_spiral.weight,  aperiodic_spiral.rho,  aperiodic_spiral.mub,  aperiodic_spiral.muc,  aperiodic_spiral.CL,  aperiodic_spiral.CD,  aperiodic_spiral.CX0,  aperiodic_spiral.CZ0)
+    
+    data=load_data("data/ref_data/ref_data.json")
+    m_pax=np.array([95,92,74,66,61,75,78,86,68])
+    M_e=9165*0.453592 
+    M_u=4050*0.453592
+    
+    #Reference data
     t_phugoid=53*60+57
     t_spm    =60*60+35
     t_dutchroll=60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
     
     t_ape_roll=59*60+10
     t_ape_spiral=62*60+20
-    """
     
     short_period=TimeTool(t=t_spm)
     phugoid     =TimeTool(t=t_phugoid)
@@ -135,8 +154,10 @@ if __name__ == "__main__":
     aperiodic_roll =TimeTool(t=t_ape_roll)
     aperiodic_spiral=TimeTool(t=t_ape_spiral)
     
-    print("for short period motion:", short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0)
-    print("for phugoid oscillation:", phugoid.altitude, phugoid.true_airspeed, phugoid.angle_of_attack, phugoid.theta, phugoid.weight, phugoid.rho, phugoid.mub, phugoid.muc, phugoid.CL, phugoid.CD, phugoid.CX0, phugoid.CZ0 )
-    print("for Dutch Roll:", dutch_roll.altitude, dutch_roll.true_airspeed,  dutch_roll.angle_of_attack,  dutch_roll.theta,  dutch_roll.weight,  dutch_roll.rho,  dutch_roll.mub,  dutch_roll.muc,  dutch_roll.CL,  dutch_roll.CD,  dutch_roll.CX0,  dutch_roll.CZ0)        
-    print("for aperiodic roll motion", aperiodic_roll.altitude, aperiodic_roll.true_airspeed,  aperiodic_roll.angle_of_attack,  aperiodic_roll.theta,  aperiodic_roll.weight,  aperiodic_roll.rho,  aperiodic_roll.mub,  aperiodic_roll.muc,  aperiodic_roll.CL,  aperiodic_roll.CD,  aperiodic_roll.CX0,  aperiodic_roll.CZ0)
-    print("for aperiodic roll motion", aperiodic_spiral.altitude, aperiodic_spiral.true_airspeed,  aperiodic_spiral.angle_of_attack,  aperiodic_spiral.theta,  aperiodic_spiral.weight,  aperiodic_spiral.rho,  aperiodic_spiral.mub,  aperiodic_spiral.muc,  aperiodic_spiral.CL,  aperiodic_spiral.CD,  aperiodic_spiral.CX0,  aperiodic_spiral.CZ0)
+    print("\n------------------FOR REFERENCE DATA----------------------------")
+    
+    print("\nfor short period motion:", short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0)
+    print("\nfor phugoid oscillation:", phugoid.altitude, phugoid.true_airspeed, phugoid.angle_of_attack, phugoid.theta, phugoid.weight, phugoid.rho, phugoid.mub, phugoid.muc, phugoid.CL, phugoid.CD, phugoid.CX0, phugoid.CZ0 )
+    print("\nfor Dutch Roll:", dutch_roll.altitude, dutch_roll.true_airspeed,  dutch_roll.angle_of_attack,  dutch_roll.theta,  dutch_roll.weight,  dutch_roll.rho,  dutch_roll.mub,  dutch_roll.muc,  dutch_roll.CL,  dutch_roll.CD,  dutch_roll.CX0,  dutch_roll.CZ0)        
+    print("\nfor aperiodic roll motion", aperiodic_roll.altitude, aperiodic_roll.true_airspeed,  aperiodic_roll.angle_of_attack,  aperiodic_roll.theta,  aperiodic_roll.weight,  aperiodic_roll.rho,  aperiodic_roll.mub,  aperiodic_roll.muc,  aperiodic_roll.CL,  aperiodic_roll.CD,  aperiodic_roll.CX0,  aperiodic_roll.CZ0)
+    print("\nfor aperiodic roll motion", aperiodic_spiral.altitude, aperiodic_spiral.true_airspeed,  aperiodic_spiral.angle_of_attack,  aperiodic_spiral.theta,  aperiodic_spiral.weight,  aperiodic_spiral.rho,  aperiodic_spiral.mub,  aperiodic_spiral.muc,  aperiodic_spiral.CL,  aperiodic_spiral.CD,  aperiodic_spiral.CX0,  aperiodic_spiral.CZ0)
