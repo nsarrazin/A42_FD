@@ -184,10 +184,22 @@ plt.xlabel('alpha [deg]')
 plt.ylabel('CD [-]')
 plt.show()
 
-
+plt.plot([0,0],[0.008,0.02])
 plt.plot(CL,CD,'x')
 plt.xlabel('CL [-]')
 plt.ylabel('CD [-]')
+plt.legend()
+plt.show()
+
+
+CD0 = 0.017 #graphically determined
+
+A = 15.911**2/30
+e = (CD - CD0)*np.pi*A*CL**2
+
+plt.plot(e,CL**2,'x')
+plt.xlabel('-')
+plt.ylabel('e')
 plt.show()
 
 """
