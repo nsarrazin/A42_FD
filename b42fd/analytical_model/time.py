@@ -132,6 +132,15 @@ if __name__ == "__main__":
     t_ape_roll=57*60
     t_ape_spiral=62*60
     
+    """Reference data
+    t_phugoid=53*60+57
+    t_spm    =60*60+35
+    t_dutchroll=60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
+    
+    t_ape_roll=59*60+10
+    t_ape_spiral=62*60+20
+    """
+    
     short_period=TimeTool(t=t_spm)
     phugoid     =TimeTool(t=t_phugoid)
     dutch_roll  =TimeTool(t=t_dutchroll)
