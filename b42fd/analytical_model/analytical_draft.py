@@ -4,7 +4,7 @@ from math import pi, sin, cos
 from pathlib import Path
 import numpy as np
 
-path = "data/ref_data/ref_data.json"
+"""path = "data/ref_data/ref_data.json"
 # data = load_data(path)
 
 
@@ -55,7 +55,7 @@ x_cg_fuel = 297.58
 mom_fuel = fuel*x_cg_fuel
 mom_ramp = mom_fuel + mom_zfw
 x_cg_ramp = mom_ramp/M_ramp
-# print(x_cg_ramp)
+# print(x_cg_ramp)"""
 
 
 # Stationary flight condition
