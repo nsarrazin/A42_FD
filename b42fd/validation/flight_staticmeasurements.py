@@ -169,10 +169,15 @@ print(Cm_alpha)
 MFl=np.array([392,369,608,508,453,431])/7936.64
 MFr=np.array([450, 378,668, 548, 488, 480])/7936.64
 
+
 thrusts = []
-for i in range(len(h_m)):
+for i in range(6):
     case = Case(h_m[i], V_ms[i], TAT_K[i], MFl[i], MFr[i])
     thrusts.append(case.thrust)
 
+CD = thrusts/(0.5*rho[0:6]*V_TAS_ms_1[0:6]**2*S)
 
-CD = thrusts/(0.5*rho*V_TAS_ms_1**2*S)
+plt.plot(CL,CD,'x')
+plt.xlabel('CL [-]')
+plt.ylabel('CD [-]')
+plt.show()

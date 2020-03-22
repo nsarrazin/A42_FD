@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import pi, sin, cos
 import scipy.signal as signal
+import case
 
 
 # Stationary flight condition
