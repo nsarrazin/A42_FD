@@ -59,7 +59,6 @@ x_cg_ramp = mom_ramp/M_ramp
 """
 
 # Stationary flight condition
-
 hp0    =   2700          # pressure altitude in the stationary flight condition [m]
 V0     =   100          # true airspeed in the stationary flight condition [m/sec]
 alpha0 =   .05          # angle of attack in the stationary flight condition [rad]
@@ -109,6 +108,7 @@ W      = m * g            # [N]       (aircraft weight)
 
 muc    = m / (rho * S * c)
 mub    = m / (rho * S * b)
+print(muc, mub)
 KX2    = 0.019
 KZ2    = 0.042
 KXZ    = 0.002
@@ -167,10 +167,10 @@ Cnda   =  -0.0120
 Cndr   =  -0.0939
 
 #Matrix form (vague)
-
 def cal_eigenvalues(A,B,C,V,c):
     return (complex(-B/2/A*V/c,np.sqrt(4*A*C-B**2)/2/A*V/c),complex(-B/2/A*V/c,-np.sqrt(4*A*C-B**2)/2/A*V/c) )
 
+#def period()
 #Short period
 """Asp=-2*muc*KY2
 Bsp=Cmadot+Cmq
@@ -180,7 +180,7 @@ Asp=2*muc*KY2*(2*muc-CZadot)
 Bsp=-2*muc*KY2*CZa-(2*muc+CZq)*Cmadot-(2*muc-CZadot)*Cmq
 Csp=CZa*Cmq-(2*muc+CZq)*Cma
 
-print("eigenvalues for short period motion are:", cal_eigenvalues(Asp, Bsp, Csp,V0,c))
+print("eigenvalues for short period motion are:", cal_eigenvalues(Asp, Bsp, Csp,V0,c)[0])
 
 #Phugoid oscillation
 """Aph=-4*muc**2
@@ -191,7 +191,7 @@ Aph=2*muc*(CZa*Cmq-2*muc*Cma)
 Bph=2*muc*(CXu*Cma-Cmu*CXa)+Cmq*(CZu*CXa-CXu*CZa)
 Cph=CZ0*(Cmu*CZa-Cma*CZu)
 
-print("eigenvalues for phugoid motion are:", cal_eigenvalues(Aph, Bph, Cph,V0,c))
+print("eigenvalues for phugoid motion are:", cal_eigenvalues(Aph, Bph, Cph,V0,c)[0])
 
 #Dutch roll
 """Adr=-2*mub*KZ2
@@ -202,15 +202,13 @@ Aro=8*mub**2*KZ2
 Bro=-2*mub*(Cnr+2*KZ2*CYb)
 Cro=4*mub*Cnb+CYb*Cnr
 
-print("eigenvalues for Dutch Roll are:", cal_eigenvalues(Aro, Bro, Cro,V0,b))
+print("eigenvalues for Dutch Roll are:", cal_eigenvalues(Aro, Bro, Cro,V0,b)[0])
 
 #aperiodic rolling motion (still needs to be changed)
-
 eig1=Clp/(4*mub*KX2)*V0/b
-print("eigenvalues for aperiodic rolling motion are:", eig1)
+print("eigenvalues for aperiodic rolling motion are:", complex(eig1,0))
       
 #aperiodic spiral motion (still needs to be changed)
-
 eig2=(2*CL*(Clb*Cnr-Cnb*Clr))/(Clp*(CYb*Cnr+4*mub*Cnb)-Cnp*(CYb*Clr+4*mub*Clb))*V0/b
-print("eigenvalues for aperiodic spiral motion are:", eig2)
+print("eigenvalues for aperiodic spiral motion are:", complex(eig2))
 
