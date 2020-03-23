@@ -121,7 +121,7 @@ if __name__ == "__main__":
     t_ape_roll=57*60
     t_ape_spiral=62*60
     
-    print("===========================FOR FLIGHT DATA========================")
+    print("=====================FOR FLIGHT DATA========================")
     
     print("--------------------- Symmetric motions ---------------------")
     
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     t_ape_roll=59*60+10
     t_ape_spiral=62*60+20
     
-    print("\n===========================FOR REFERENCE DATA========================")
+    print("\n=================FOR REFERENCE DATA=====================")
     
     print("\n--------------------- Symmetric motions ---------------------")
     
