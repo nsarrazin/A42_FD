@@ -14,22 +14,22 @@ from b42fd.helpers import load_data
 from pathlib import Path
 
 class Analytical_Eigenmotion:
-    def __init__(self,motion_type,t=0):
+    def __init__(self,motion_type,t=0, M_u=0):
         
         if motion_type =="short period motion":
-            self.eigvalues, self.properties=self.get_eignval_spm(t) 
+            self.eigvalues, self.properties=self.get_eignval_spm(t, M_u) 
         
         if motion_type=="phugoid oscillation":
-            self.eigvalues, self.properties=self.get_eigval_phu(t)
+            self.eigvalues, self.properties=self.get_eigval_phu(t, M_u)
             
         if motion_type=="dutch roll":
-            self.eigvalues, self.properties=self.get_eigval_dutchroll(t)
+            self.eigvalues, self.properties=self.get_eigval_dutchroll(t, M_u)
             
         if motion_type=="aperiodic roll":
-            self.eigvalues, self.properties=self.get_eigval_ape_roll(t)
+            self.eigvalues, self.properties=self.get_eigval_ape_roll(t, M_u)
             
         if motion_type=="aperiodic spiral":
-            self.eigvalues, self.properties=self.get_eigval_ape_spiral(t)
+            self.eigvalues, self.properties=self.get_eigval_ape_spiral(t, M_u)
     
     @staticmethod
     def cal_eigenvalues(A,B,C,V,c):
@@ -53,8 +53,8 @@ class Analytical_Eigenmotion:
 
         return damping_ratio, P, half_t.real
     
-    def get_eignval_spm(self,t):
-        params=TimeTool(t)
+    def get_eignval_spm(self,t,M_u):
+        params=TimeTool(t,M_u)
         muc, V0=params.muc, params.true_airspeed
         
         A=2*muc*KY2*(2*muc-CZadot)
@@ -66,9 +66,9 @@ class Analytical_Eigenmotion:
         
         return  eigval, properties
     
-    def get_eigval_phu(self,t):
+    def get_eigval_phu(self,t, M_u):
         
-        params=TimeTool(t)
+        params=TimeTool(t, M_u)
         muc, V0, CZ0=params.muc, params.true_airspeed, params.CZ0
         
         A=2*muc*(CZa*Cmq-2*muc*Cma)
@@ -80,9 +80,9 @@ class Analytical_Eigenmotion:
         
         return eigval, properties
     
-    def get_eigval_dutchroll(self, t):
+    def get_eigval_dutchroll(self, t, M_u):
         
-        params=TimeTool(t)
+        params=TimeTool(t, M_u)
         mub, V0=params.mub, params.true_airspeed
     
         A=8*mub**2*KZ2
@@ -94,17 +94,17 @@ class Analytical_Eigenmotion:
         
         return eigval, properties
     
-    def get_eigval_ape_roll(self, t):
-        params=TimeTool(t)
+    def get_eigval_ape_roll(self,  t, M_u):
+        params=TimeTool(t, M_u)
         mub, V0=params.mub, params.true_airspeed
         
         eig1=complex(Clp/(4*mub*KX2)*V0/b,0)
         
         return eig1, self.eigenvalue_properties(eig1)
     
-    def get_eigval_ape_spiral(self,t):
+    def get_eigval_ape_spiral(self, t, M_u):
         
-        params=TimeTool(t)
+        params=TimeTool(t, M_u)
         mub, V0, CL=params.mub, params.true_airspeed, params.CL
         eig2=complex((2*CL*(Clb*Cnr-Cnb*Clr))/(Clp*(CYb*Cnr+4*mub*Cnb)-Cnp*(CYb*Clr+4*mub*Clb))*V0/b,0)
         
