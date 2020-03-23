@@ -6,9 +6,9 @@ from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,so
 from b42fd.consts import gamma,T0,lamb,g0,R,p0, rho0
 from b42fd.numerical_model.case import Case
 from b42fd.validation.staticmeasurements.flight_cl import CL
-from b42fd.validation.staticmeasurements.flight_data import h_m, V_ms, TAT_K, alpha_deg, fuelburnt_kg, MFl, MFr
+from b42fd.validation.staticmeasurements.flight_data import h_m, V_ms, TAT_K, alpha_deg, fuelburnt_kg
 
-print("Flight test data")
+print("Flight test data CD")
 
 #fixed values
 b = 15.911
