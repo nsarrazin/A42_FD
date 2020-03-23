@@ -90,10 +90,11 @@ trim curve
 #take values from before
 indices = [6,7,8,9,10,11,12]
 alpha_deg_2 = np.take(alpha_deg,indices)
-
+alpha_rad_2=np.radians(alpha_deg_2)
 #take value from excel
 de_deg_2 = np.array([-0.3,-0.7,-1.2,0.1,0.4,0.7,-0.2]) 
 
+de_rad_2=np.radians(de_deg_2)
 #plot trim curve
 plt.plot(alpha_deg_2,de_deg_2,'x')
 plt.xlabel('angle of attack [deg]')
@@ -103,7 +104,7 @@ plt.show()
 de_da = -(max(de_deg_2)-min(de_deg_2))/(max(alpha_deg_2)-min(alpha_deg_2))        #0.46 [-]
 
 print('de/dalpha =')
-print(de_da, de_da_rad)
+print(de_da)
 
 """
 Cm_delta, Cm_alpha
