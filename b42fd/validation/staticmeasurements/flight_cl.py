@@ -5,6 +5,7 @@ from b42fd.numerical_model.Cit_par import M_ramp, c
 from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
 from b42fd.consts import gamma,T0,lamb,g0,R,p0,rho0
 from b42fd.numerical_model.case import Case
+from b42fd.validation.staticmeasurements.flight_data import h
 
 print("Flight test data Cl-a")
 
