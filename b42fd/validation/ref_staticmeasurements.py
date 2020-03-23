@@ -140,7 +140,7 @@ mass_3 = mramp_kg - fuelburnt_kg_3
 W = mass_3*g0
 # print(W)
 
-x_cg_fuel = 287.58 #inches
+x_cg_fuel = 287.3 #inches
 x_cg_fuel_m = x_cg_fuel*0.0254
 m_shift = 68 #kg
 
