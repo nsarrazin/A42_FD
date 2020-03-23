@@ -79,7 +79,7 @@ class TimeTool:
                 weight[i]=(W0-m_fuel[i])*g
         
         for idx, t_i in enumerate(time):
-            if time[idx] < t <= time[idx+1]:
+            if time[idx] <= t < time[idx+1]:
                 break
         
         hp0=self.altitude[idx]
