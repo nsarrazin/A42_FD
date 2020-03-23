@@ -14,6 +14,7 @@ print("Flight test data CD")
 b = 15.911
 S = 30.
 A = b**2/S
+mu = 3.178 * 10**-5 # dynamic viscosity of air (constant between 300-1000 K) kg m−1 s−1
 
 #from 20200310_V2
 h_m = h_m[:6]                                               #altitude 
@@ -34,6 +35,8 @@ rho = atmospheres.density
 
 #To find true airspeed
 V_TAS=np.zeros(len(h_m))
+Mlst = np.zeros(len(h_m))
+Relst = np.zeros(len(h_m))
 
 for i in range(len(h_m)):
     Vc_ms=V_ms[i]
@@ -44,6 +47,9 @@ for i in range(len(h_m)):
     T=corrected_temp(Tm_K,M,gamma)
     a=sound_speed(gamma,R,T)
     V_TAS[i]=true_airspeed(M,a)
+    Mlst[i] = M
+    Re = V_TAS[i]*c*rho[i]/mu
+    Relst[i] = Re
 
 
 thrusts = []
@@ -58,13 +64,20 @@ plt.xlabel('alpha [deg]')
 plt.ylabel('CD [-]')
 plt.show()
 
-Machmin = min(M)
-Machmax = max(M)
+Machmin = min(Mlst)
+Machmax = max(Mlst)
 
-plt.plot(CL,CD,'x')
-plt.title('CL-CD curve with Mach range: M =',Machmin, '- M =',Machmax)
-plt.xlabel('CL [-]')
-plt.ylabel('CD [-]')
+Remin = min(Relst)
+Remax = max(Relst)
+
+title = 'CL-CD curve with Mach range: M =' + str(round(Machmin,2)) + ' to M =' + str(round(Machmax,2))
+subtitle = 'Reynoldsnumber range: Re = ' + str(round(Remin/10**6,1)) + ' * 10^6 to Re =' + str(round(Remax/10**6,1)) + ' * 10^6'
+
+plt.plot(CL,CD,'x',markersize = 10)
+plt.title(title,fontsize = 16, y=1.07)
+plt.suptitle(subtitle, fontsize = 16, y=0.92)
+plt.xlabel('CL [-]',fontsize = 14)
+plt.ylabel('CD [-]', fontsize = 14)
 plt.show()
 
 

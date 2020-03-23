@@ -11,6 +11,7 @@ print("Flight test data Cl-a")
 
 #fixed values
 S = 30                  #[m^2]
+mu = 3.178 * 10**-5 # dynamic viscosity of air (constant between 300-1000 K) kg m−1 s−1
 
 #data
 h_m = h_m[:6]                                               #altitude 
@@ -29,6 +30,8 @@ rho = atmospheres.density
 
 #To find true airspeed
 V_TAS=np.zeros(len(h_m))
+Mlst = np.zeros(len(h_m))
+Relst = np.zeros(len(h_m))
 
 for i in range(len(h_m)):
     Vc_ms=V_ms[i]
@@ -40,6 +43,19 @@ for i in range(len(h_m)):
     T=corrected_temp(Tm_K,M,gamma)
     a=sound_speed(gamma,R,T)
     V_TAS[i]=true_airspeed(M,a)
+    Mlst[i] = M
+    Re = V_TAS[i]*c*rho[i]/mu
+    Relst[i] = Re
+
+
+Machmin = min(Mlst)
+Machmax = max(Mlst)
+
+Remin = min(Relst)
+Remax = max(Relst)
+
+title = 'CL-alpha curve with Mach range: M =' + str(round(Machmin,2)) + ' to M =' + str(round(Machmax,2))
+subtitle = 'Reynoldsnumber range: Re = ' + str(round(Remin/10**6,1)) + ' * 10^6 to Re =' + str(round(Remax/10**6,1)) + ' * 10^6'
 
 #calculations
 mass_1 = mramp_kg - fuelburnt_kg
@@ -50,9 +66,11 @@ CL_alpha_rad = (CL[-1] - CL[0])/(alpha_rad[-1]-alpha_rad[0])        # in 1/radia
 
 #CL-alpha plot
 
-plt.plot(alpha_deg,CL,'x')
-plt.xlabel('angle of attack [deg]')
-plt.ylabel('lift coefficient [-]')
+plt.plot(alpha_deg,CL,'x',markersize=11)
+plt.title(title,y=1.07,fontsize=16)
+plt.suptitle(subtitle,y=0.92,fontsize=16)
+plt.xlabel('angle of attack [deg]', fontsize = 14)
+plt.ylabel('CL [-]', fontsize = 14)
 plt.show()
 
 
