@@ -43,11 +43,19 @@ class PostProcessing:
         t_0 = self.events[key] - 5
         t_0_i = np.searchsorted(self.t, t_0)
 
-        u_0 = self.data["Dadc1_tas"]["data"][t_0_i]*0
+        # symmetrical
+        u_0 = 0
         alpha_0 = self.data["Ahrs1_Pitch"]["data"][t_0_i]
         theta_0 = self.data["Ahrs1_Roll"]["data"][t_0_i]
         q_0 = self.data["Ahrs1_bPitchRate"]["data"][t_0_i]
+
+        #asymmetrical
+        # beta_0 = self.data["Ahrs41_"]
+        # psi_0 =
+        # p_0 = 
+        # q_0 = 
         return [u_0, alpha_0, theta_0, q_0]
+        # return [u_0, theta_0, alpha_0, q_0]
 
     def plotAngles(self, key_event, t_plot = 60, angles = ["roll", "pitch"], show=True):
         """
@@ -100,7 +108,7 @@ class PostProcessing:
         plt.xlabel("Time [s]")
         plt.ylabel("Angular rate [rad/s]")
         plt.legend()
-        
+
         if show:
             plt.show(block=False)
 
@@ -121,6 +129,7 @@ class PostProcessing:
 
         if "elevator_dte" in inputs:
             self._plotData("elevator_dte", t_0, t_max)
+        
         plt.axvline(x=self.events[key_event], label=f"Time of {key_event}", c="black", linestyle="dashed")
 
         plt.xlabel("Time [s]")
