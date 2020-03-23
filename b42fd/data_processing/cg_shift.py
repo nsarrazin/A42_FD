@@ -30,13 +30,15 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
     #Aircraft Geometry
     """x_LEMAC = 261.56*2.54E-2
     c = 2.0569	"""
+    M_u_kg=fuel_mass0*0.453592
     
     #Be careful with what data is being used. 
-    FU1 = TimeTool(t_start).fuel_mass_used
-    fuel1 = fuel_mass0-FU1
-
-    FU2= TimeTool(t_end).fuel_mass_used
-    fuel2=fuel_mass0-FU2
+    FU1 = TimeTool(data,t_start,M_u_kg).fuel_mass_used 
+    print(FU1)
+    fuel1 = fuel_mass0-FU1*2.20462
+    
+    FU2= TimeTool(data,t_end,M_u_kg).fuel_mass_used
+    fuel2=fuel_mass0-FU2*2.20462
     
     #get the index of the start time
     for idx_start, t_i in enumerate(time):
@@ -95,11 +97,14 @@ delta_cg_flight=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_o
 print("-----------------FLIGHT DATA--------------------")
 print("\n shift in cg location in meters:", delta_cg_flight)
 
+M_u_kg=fuel_mass0*0.453592
+
 #to determine Cm_de using cg shift data 
 de_1=np.radians([-0.2, -0.8])
-Cn=TimeTool(t_start).CL
+Cn=TimeTool(data,t_start,M_u_kg).CL
 Cm_de= get_Cm_de(de_1, Cn, delta_cg_flight, c)
 
+print(Cn)
 print("\n Cm_de:", Cm_de)
 
 #to determine Cma using the stationary trim curve data
@@ -110,10 +115,18 @@ Cm_a=get_Cm_a(de, a, Cm_de)
 
 print("\n Cm_a:", Cm_a)
 
+print("\nweight     ", TimeTool(data,t_start,M_u_kg).weight)
+print("rho          ", TimeTool(data,t_start,M_u_kg).rho)
+print("altitude     ", TimeTool(data,t_start,M_u_kg).altitude)
+print("true airspeed", TimeTool(data,t_start,M_u_kg).true_airspeed)
+print("Cn           ", Cn)
+
+
 from b42fd.helpers import load_data
 
 
 data=load_data("data/ref_data/ref_data.json")
+
 m_pax=np.array([95,92,74,66,61,75,78,86,68])*2.20462
 time=data["time"]["data"]
 
@@ -124,6 +137,8 @@ fuel_mass0=4050
 x_pax_cg_old=288  #inches
 x_pax_cg_new=134  #inches
 
+M_u_kg=fuel_mass0*0.453592
+
 delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new)
 
 print("\n-----------------REF DATA------------------------")
@@ -131,10 +146,15 @@ print("\nshift in cg location in meters:", delta_cg_ref)
 
 #to determine Cm_de using cg shift data 
 de_2=np.radians([-0, -0.5])
-Cn=TimeTool(t_start).CL
+Cn=TimeTool(data, t_start,M_u_kg).CL
 Cm_de= get_Cm_de(de_2, Cn, delta_cg_ref, c)
 
-print("\n Cm_de:", Cm_de)
+print("\nweight     ", TimeTool(data,t_start,M_u_kg).weight)
+print("rho          ", TimeTool(data,t_start,M_u_kg).rho)
+print("altitude     ", TimeTool(data,t_start,M_u_kg).altitude)
+print("true airspeed", TimeTool(data,t_start,M_u_kg).true_airspeed)
+print("Cn           ", Cn)
+
 
 #to determine Cma using the stationary trim curve data
 a=np.radians([5.3, 6.3, 7.3, 8.5, 4.5, 4.1, 3.4])
@@ -143,4 +163,4 @@ de=np.radians([0, -0.4, -0.9, -1.5, 0.4, 0.6, 1])
 Cm_a=get_Cm_a(de, a, Cm_de)
 
 print("\n Cm_a:", Cm_a)
-
+print("\n Cm_de:", Cm_de)
