@@ -34,7 +34,6 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
     
     #Be careful with what data is being used. 
     FU1 = TimeTool(data,t_start,M_u_kg).fuel_mass_used 
-    print(FU1)
     fuel1 = fuel_mass0-FU1*2.20462
     
     FU2= TimeTool(data,t_end,M_u_kg).fuel_mass_used
@@ -60,8 +59,8 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
             fuel_moment2 =(moment[i+1]-moment[i])/(fuel_left[i+1]-fuel_left[i])*fuel2 +moment[i]
         
     # Calculate CoG for Passenger Shift
-    x_cg_old = (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment1) / (M_e + fuel1+sum(m_pax))
-    x_cg_new= (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment2 - (x_pax_cg_old- x_pax_cg_new)*m_shift) / (M_e + fuel2 + sum(m_pax))
+    x_cg_old = (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment1) / (M_e + fuel1+sum(m_pax))         #in inches
+    x_cg_new= (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment2 - (x_pax_cg_old- x_pax_cg_new)*m_shift) / (M_e + fuel2 + sum(m_pax))   #in inches
 
     return (x_cg_new-x_cg_old)*0.0254
 
