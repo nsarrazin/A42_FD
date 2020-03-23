@@ -184,8 +184,8 @@ C2_s_h[3, 3] = Cmq * (c/V0)
 
 C3_s_h = np.array([[CXde], [CZde], [0], [Cmde]])
 
-A_s_h = -1 * np.linalg.inv(C1_s_l) @ C2_s_l
-B_s_h = -1 * np.linalg.inv(C1_s_l) @ C3_s_l
+A_s_h = -1 * np.linalg.inv(C1_s_h) @ C2_s_h
+B_s_h = -1 * np.linalg.inv(C1_s_h) @ C3_s_h
 # print(A_s)
 # print(np.linalg.eig(A_s)[0])
 C_s_h = np.eye(4)
@@ -277,6 +277,11 @@ B_a_h = -1 * np.linalg.inv(C1_a_h) @ C3_a_h
 C_a_h = np.eye(4)
 D_a_h = np.zeros((4, 2))
 
+if __name__ == '__main__':
+    print(np.linalg.eig(A_s_l)[0])
+    print(np.linalg.eig(A_a_l)[0])
+    print(np.linalg.eig(A_s_h)[0])
+    print(np.linalg.eig(A_a_h)[0])
 
 
 

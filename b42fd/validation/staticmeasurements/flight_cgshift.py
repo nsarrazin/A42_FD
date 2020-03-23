@@ -54,13 +54,14 @@ xnose_inch = np.array([288,131])
 #conversion
 xnose_m = xnose_inch* 0.0254
 
+
+#calculations
 mass = mramp_kg - fuelburnt_kg
 W = mass*g0
 
-x_cg_fuel = 287.58 #inches
+x_cg_fuel = 287.58                  #inches
 x_cg_fuel_m = x_cg_fuel*0.0254
-
-m_shift = 96 #kg
+m_shift = 96                        #kg
 
 def cg_shift(x_cg_fuel_m, xnose_m, mass_3, m_shift):
     mom = []
