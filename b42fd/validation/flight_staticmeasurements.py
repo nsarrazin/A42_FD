@@ -196,13 +196,19 @@ plt.show()
 
 CD0 = 0.017 #graphically determined
 
-A = 15.911**2/30
-e = (CD - CD0)*np.pi*A*CL**2
+A = 15.911**2/30.
+e = 0.9
 
-plt.plot(e,CL**2,'x')
-plt.xlabel('-')
-plt.ylabel('e')
+CDtheoretical = CD0 + CL**2/(np.pi*A*e)
+
+plt.plot(CL**2, CDtheoretical, 'o-')
+plt.plot(CL**2, CD,'x')
+plt.xlabel('CL^2 [-]')
+plt.ylabel('CD')
 plt.show()
+
+#e = (CD - CD0)/(CL**2)*(np.pi*A)
+#print(e)
 
 """
 Elevator control force curve
