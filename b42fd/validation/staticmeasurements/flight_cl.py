@@ -23,11 +23,6 @@ fuelburnt_kg = fuelburnt_kg[:6]                             #fuel burnt lbs
 MFl=np.array([392,369,608,508,453,431])/7936.64             #fuel flow left engine (already converted to kg/s)
 MFr=np.array([450, 378,668, 548, 488, 480])/7936.64
 
-
-
-
-
-
 #density from ambiance package (not a standard package so install)
 atmospheres = Atmosphere(h_m)
 rho = atmospheres.density

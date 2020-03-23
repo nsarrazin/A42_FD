@@ -11,6 +11,7 @@ mramp_lbs = M_ramp
 MFl =  np.array([392, 369, 608, 508, 453, 431])/7936.64                                                           #fuel flow left engine (already converted to kg/s)
 MFr =  np.array([450, 378, 668, 548, 488, 480])/7936.64
 
+print(mramp_lbs)
 
 #conversions 
 h_m =   h*0.3048

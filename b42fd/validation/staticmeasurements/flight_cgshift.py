@@ -11,6 +11,7 @@ from b42fd.validation.staticmeasurements.flight_data import h_m, V_ms, TAT_K, al
 print("Flight test data cg shift")
 
 #fixed value
+Ws = 60500 #[N] table B1 page 11 of assignment
 S = 30.
 
 #from 20200310_V2

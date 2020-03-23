@@ -58,7 +58,11 @@ plt.xlabel('alpha [deg]')
 plt.ylabel('CD [-]')
 plt.show()
 
+Machmin = min(M)
+Machmax = max(M)
+
 plt.plot(CL,CD,'x')
+plt.title('CL-CD curve with Mach range: M =',Machmin, '- M =',Machmax)
 plt.xlabel('CL [-]')
 plt.ylabel('CD [-]')
 plt.show()
@@ -66,8 +70,8 @@ plt.show()
 
 #vary these to see get them right
 
-CD0 = 0.006 
-e = 0.2
+CD0 = 0.04 
+e = 0.8
 
 CLsquared = CL**2
 CDtheoretical = CD0 + CLsquared/(np.pi*A*e)
