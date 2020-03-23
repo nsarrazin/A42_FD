@@ -28,7 +28,7 @@ class TimeTool:
         self.theta=data["Ahrs1_Pitch"]["data"]
                         
         if t !=0:
-            self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0, self.fuel_mass_used=self.get_flight_conditions(t, M_u)
+            self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0, self.fuel_mass_used, self.t=self.get_flight_conditions(t, M_u)
         
     def get_flight_conditions(self,t, M_u):
         """
@@ -104,7 +104,7 @@ class TimeTool:
         CX0    = W * np.sin(th0) / (0.5 * rho * V0 ** 2 * S)
         CZ0    = -W * np.cos(th0) / (0.5 * rho * V0 ** 2 * S)
 
-        return hp0, V0, alpha0, th0, W, rho, mub, muc, CL, CD, CX0, CZ0, m_fuel[idx]
+        return hp0, V0, alpha0, th0, W, rho, mub, muc, CL, CD, CX0, CZ0, m_fuel[idx], time[idx]
     
 if __name__ == "__main__":
     
