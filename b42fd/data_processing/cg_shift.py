@@ -148,13 +148,6 @@ de_2=np.radians([-0, -0.5])
 Cn=TimeTool(data, t_start,M_u_kg).CL
 Cm_de= get_Cm_de(de_2, Cn, delta_cg_ref, c)
 
-print("\nweight     ", TimeTool(data,t_start,M_u_kg).weight)
-print("rho          ", TimeTool(data,t_start,M_u_kg).rho)
-print("altitude     ", TimeTool(data,t_start,M_u_kg).altitude)
-print("true airspeed", TimeTool(data,t_start,M_u_kg).true_airspeed)
-print("Cn           ", Cn)
-
-
 #to determine Cma using the stationary trim curve data
 a=np.radians([5.3, 6.3, 7.3, 8.5, 4.5, 4.1, 3.4])
 de=np.radians([0, -0.4, -0.9, -1.5, 0.4, 0.6, 1])
@@ -163,3 +156,12 @@ Cm_a=get_Cm_a(de, a, Cm_de)
 
 print("\n Cm_a:", Cm_a)
 print("\n Cm_de:", Cm_de)
+
+print("\nweight     ", TimeTool(data,t_start,M_u_kg).weight)
+print("rho          ", TimeTool(data,t_start,M_u_kg).rho)
+print("altitude     ", TimeTool(data,t_start,M_u_kg).altitude)
+print("true airspeed", TimeTool(data,t_start,M_u_kg).true_airspeed)
+print("Cn           ", Cn)
+
+
+
