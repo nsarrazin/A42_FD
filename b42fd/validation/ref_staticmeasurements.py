@@ -140,7 +140,7 @@ mass_3 = mramp_kg - fuelburnt_kg_3
 W = mass_3*g0
 # print(W)
 
-x_cg_fuel = 287.58 #inches
+x_cg_fuel = 287.3 #inches
 x_cg_fuel_m = x_cg_fuel*0.0254
 m_shift = 68 #kg
 
@@ -213,7 +213,9 @@ W_4 = mass_4*g0 #N
 
 V_hat_e_ms = V_EAS_ms_4 * np.sqrt(W_s/W_4)
 
-plt.plot(V_hat_e_ms,Fe_N,"x")
+plt.plot(V_hat_e_ms,Fe_N,'x')
+plt.ylim(90,-40)
+plt.hlines(0,np.min(V_hat_e_ms),np.max(V_hat_e_ms))
 plt.xlabel("Reduced equivalent airspeed [m/s]")
 plt.ylabel("Measured elevator control force [N]")
 plt.show()
