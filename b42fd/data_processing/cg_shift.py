@@ -72,7 +72,6 @@ fuel_mass0=2640
 
 x_pax_cg_old=288  #inches
 x_pax_cg_new=131  #inches
-m_shift     =96   #kg
 
 time=data["time"]["data"]
 
@@ -93,7 +92,6 @@ fuel_mass0=4050
 
 x_pax_cg_old=288  #inches
 x_pax_cg_new=134  #inches
-m_shift     =68   #kg
 
 cg_shift_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new )
 print("\n-----------------REF DATA------------------------")
