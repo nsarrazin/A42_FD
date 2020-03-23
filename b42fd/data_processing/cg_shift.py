@@ -3,7 +3,7 @@
 """
 Created on Mon Mar 23 09:33:57 2020
 
-@author: wenweidong
+@author: suyi
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -81,7 +81,7 @@ def get_Cm_a(de, a, Cm_de):
 #wing geometry 
 c = 2.0569
 
-m_pax=np.array([95,102,89,82,66,81,69,85,96])
+m_pax=np.array([95,102,89,82,66,81,69,85,96])*2.20462
 t_start=49*60
 t_end=52*60
 fuel_mass0=2640
@@ -114,7 +114,7 @@ from b42fd.helpers import load_data
 
 
 data=load_data("data/ref_data/ref_data.json")
-m_pax=np.array([95,92,74,66,61,75,78,86,68])
+m_pax=np.array([95,92,74,66,61,75,78,86,68])*2.20462
 time=data["time"]["data"]
 
 t_start=51*60+2
@@ -124,7 +124,8 @@ fuel_mass0=4050
 x_pax_cg_old=288  #inches
 x_pax_cg_new=134  #inches
 
-delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new )
+delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new)
+
 print("\n-----------------REF DATA------------------------")
 print("\nshift in cg location in meters:", delta_cg_ref)
 
