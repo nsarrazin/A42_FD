@@ -24,14 +24,12 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
     
     #moment in pound inches
     moment=np.array([298.16,591.18,879.08,1165.42, 1448.4,1732.53, 2014.8, 2298.84, 2581.92, 2866.3,3150.18, 3434.52, 3718.52, 4003.32, 4287.76, 4572.24, 4856.56, 5141.16, 5425.64, 5709.9, 5994.04, 6278.47, 6562.82, 6846.96, 7131, 7415.33, 7699.6, 7984.34, 8269.06, 8554.05, 8839.04, 9124.8, 9410.62, 9696.97, 9983.40, 10270.08, 10556.84, 10843.87, 11131.0, 11418.2, 11705.5, 11993.31, 12281.18, 12569.04, 12856.86, 13144.73, 13432.48, 13720.56, 14008.46 ])
-    
-    x_fuel=moment/fuel_left*100    #inches
 
     m_shift     =m_pax[8]   #kg
 
     #Aircraft Geometry
-    x_LEMAC = 261.56*2.54E-2
-    c = 2.0569	
+    """x_LEMAC = 261.56*2.54E-2
+    c = 2.0569	"""
     
     #Be careful with what data is being used. 
     FU1 = TimeTool(t_start).fuel_mass_used
@@ -55,14 +53,13 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
     
     for i, x_i in enumerate(fuel_left):
         if fuel_left[i] <= fuel1 < fuel_left[i + 1]:
-            fuel_moment1=(moment[i+1]-moment[i])/(fuel_left[i+1]-fuel_left[i])*fuel1
+            fuel_moment1=(moment[i+1]-moment[i])/(fuel_left[i+1]-fuel_left[i])*fuel1 +moment[i]
         if fuel_left[i] <= fuel2 < fuel_left[i+1]:
-            fuel_moment2 =(moment[i+1]-moment[i])/(fuel_left[i+1]-fuel_left[i])*fuel2
-    
+            fuel_moment2 =(moment[i+1]-moment[i])/(fuel_left[i+1]-fuel_left[i])*fuel2 +moment[i]
         
     # Calculate CoG for Passenger Shift
     x_cg_old = (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment1) / (M_e + fuel1+sum(m_pax))
-    x_cg_new= (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment2 - (x_pax_cg_old- x_pax_cg_new)*m_shift) / (M_e + fuel1+sum(m_pax))
+    x_cg_new= (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment2 - (x_pax_cg_old- x_pax_cg_new)*m_shift) / (M_e + fuel2 + sum(m_pax))
 
     return (x_cg_new-x_cg_old)*0.0254
 
