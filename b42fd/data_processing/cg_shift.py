@@ -6,6 +6,7 @@ Created on Mon Mar 23 09:33:57 2020
 @author: wenweidong
 """
 import numpy as np
+import matplotlib.pyplot as plt
 from b42fd.analytical_model.time import TimeTool
 from b42fd.validation.fuelmass import data
 
@@ -64,7 +65,25 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
     x_cg_new= (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment1 - (x_pax_cg_old- x_pax_cg_new)*m_shift) / (M_e + fuel1+sum(m_pax))
 
     return (x_cg_new-x_cg_old)*0.0254
+
+def get_Cm_de(de, Cn, delta_cg, c):
+    """input:     
+    de: array of elevator deflections in radians
+    Cn: normal force coefficient
+    delta_cg: cg shift
+    c: mac"""
+    delta_de=de[1]-de[0]
+    return -1/delta_de*Cn*delta_cg/c
+
+def get_Cm_a(de, a, Cm_de):
+    delta_de=min(de)-max(de)
+    delta_a=max(a)-min(a)
     
+    return -delta_de/delta_a*Cm_de
+
+#wing geometry 
+c = 2.0569
+
 m_pax=np.array([95,102,89,82,66,81,69,85,96])
 t_start=49*60
 t_end=52*60
@@ -75,9 +94,24 @@ x_pax_cg_new=131  #inches
 
 time=data["time"]["data"]
 
-cg_shift_flight=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new )
+delta_cg_flight=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new )
 print("-----------------FLIGHT DATA--------------------")
-print("\n shift in cg location in meters:", cg_shift_flight)
+print("\n shift in cg location in meters:", delta_cg_flight)
+
+#to determine Cm_de using cg shift data 
+de_1=np.radians([-0.2, -0.8])
+Cn=TimeTool(t_start).CL
+Cm_de= get_Cm_de(de_1, Cn, delta_cg_flight, c)
+
+print("\n Cm_de:", Cm_de)
+
+#to determine Cma using the stationary trim curve data
+a=np.radians([5.2, 6.3, 7.5, 4.4, 3.8, 3.3, 5.2])
+de=np.radians([-0.3, -0.7, -1.2, 0.1, 0.4, 0.7, -0.2])
+
+Cm_a=get_Cm_a(de, a, Cm_de)
+
+print("\n Cm_a:", Cm_a)
 
 from b42fd.helpers import load_data
 
@@ -93,9 +127,22 @@ fuel_mass0=4050
 x_pax_cg_old=288  #inches
 x_pax_cg_new=134  #inches
 
-cg_shift_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new )
+delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new )
 print("\n-----------------REF DATA------------------------")
-print("\nshift in cg location in meters:", cg_shift_ref)
+print("\nshift in cg location in meters:", delta_cg_ref)
 
+#to determine Cm_de using cg shift data 
+de_2=np.radians([-0, -0.5])
+Cn=TimeTool(t_start).CL
+Cm_de= get_Cm_de(de_2, Cn, delta_cg_ref, c)
 
+print("\n Cm_de:", Cm_de)
+
+#to determine Cma using the stationary trim curve data
+a=np.radians([5.3, 6.3, 7.3, 8.5, 4.5, 4.1, 3.4])
+de=np.radians([0, -0.4, -0.9, -1.5, 0.4, 0.6, 1])
+
+Cm_a=get_Cm_a(de, a, Cm_de)
+
+print("\n Cm_a:", Cm_a)
 
