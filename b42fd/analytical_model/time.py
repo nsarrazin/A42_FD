@@ -9,13 +9,8 @@ Created on Sat Mar 21 16:45:39 2020
 from b42fd.validation.fuelmass import data
 import numpy as np
 from b42fd.numerical_model.Cit_par import *
-
 from b42fd.helpers import load_data
 from pathlib import Path
-
-m_pax=np.array([95,102,89,82,66,81,69,85,96])    #passenger weights in kg
-M_e=9165*0.453592                     #empty aircraft weight in kg
-M_u=2640*0.453592                     #mass of fuel
 
 class TimeTool:
     
@@ -107,10 +102,14 @@ class TimeTool:
         #Stability derivaties
         CX0    = W * np.sin(th0) / (0.5 * rho * V0 ** 2 * S)
         CZ0    = -W * np.cos(th0) / (0.5 * rho * V0 ** 2 * S)
-        
+
         return hp0, V0, alpha0, th0, W, rho, mub, muc, CL, CD, CX0, CZ0, m_fuel[idx]
     
 if __name__ == "__main__":
+    
+    m_pax=np.array([95,102,89,82,66,81,69,85,96])    #passenger weights in kg
+    M_e=9165*0.453592                     #empty aircraft weight in kg
+    M_u=2640*0.453592                     #mass of fuel
     
     #Flight Data 
     #all in seconds
@@ -128,7 +127,6 @@ if __name__ == "__main__":
     aperiodic_spiral=TimeTool(t=t_ape_spiral)
     
     print("\n---------------------FOR FLIGHT DATA----------------------------")
-    
     
     print("for short period motion:", short_period.altitude, short_period.true_airspeed, short_period.angle_of_attack, short_period.theta, short_period.weight, short_period.rho, short_period.mub, short_period.muc, short_period.CL, short_period.CD, short_period.CX0, short_period.CZ0, short_period.fuel_mass_used)
     print("\nfor phugoid oscillation:", phugoid.altitude, phugoid.true_airspeed, phugoid.angle_of_attack, phugoid.theta, phugoid.weight, phugoid.rho, phugoid.mub, phugoid.muc, phugoid.CL, phugoid.CD, phugoid.CX0, phugoid.CZ0 )
