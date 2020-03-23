@@ -6,39 +6,31 @@ from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,so
 from b42fd.consts import gamma,T0,lamb,g0,R,p0, rho0
 from b42fd.numerical_model.case import Case
 from b42fd.validation.staticmeasurements.flight_trimcurve import de_da
-print("Flight test data")
+from b42fd.validation.staticmeasurements.flight_data import h_m, V_ms, TAT_K, alpha_deg, fuelburnt_kg, mramp_kg
+
+print("Flight test data cg shift")
 
 #fixed value
 S = 30.
 
 #from 20200310_V2
-h = np.array([18369,18550]) #altitude 
-V = np.array([156,156])#indicated airspeed
-TAT_C = np.array([-11.2,-11.2]) #temp
-alpha_deg = np.array([5.2,5.2])  #aoa deg
-fuelburnt_lbs = np.array([940,989]) #fuel burnt lbs
-
+alpha_deg = alpha_deg[13:15]
 de_deg = [-0.2,-0.8]
 de_rad = np.radians(de_deg)
-
-mramp_lbs = M_ramp
-
-#conversions 
-h_m = h*0.3048
-V_ms  = V*0.5144
+h_m = h_m[13:15]
+V_ms  = V_ms[13:15]
 alpha_rad = np.radians(alpha_deg)
-mramp_kg = mramp_lbs*0.45359237
-fuelburnt_kg = fuelburnt_lbs*0.45359237
-TAT_K = TAT_C+273.15
+fuelburnt_kg = fuelburnt_kg[13:15]
+TAT_K = TAT_K[13:15]
 
 #density from ambiance package (not a standard package so install)
 atmospheres = Atmosphere(h_m)
 rho = atmospheres.density
 
 #To find true airspeed
-V_TAS=np.zeros(len(h))
+V_TAS=np.zeros(len(h_m))
 
-for i in range(len(h)):
+for i in range(len(h_m)):
     Vc_ms=V_ms[i]
     hp_m=h_m[i]
     Tm_K=TAT_K[i]
