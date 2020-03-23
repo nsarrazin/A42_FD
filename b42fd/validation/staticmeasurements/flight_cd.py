@@ -8,7 +8,7 @@ from b42fd.numerical_model.case import Case
 from b42fd.validation.staticmeasurements.flight_cl import CL
 from b42fd.validation.staticmeasurements.flight_data import h_m, V_ms, TAT_K, alpha_deg, fuelburnt_kg
 
-print("Flight test data")
+print("Flight test data CD")
 
 #fixed values
 b = 15.911
@@ -16,11 +16,11 @@ S = 30.
 A = b**2/S
 
 #from 20200310_V2
-h_m = h_m[:6]                                                #altitude 
+h_m = h_m[:6]                                               #altitude 
 V_ms = V_ms[:6]                                             #indicated airspeed
-TAT_K = TAT_K[:6]         #temp
-alpha_deg = alpha_deg[:6]           #aoa deg
-fuelburnt_kg = fuelburnt_kg[:6]       #fuel burnt lbs
+TAT_K = TAT_K[:6]                                           #temp
+alpha_deg = alpha_deg[:6]                                   #aoa deg
+fuelburnt_kg = fuelburnt_kg[:6]                             #fuel burnt lbs
 MFl=np.array([392,369,608,508,453,431])/7936.64             #fuel flow left engine (already converted to kg/s)
 MFr=np.array([450, 378,668, 548, 488, 480])/7936.64
 
@@ -61,7 +61,6 @@ plt.show()
 plt.plot(CL,CD,'x')
 plt.xlabel('CL [-]')
 plt.ylabel('CD [-]')
-plt.legend()
 plt.show()
 
 
