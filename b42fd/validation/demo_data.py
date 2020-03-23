@@ -7,7 +7,9 @@ from b42fd.helpers import load_data
 # with open("data.json", "r") as f:
 #     raw = f.read()
 #     dataDict = json.loads(raw)
-dataDict = load_data("data/flight_data/flight_data.json")
+# dataDict = load_data("data/flight_data/flight_data.json")
+dataDict = load_data("data/ref_data/ref_data.json")
+
 # structure is as follow
 # you have a dictionary whose keys represent a dataset each
 #
