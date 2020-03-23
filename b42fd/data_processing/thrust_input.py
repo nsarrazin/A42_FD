@@ -22,9 +22,12 @@ def Mach(Vc, hp, gamma, rho0,p0, p):
     """input: Vc: caliberated airspeed
               hp: pressure altitude
        output: a :speed of sound"""
-    C=1+(gamma-1)/2/gamma*rho0/p0*Vc**2
-    D=gamma/(gamma-1)
-    M=np.sqrt(2/(gamma-1)*((1+p0/p*(C**D-1))**(1/C)-1))
+    A=(gamma-1)/(gamma*2)*rho0/p0*(Vc**2)
+    B=gamma/(gamma-1)
+    C=1/B
+    D=2/(gamma-1)
+    
+    M=np.sqrt(D*((1+p0/p*((1+A)**B-1))**C-1))
     return M
 
 def corrected_temp(Tm, M, gamma):
@@ -34,7 +37,6 @@ def corrected_temp(Tm, M, gamma):
     M: Mach number
 
     output: T: corrected temperature"""
-    
     T=Tm/(1+(gamma-1)*M**2)
     return T
 
@@ -51,7 +53,7 @@ def temp_diff(T,T_isa):
     return T-T_isa
 
 def sound_speed(gamma,R,T):
-    return sqrt(gamma*R*T)
+    return np.sqrt(gamma*R*T)
 
 def true_airspeed(M,a):
     return M*a
@@ -122,6 +124,18 @@ MFr=np.array([470, 466, 455, 471, 448, 484, 469])*lbshr
 
 #input thrust data elevator trim curve
 input1= Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
+
+V_TAS=np.zeros(len(h))
+
+for i in range(len(h)):
+    Vc=V[i]
+    hp=h[i]
+    Tm=TAT[i]
+    p=pressure(hp, gamma,T0,lamb,g0,R,p0)
+    M=Mach(Vc,hp, gamma, rho0,p0, p)
+    T=corrected_temp(Tm,M,gamma)
+    a=sound_speed(gamma,R,T)
+    V_TAS[i]=true_airspeed(M,a)
 
 """======================================================================================
                              FOR REFERENCE DATA 
