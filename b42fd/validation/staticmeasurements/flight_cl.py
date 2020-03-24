@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from ambiance import Atmosphere
-from b42fd.numerical_model.Cit_par import M_ramp, c
+from b42fd.numerical_model.Cit_par import c
 from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
 from b42fd.consts import gamma,T0,lamb,g0,R,p0,rho0
 from b42fd.numerical_model.case import Case
@@ -12,6 +12,7 @@ print("Flight test data Cl-a")
 #fixed values
 S = 30                  #[m^2]
 mu = 3.178 * 10**-5 # dynamic viscosity of air (constant between 300-1000 K) kg m−1 s−1
+M_ramp = 13491.5
 
 #data
 h_m = h_m[:6]                                               #altitude 
