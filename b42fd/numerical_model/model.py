@@ -21,7 +21,7 @@ m_pax=np.array([95,102,89,82,66,81,69,85,96])    #passenger weights in kg
 M_u=2640*0.453592                     #mass of fuel
 
 #stationary measurements
-Cm_de= -1.1941458222011172
+Cmde= -1.1941458222011172
 Cma= -0.5402088243290768
 
 CLa=4.371485054942859
@@ -61,13 +61,13 @@ from b42fd.helpers import load_data
 
 
 #for reference data 
-e      = 0.8        # Oswald factor [ ]
-CD0    = 0.04        # Zero lift drag coefficient [ ]
-CLa    = 5.084       # Slope of CL-alpha curve [ ]
+# e      = 0.8        # Oswald factor [ ]
+# CD0    = 0.04        # Zero lift drag coefficient [ ]
+# CLa    = 5.084       # Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
 # Cma    = -0.5626     # longitudinal stabilty [ ]
-Cmde   = -1.1642     # elevator effectiveness [ ]
+# Cmde   = -1.1642     # elevator effectiveness [ ]
 
 # Stationary flight condition
 
