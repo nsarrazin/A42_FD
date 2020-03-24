@@ -47,7 +47,7 @@ for i in range(len(h)):
 """
 CL-CD and CL-a curves 
 1st set of values
-
+"""
 
 #take values from before
 indices = [0,1,2,3,4,5]
@@ -210,7 +210,7 @@ plt.show()
 #e = (CD - CD0)/(CL**2)*(np.pi*A)
 #print(e)
 """
-"""
+
 Elevator control force curve
 flight data
 4th set of data
