@@ -36,7 +36,7 @@ class TestAnalytical(unittest.TestCase):
         input_data={"hp": 0, "gamma":1.4, "T0": 288.15, "p0": 101325, "lamb": 9.81, "R": 288.17, "p0": 101325 }
         test_result=1.225
         self.assertEqual( pressure(hp, gamma, T0, lamb, g0, R, p0), test_result)
-        
+
         
 if __name__ == '__main__':
     unittest.main()

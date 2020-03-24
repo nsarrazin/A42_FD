@@ -6,7 +6,6 @@ Created on Mon Mar 23 09:33:57 2020
 @author: suyi
 """
 import numpy as np
-import matplotlib.pyplot as plt
 from b42fd.analytical_model.time import TimeTool
 from b42fd.validation.fuelmass import data
 
@@ -33,10 +32,10 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
     M_u_kg=fuel_mass0*0.453592
     
     #Be careful with what data is being used. 
-    FU1 = TimeTool(data,t_start,M_u_kg).fuel_mass_used 
+    FU1 = TimeTool(data,t_start,M_u_kg,m_pax, CLa, CD0,  e).fuel_mass_used 
     fuel1 = fuel_mass0-FU1*2.20462
     
-    FU2= TimeTool(data,t_end,M_u_kg).fuel_mass_used
+    FU2= TimeTool(data,t_end,M_u_kg, m_pax, CLa, CD0,  e).fuel_mass_used
     fuel2=fuel_mass0-FU2*2.20462
     
     #get the index of the start time
@@ -92,6 +91,14 @@ x_pax_cg_new=131  #inches
 
 time=data["time"]["data"]
 
+#stationary mesurements results 
+Cm_de= -1.1941458222011172
+Cma= -0.5402088243290768
+
+CLa=4.371485054942859
+CD0=0.016
+e=0.6
+
 delta_cg_flight=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new )
 print("-----------------FLIGHT DATA--------------------")
 print("\n shift in cg location in meters:", delta_cg_flight)
@@ -100,10 +107,9 @@ M_u_kg=fuel_mass0*0.453592
 
 #to determine Cm_de using cg shift data 
 de_1=np.radians([-0.2, -0.8])
-Cn=TimeTool(data,t_start,M_u_kg).CL
+Cn=TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa, CD0,  e).CL
 Cm_de= get_Cm_de(de_1, Cn, delta_cg_flight, c)
 
-print(Cn)
 print("\n Cm_de:", Cm_de)
 
 #to determine Cma using the stationary trim curve data
@@ -113,12 +119,12 @@ de=np.radians([-0.3, -0.7, -1.2, 0.1, 0.4, 0.7, -0.2])
 Cm_a=get_Cm_a(de, a, Cm_de)
 
 print("\n Cm_a:", Cm_a)
-
-print("\nweight     ", TimeTool(data,t_start,M_u_kg).weight)
-print("rho          ", TimeTool(data,t_start,M_u_kg).rho)
-print("altitude     ", TimeTool(data,t_start,M_u_kg).altitude)
-print("true airspeed", TimeTool(data,t_start,M_u_kg).true_airspeed)
-print("Cn           ", Cn)
+"""
+print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
+print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).rho)
+print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).altitude)
+print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
+print("Cn           ", Cn)"""
 
 
 from b42fd.helpers import load_data
@@ -138,6 +144,14 @@ x_pax_cg_new=134  #inches
 
 M_u_kg=fuel_mass0*0.453592
 
+#stationary mesurements results 
+Cm_de= -1.0024724929977598
+Cma_ref= -0.4914080848028234
+ 
+CLa=4.662367336619402
+CD0=0.016
+e=0.88
+
 delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new)
 
 print("\n-----------------REF DATA------------------------")
@@ -145,7 +159,7 @@ print("\nshift in cg location in meters:", delta_cg_ref)
 
 #to determine Cm_de using cg shift data 
 de_2=np.radians([-0, -0.5])
-Cn=TimeTool(data, t_start,M_u_kg).CL
+Cn=TimeTool(data, t_start,M_u_kg, m_pax/2.20462,CLa, CD0,  e).CL
 Cm_de= get_Cm_de(de_2, Cn, delta_cg_ref, c)
 
 #to determine Cma using the stationary trim curve data
@@ -154,14 +168,18 @@ de=np.radians([0, -0.4, -0.9, -1.5, 0.4, 0.6, 1])
 
 Cm_a=get_Cm_a(de, a, Cm_de)
 
-print("\n Cm_a:", Cm_a)
-print("\n Cm_de:", Cm_de)
 
-print("\nweight     ", TimeTool(data,t_start,M_u_kg).weight)
-print("rho          ", TimeTool(data,t_start,M_u_kg).rho)
-print("altitude     ", TimeTool(data,t_start,M_u_kg).altitude)
-print("true airspeed", TimeTool(data,t_start,M_u_kg).true_airspeed)
-print("Cn           ", Cn)
+Cm_a=get_Cm_a(de, a, Cm_de)
+
+print("\n Cm_de:", Cm_de)
+print("\n Cm_a:", Cm_a)
+"""
+
+print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
+print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).rho)
+print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).altitude)
+print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
+print("Cn           ", Cn)"""
 
 
 

@@ -14,7 +14,7 @@ from b42fd.helpers import load_data
 M_e=9165*0.453592                     #empty aircraft weight in kg
 class TimeTool:
     
-    def __init__(self, data, t, M_u):
+    def __init__(self, data, t, M_u, m_pax,CLa, CD0, e):
         self.data=data    #flight data
         #sefl.data=load_data("data/ref_data/ref_data.json")
         
@@ -27,9 +27,9 @@ class TimeTool:
         self.theta=data["Ahrs1_Pitch"]["data"]
                         
         if t !=0:
-            self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0, self.fuel_mass_used, self.t=self.get_flight_conditions(t, M_u)
+            self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0, self.fuel_mass_used, self.t=self.get_flight_conditions(t, M_u,m_pax, CLa, CD0, e)
         
-    def get_flight_conditions(self,t, M_u):
+    def get_flight_conditions(self,t, M_u,m_pax,CLa, CD0, e):
         """
         returns all parameters that are depended on time
 
@@ -51,19 +51,6 @@ class TimeTool:
         CL : Drag coefficient 
 
         """
-        """# Constant values concerning atmosphere and gravity
-        rho0   = 1.2250          # air density at sea level [kg/m^3] 
-        lambd = -0.0065         # temperature gradient in ISA [K/m]
-        Temp0  = 288.15          # temperature at sea level in ISA [K]
-        R      = 287.05          # specific gas constant [m^2/sec^2K]
-        g      = 9.81            # [m/sec^2] (gravity constant)
-        
-        # Aircraft geometry
-        S      = 30.00	         # wing area [m^2]
-        c      = 2.0569	         # mean aerodynamic cord [m]
-        b      = 15.911	         # wing span [m]
-        A      = b ** 2 / S      # wing aspect ratio [ ]"""
-        
         time=self.time
         W0=M_e+M_u+np.sum(m_pax)
         rh_FU=self.rh_FU
@@ -110,6 +97,13 @@ if __name__ == "__main__":
     m_pax=np.array([95,102,89,82,66,81,69,85,96])    #passenger weights in kg
     M_u=2640*0.453592                     #mass of fuel
     
+    Cm_de= -1.1941458222011172
+    Cma= -0.5402088243290768
+    
+    CLa=4.371485054942859
+    CD0=0.016
+    e=0.6
+    
     #Flight Data 
     #all in seconds
     t_phugoid=53*60
@@ -119,11 +113,11 @@ if __name__ == "__main__":
     t_ape_roll=57*60
     t_ape_spiral=62*60
         
-    short_period=TimeTool(data,t=t_spm, M_u=M_u)
-    phugoid     =TimeTool(data,t=t_phugoid, M_u=M_u)
-    dutch_roll  =TimeTool(data,t=t_dutchroll, M_u=M_u)
-    aperiodic_roll =TimeTool(data,t=t_ape_roll, M_u=M_u)
-    aperiodic_spiral=TimeTool(data,t=t_ape_spiral, M_u=M_u)
+    short_period=TimeTool(data,t=t_spm, M_u=M_u,m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e)
+    phugoid     =TimeTool(data,t=t_phugoid, M_u=M_u,m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e)
+    dutch_roll  =TimeTool(data,t=t_dutchroll, M_u=M_u,m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e)
+    aperiodic_roll =TimeTool(data,t=t_ape_roll, M_u=M_u,m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e)
+    aperiodic_spiral=TimeTool(data,t=t_ape_spiral, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e)
     
     print("\n---------------------FOR FLIGHT DATA----------------------------")
     
@@ -139,6 +133,14 @@ if __name__ == "__main__":
     M_e=9165*0.453592 
     M_u=4050*0.453592
     
+    #stationary mesurements results 
+    Cm_de= -1.0024724929977598
+    Cma_ref= -0.4914080848028234
+     
+    CLa=4.662367336619402
+    CD0=0.016
+    e=0.88
+
     #Reference data
     t_phugoid=53*60+57
     t_spm    =60*60+35
@@ -147,11 +149,11 @@ if __name__ == "__main__":
     t_ape_roll=59*60+10
     t_ape_spiral=65*60+20
     
-    short_period=TimeTool(data,t=t_spm, M_u=M_u)
-    phugoid     =TimeTool(data,t=t_phugoid, M_u=M_u)
-    dutch_roll  =TimeTool(data,t=t_dutchroll, M_u=M_u)
-    aperiodic_roll =TimeTool(data,t=t_ape_roll, M_u=M_u)
-    aperiodic_spiral=TimeTool(data,t=t_ape_spiral, M_u=M_u)
+    short_period=TimeTool(data,t=t_spm, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e)
+    phugoid     =TimeTool(data,t=t_phugoid, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e)
+    dutch_roll  =TimeTool(data,t=t_dutchroll, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e)
+    aperiodic_roll =TimeTool(data,t=t_ape_roll, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e)
+    aperiodic_spiral=TimeTool(data,t=t_ape_spiral, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e)
     
     print("\n------------------FOR REFERENCE DATA----------------------------")
     

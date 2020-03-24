@@ -6,6 +6,69 @@ from math import pi, sin, cos
 import scipy.signal as signal
 
 
+#pulling coefficients using TimeTool
+
+from b42fd.analytical_model.time import TimeTool
+
+t= 1000    #time in seconds
+
+#for flight data 
+#need to put these input values before using TimeTool
+from b42fd.validation.fuelmass import data
+from b42fd.data_processing.stationarymeas_results import *
+
+m_pax=np.array([95,102,89,82,66,81,69,85,96])    #passenger weights in kg
+M_u=2640*0.453592                     #mass of fuel
+
+#stationary measurements
+Cm_de= -1.1941458222011172
+Cma= -0.5402088243290768
+
+CLa=4.371485054942859
+CD0=0.016
+e=0.6
+
+a=TimeTool(data,t,M_u,m_pax,CLa, CD0, e)
+
+#weight in N
+hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0 = a.altitude, a.true_airspeed, a.angle_of_attack, a.weight, a.mub, a.muc, a.CL, a.CD, a.CX0, a.CZ0
+print(hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0)
+
+
+#For reference data 
+
+from b42fd.helpers import load_data
+
+# data=load_data("data/ref_data/ref_data.json")
+#
+# m_pax=np.array([95,92,74,66,61,75,78,86,68])
+# M_e=9165*0.453592
+# M_u=4050*0.453592
+#
+# #stationary mesurements results
+# Cm_de= -1.0024724929977598
+# Cma_ref= -0.4914080848028234
+#
+# CLa=4.662367336619402
+# CD0=0.016
+# e=0.88
+#
+# b=TimeTool(data,t,M_u,m_pax,CLa, CD0, e)
+# #weight in N
+# hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0 = b.altitude, b.true_airspeed, b.angle_of_attack, b.weight, b.mub, b.muc, b.CL, b.CD, b.CX0, b.CZ0
+# print(hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0)
+
+
+
+#for reference data 
+e      = 0.8        # Oswald factor [ ]
+CD0    = 0.04        # Zero lift drag coefficient [ ]
+CLa    = 5.084       # Slope of CL-alpha curve [ ]
+
+# Longitudinal stability
+# Cma    = -0.5626     # longitudinal stabilty [ ]
+Cmde   = -1.1642     # elevator effectiveness [ ]
+
 # Stationary flight condition
 
 hp0    =   2700          # pressure altitude in the stationary flight condition [m]
@@ -17,13 +80,13 @@ th0    =   .05          # pitch angle in the stationary flight condition [rad]
 m      =  5000           # mass [kg]
 
 # aerodynamic properties
-e      = 0.8         # Oswald factor [ ]
-CD0    = 0.04        # Zero lift drag coefficient [ ]
-CLa    = 5.084       # Slope of CL-alpha curve [ ]
+# e      = 0.8         # Oswald factor [ ]
+# CD0    = 0.04        # Zero lift drag coefficient [ ]
+# CLa    = 5.084       # Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
-Cma    = -0.5626     # longitudinal stabilty [ ]
-Cmde   = -1.1642     # elevator effectiveness [ ]
+# Cma    = -0.5626     # longitudinal stabilty [ ]
+# Cmde   = -1.1642     # elevator effectiveness [ ]
 
 # Aircraft geometry
 S      = 30.00	         # wing area [m^2]
@@ -270,7 +333,7 @@ C2_a_h[3, 0] = Cnb
 C2_a_h[3, 2] = Cnp * (b / (2*V0))
 C2_a_h[3, 3] = Cnr * (b / (2*V0))
 
-C3_a_h = np.array([[CYda, CYdr], [0, 0], [Clda, Cldr], [Cnda, Cndr]])
+C3_a_h = np.array([[-CYda, CYdr], [0, 0], [-Clda, Cldr], [-Cnda, Cndr]])
 
 A_a_h = -1 * np.linalg.inv(C1_a_h) @ C2_a_h
 B_a_h = -1 * np.linalg.inv(C1_a_h) @ C3_a_h
@@ -278,9 +341,9 @@ C_a_h = np.eye(4)
 D_a_h = np.zeros((4, 2))
 
 if __name__ == '__main__':
-    print(np.linalg.eig(A_s_l)[0])
-    print(np.linalg.eig(A_a_l)[0])
-    print(np.linalg.eig(A_s_h)[0])
+    # print(np.linalg.eig(A_s_l)[0])
+    # print(np.linalg.eig(A_a_l)[0])
+    print("\n", np.linalg.eig(A_s_h)[0])
     print(np.linalg.eig(A_a_h)[0])
 
 
@@ -288,61 +351,61 @@ if __name__ == '__main__':
 ###### These are form the FD reader, difference being they assume CXq = 0
 
 
-# T = np.zeros((4,4))
-#
-# T[0,0] = (V0/c)*(CXu/(2*muc))
-# T[0,1] = (V0/c)*(CXa/(2*muc))
-# T[0,2] = (V0/c)*(CZ0/(2*muc))
-# T[0,3] = (V0/c)*(CXq/(2*muc))
-#
-# T[1,0] = (V0/c)*(CZu/(2*muc - CZadot))
-# T[1,1] = (V0/c)*(CZa/(2*muc - CZadot))
-# T[1,2] = -1*(V0/c)*(CX0/(2*muc-CZadot))
-# T[1,3] = (V0/c)*(2*muc+CZq)/(2*muc - CZadot)
-#
-# T[2,3] = (V0/c)
-#
-# T[3,0] = (V0/c)*(Cmu + CZu*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-# T[3,1] = (V0/c)*(Cma + CZa*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-# T[3,2] = -1*(V0/c)*(CX0*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-# T[3,3] = (V0/c)*(Cmq + Cmadot*(2*muc+CZq)/(2*muc-CZadot))/(2*muc*KY2)
-#
-#
-#
-# P = np.zeros((4,4))
-#
-# P[0,0] = (V0/b)*(CYb/(2*mub))
-# P[0,1] = (V0/b)*(CL/(2*mub))
-# P[0,2] = (V0/b)*(CYp/(2*mub))
-# P[0,3] = (V0/b)*(CYr - 4*mub)/(2*mub)
-#
-# P[1,2] = 2*V0/b
-#
-# P[2,0] = (V0/b)*(Clb*KZ2 + Cnb*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-# P[2,2] = (V0/b)*(Clp*KZ2 + Cnp*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-# P[2,3] = (V0/b)*(Clr*KZ2 + Cnr*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-#
-# P[3,0] = (V0/b)*(Clb*KXZ + Cnb*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
-# P[3,2] = (V0/b)*(Clp*KXZ + Cnp*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
-# P[3,3] = (V0/b)*(Clr*KXZ + Cnr*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+T = np.zeros((4,4))
+
+T[0,0] = (V0/c)*(CXu/(2*muc))
+T[0,1] = (V0/c)*(CXa/(2*muc))
+T[0,2] = (V0/c)*(CZ0/(2*muc))
+T[0,3] = (V0/c)*(CXq/(2*muc))
+
+T[1,0] = (V0/c)*(CZu/(2*muc - CZadot))
+T[1,1] = (V0/c)*(CZa/(2*muc - CZadot))
+T[1,2] = -1*(V0/c)*(CX0/(2*muc-CZadot))
+T[1,3] = (V0/c)*(2*muc+CZq)/(2*muc - CZadot)
+
+T[2,3] = (V0/c)
+
+T[3,0] = (V0/c)*(Cmu + CZu*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+T[3,1] = (V0/c)*(Cma + CZa*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+T[3,2] = -1*(V0/c)*(CX0*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+T[3,3] = (V0/c)*(Cmq + Cmadot*(2*muc+CZq)/(2*muc-CZadot))/(2*muc*KY2)
+
+
+
+P = np.zeros((4,4))
+
+P[0,0] = (V0/b)*(CYb/(2*mub))
+P[0,1] = (V0/b)*(CL/(2*mub))
+P[0,2] = (V0/b)*(CYp/(2*mub))
+P[0,3] = (V0/b)*(CYr - 4*mub)/(2*mub)
+
+P[1,2] = 2*V0/b
+
+P[2,0] = (V0/b)*(Clb*KZ2 + Cnb*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+P[2,2] = (V0/b)*(Clp*KZ2 + Cnp*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+P[2,3] = (V0/b)*(Clr*KZ2 + Cnr*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+
+P[3,0] = (V0/b)*(Clb*KXZ + Cnb*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+P[3,2] = (V0/b)*(Clp*KXZ + Cnp*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+P[3,3] = (V0/b)*(Clr*KXZ + Cnr*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
 #
 # ########
 #
 # if __name__ == '__main__':
 #
-#     print(np.linalg.eig(A_s)[0])
+#     print(np.linalg.eig(A_s_l)[0])
 #
 #     print(np.linalg.eig(T)[0])
 #
 #     print(T)
 #     print('')
-#     print(A_s)
+#     print(A_s_l)
 #     print('')
-#     print(np.where(np.abs(T-A_s)<.001, True, False))
+#     print(np.where(np.abs(T-A_s_l)<.001, True, False))
 #
 #     print(P)
 #     print('')
-#     print(A_a)
+#     print(A_a_l)
 #     print('')
-#     print(np.where(np.abs(P-A_a)<.001, True, False))
+#     print(np.where(np.abs(P-A_a_l)<.001, True, False))
 

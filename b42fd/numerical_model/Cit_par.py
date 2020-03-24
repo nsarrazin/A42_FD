@@ -11,7 +11,9 @@ V0     =   1          # true airspeed in the stationary flight condition [m/sec]
 alpha0 =   1          # angle of attack in the stationary flight condition [rad]
 th0    =   1          # pitch angle in the stationary flight condition [rad]
 
-# Aircraft mass, 20200310, inches, and lbs
+m=6000
+
+"""# Aircraft mass, 20200310, inches, and lbs
 
 m = [95,102,89,82,66,81,69,85,96] #[kg] 
 m_pax = np.array(m, dtype=int)*2.2046  #[lbs]
@@ -59,7 +61,7 @@ mom_fuel = fuel*x_cg_fuel
 mom_ramp = mom_fuel + mom_zfw
 x_cg_ramp = mom_ramp/M_ramp
 # print(x_cg_ramp)
-
+"""
 
 # aerodynamic properties
 e      = 0.8         # Oswald factor [ ]
@@ -93,12 +95,12 @@ g      = 9.81            # [m/sec^2] (gravity constant)
 
 # air density [kg/m^3]  
 rho    = rho0 * pow( ((1+(lambd * hp0 / Temp0))), (-((g / (lambd*R)) + 1)))   
-# W      = m * g            # [N]       (aircraft weight)
+W      = m * g            # [N]       (aircraft weight)
 
 # Constant values concerning aircraft inertia
 
-muc    = m[0] / (rho * S * c)
-mub    = m[0] / (rho * S * b)
+muc    = m/ (rho * S * c)
+mub    = m/ (rho * S * b)
 KX2    = 0.019
 KZ2    = 0.042
 KXZ    = 0.002
