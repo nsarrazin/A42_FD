@@ -278,8 +278,8 @@ C_a_h = np.eye(4)
 D_a_h = np.zeros((4, 2))
 
 if __name__ == '__main__':
-    print(np.linalg.eig(A_s_l)[0])
-    print(np.linalg.eig(A_a_l)[0])
+    # print(np.linalg.eig(A_s_l)[0])
+    # print(np.linalg.eig(A_a_l)[0])
     print(np.linalg.eig(A_s_h)[0])
     print(np.linalg.eig(A_a_h)[0])
 
@@ -288,61 +288,61 @@ if __name__ == '__main__':
 ###### These are form the FD reader, difference being they assume CXq = 0
 
 
-# T = np.zeros((4,4))
-#
-# T[0,0] = (V0/c)*(CXu/(2*muc))
-# T[0,1] = (V0/c)*(CXa/(2*muc))
-# T[0,2] = (V0/c)*(CZ0/(2*muc))
-# T[0,3] = (V0/c)*(CXq/(2*muc))
-#
-# T[1,0] = (V0/c)*(CZu/(2*muc - CZadot))
-# T[1,1] = (V0/c)*(CZa/(2*muc - CZadot))
-# T[1,2] = -1*(V0/c)*(CX0/(2*muc-CZadot))
-# T[1,3] = (V0/c)*(2*muc+CZq)/(2*muc - CZadot)
-#
-# T[2,3] = (V0/c)
-#
-# T[3,0] = (V0/c)*(Cmu + CZu*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-# T[3,1] = (V0/c)*(Cma + CZa*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-# T[3,2] = -1*(V0/c)*(CX0*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
-# T[3,3] = (V0/c)*(Cmq + Cmadot*(2*muc+CZq)/(2*muc-CZadot))/(2*muc*KY2)
-#
-#
-#
-# P = np.zeros((4,4))
-#
-# P[0,0] = (V0/b)*(CYb/(2*mub))
-# P[0,1] = (V0/b)*(CL/(2*mub))
-# P[0,2] = (V0/b)*(CYp/(2*mub))
-# P[0,3] = (V0/b)*(CYr - 4*mub)/(2*mub)
-#
-# P[1,2] = 2*V0/b
-#
-# P[2,0] = (V0/b)*(Clb*KZ2 + Cnb*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-# P[2,2] = (V0/b)*(Clp*KZ2 + Cnp*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-# P[2,3] = (V0/b)*(Clr*KZ2 + Cnr*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
-#
-# P[3,0] = (V0/b)*(Clb*KXZ + Cnb*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
-# P[3,2] = (V0/b)*(Clp*KXZ + Cnp*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
-# P[3,3] = (V0/b)*(Clr*KXZ + Cnr*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+T = np.zeros((4,4))
+
+T[0,0] = (V0/c)*(CXu/(2*muc))
+T[0,1] = (V0/c)*(CXa/(2*muc))
+T[0,2] = (V0/c)*(CZ0/(2*muc))
+T[0,3] = (V0/c)*(CXq/(2*muc))
+
+T[1,0] = (V0/c)*(CZu/(2*muc - CZadot))
+T[1,1] = (V0/c)*(CZa/(2*muc - CZadot))
+T[1,2] = -1*(V0/c)*(CX0/(2*muc-CZadot))
+T[1,3] = (V0/c)*(2*muc+CZq)/(2*muc - CZadot)
+
+T[2,3] = (V0/c)
+
+T[3,0] = (V0/c)*(Cmu + CZu*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+T[3,1] = (V0/c)*(Cma + CZa*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+T[3,2] = -1*(V0/c)*(CX0*(Cmadot/(2*muc - CZadot)))/(2*muc*KY2)
+T[3,3] = (V0/c)*(Cmq + Cmadot*(2*muc+CZq)/(2*muc-CZadot))/(2*muc*KY2)
+
+
+
+P = np.zeros((4,4))
+
+P[0,0] = (V0/b)*(CYb/(2*mub))
+P[0,1] = (V0/b)*(CL/(2*mub))
+P[0,2] = (V0/b)*(CYp/(2*mub))
+P[0,3] = (V0/b)*(CYr - 4*mub)/(2*mub)
+
+P[1,2] = 2*V0/b
+
+P[2,0] = (V0/b)*(Clb*KZ2 + Cnb*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+P[2,2] = (V0/b)*(Clp*KZ2 + Cnp*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+P[2,3] = (V0/b)*(Clr*KZ2 + Cnr*KXZ)/(4*mub*(KX2*KZ2 - KXZ**2))
+
+P[3,0] = (V0/b)*(Clb*KXZ + Cnb*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+P[3,2] = (V0/b)*(Clp*KXZ + Cnp*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
+P[3,3] = (V0/b)*(Clr*KXZ + Cnr*KX2)/(4*mub*(KX2*KZ2 - KXZ**2))
 #
 # ########
 #
 # if __name__ == '__main__':
 #
-#     print(np.linalg.eig(A_s)[0])
+#     print(np.linalg.eig(A_s_l)[0])
 #
 #     print(np.linalg.eig(T)[0])
 #
 #     print(T)
 #     print('')
-#     print(A_s)
+#     print(A_s_l)
 #     print('')
-#     print(np.where(np.abs(T-A_s)<.001, True, False))
+#     print(np.where(np.abs(T-A_s_l)<.001, True, False))
 #
 #     print(P)
 #     print('')
-#     print(A_a)
+#     print(A_a_l)
 #     print('')
-#     print(np.where(np.abs(P-A_a)<.001, True, False))
+#     print(np.where(np.abs(P-A_a_l)<.001, True, False))
 
