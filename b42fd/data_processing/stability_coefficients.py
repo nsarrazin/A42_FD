@@ -8,8 +8,10 @@ Created on Mon Mar 23 09:33:57 2020
 import numpy as np
 from b42fd.analytical_model.time import TimeTool
 from b42fd.validation.fuelmass import data
+from b42fd.data_processing.thrust_input import *
 
-def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new ):
+
+def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new, FU1, FU2):
         
     #Weight & Balance Values of Aircraft for CoG Calculations
     M_e=9165    #lbs
@@ -25,29 +27,14 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
     moment=np.array([298.16,591.18,879.08,1165.42, 1448.4,1732.53, 2014.8, 2298.84, 2581.92, 2866.3,3150.18, 3434.52, 3718.52, 4003.32, 4287.76, 4572.24, 4856.56, 5141.16, 5425.64, 5709.9, 5994.04, 6278.47, 6562.82, 6846.96, 7131, 7415.33, 7699.6, 7984.34, 8269.06, 8554.05, 8839.04, 9124.8, 9410.62, 9696.97, 9983.40, 10270.08, 10556.84, 10843.87, 11131.0, 11418.2, 11705.5, 11993.31, 12281.18, 12569.04, 12856.86, 13144.73, 13432.48, 13720.56, 14008.46 ])
 
     m_shift     =m_pax[8]   #kg
-
+    
     #Aircraft Geometry
-    """x_LEMAC = 261.56*2.54E-2
-    c = 2.0569	"""
     M_u_kg=fuel_mass0*0.453592
     
     #Be careful with what data is being used. 
-    FU1 = TimeTool(data,t_start,M_u_kg,m_pax, CLa, CD0,  e).fuel_mass_used 
-    fuel1 = fuel_mass0-FU1*2.20462
-    
-    FU2= TimeTool(data,t_end,M_u_kg, m_pax, CLa, CD0,  e).fuel_mass_used
-    fuel2=fuel_mass0-FU2*2.20462
-    
-    #get the index of the start time
-    for idx_start, t_i in enumerate(time):
-        if time[idx_start]< t_start <= time[idx_start+1]:
-            break
-    
-    #get the index of the end time
-    for idx_end, t_i in enumerate(time):
-        if time[idx_end]< t_end <= time[idx_end+1]:
-            break
-        
+    fuel1 = fuel_mass0-FU1
+    fuel2= fuel_mass0-FU2
+            
     fuel_moment1=0
     fuel_moment2=0
     
@@ -78,8 +65,10 @@ def get_Cm_a(de, a, Cm_de):
     
     return -delta_de/delta_a*Cm_de
 
+M_e=9165
 #wing geometry 
 c = 2.0569
+S=30
 
 m_pax=np.array([95,102,89,82,66,81,69,85,96])*2.20462
 t_start=49*60
@@ -99,7 +88,10 @@ CLa=4.371485054942859
 CD0=0.016
 e=0.6
 
-delta_cg_flight=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new )
+FU1=940
+FU2=989
+
+delta_cg_flight=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new, FU1, FU2)
 print("-----------------FLIGHT DATA--------------------")
 print("\n shift in cg location in meters:", delta_cg_flight)
 
@@ -107,6 +99,7 @@ M_u_kg=fuel_mass0*0.453592
 
 #to determine Cm_de using cg shift data 
 de_1=np.radians([-0.2, -0.8])
+
 Cn=TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa, CD0,  e).CL
 Cm_de= get_Cm_de(de_1, Cn, delta_cg_flight, c)
 
@@ -119,12 +112,12 @@ de=np.radians([-0.3, -0.7, -1.2, 0.1, 0.4, 0.7, -0.2])
 Cm_a=get_Cm_a(de, a, Cm_de)
 
 print("\n Cm_a:", Cm_a)
-"""
+
 print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
 print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).rho)
 print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).altitude)
 print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
-print("Cn           ", Cn)"""
+print("Cn           ", Cn)
 
 
 from b42fd.helpers import load_data
@@ -137,6 +130,7 @@ time=data["time"]["data"]
 
 t_start=51*60+2
 t_end=52*60+46
+
 fuel_mass0=4050
 
 x_pax_cg_old=288  #inches
@@ -144,21 +138,19 @@ x_pax_cg_new=134  #inches
 
 M_u_kg=fuel_mass0*0.453592
 
-#stationary mesurements results 
-Cm_de= -1.0024724929977598
-Cma_ref= -0.4914080848028234
- 
-CLa=4.662367336619402
-CD0=0.016
-e=0.88
+FU1=881
+FU2=910
 
-delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new)
+delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new, FU1, FU2)
 
 print("\n-----------------REF DATA------------------------")
 print("\nshift in cg location in meters:", delta_cg_ref)
 
 #to determine Cm_de using cg shift data 
 de_2=np.radians([-0, -0.5])
+CLa=4.662367336619402
+CD0=0.016
+e=0.88
 Cn=TimeTool(data, t_start,M_u_kg, m_pax/2.20462,CLa, CD0,  e).CL
 Cm_de= get_Cm_de(de_2, Cn, delta_cg_ref, c)
 
@@ -173,13 +165,13 @@ Cm_a=get_Cm_a(de, a, Cm_de)
 
 print("\n Cm_de:", Cm_de)
 print("\n Cm_a:", Cm_a)
-"""
+
 
 print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
 print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).rho)
 print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).altitude)
 print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
-print("Cn           ", Cn)"""
+print("Cn           ", Cn)
 
 
 
