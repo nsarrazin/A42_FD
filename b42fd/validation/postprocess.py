@@ -39,22 +39,27 @@ class PostProcessing:
                 "delta_r" : delta_r
                 }
 
-    def _getInitialCondition(self, key):
+    def _getInitialCondition(self, key, type):
         t_0 = self.events[key] - 5
         t_0_i = np.searchsorted(self.t, t_0)
 
         # symmetrical
-        u_0 = 0
-        alpha_0 = self.data["Ahrs1_Pitch"]["data"][t_0_i]
-        theta_0 = self.data["Ahrs1_Roll"]["data"][t_0_i]
-        q_0 = self.data["Ahrs1_bPitchRate"]["data"][t_0_i]
+        if type == "symmetrical":
+            u_0 = 0
+            alpha_0 = self.data["vane_AOA"]["data"][t_0_i] # AoA
+            theta_0 = self.data["Ahrs1_Pitch"]["data"][t_0_i] # pitch
+            q_0 = self.data["Ahrs1_bPitchRate"]["data"][t_0_i] # pitchrate
+            return [u_0, alpha_0, theta_0, q_0]
 
         #asymmetrical
-        # beta_0 = self.data["Ahrs41_"]
-        # psi_0 =
-        # p_0 = 
-        # q_0 = 
-        return [u_0, alpha_0, theta_0, q_0]
+        if type == "asymmetrical":
+            # beta_0 = self.data["Ahrs41_"]
+            beta_0 = 0 # side slip
+            psi_0 = self.data["Ahrs1_Roll"]["data"][t_0_i] # roll
+            p_0 = self.data["Ahrs1_bRollRate"]["data"][t_0_i] # roll rate
+            r_0 = self.data["Ahrs1_bYawRate"]["data"][t_0_i] # yaw rate
+            return [beta_0, psi_0, p_0, r_0]
+
         # return [u_0, theta_0, alpha_0, q_0]
 
     def plotAngles(self, key_event, t_plot = 60, angles = ["roll", "pitch"], show=True):
@@ -73,6 +78,8 @@ class PostProcessing:
             self._plotData("Ahrs1_Roll", t_0, t_max)
         if "pitch" in angles:
             self._plotData("Ahrs1_Pitch", t_0, t_max)
+        if "aoa" in angles:
+            self._plotData("vane_AOA", t_0, t_max)
         # if "yaw" in angles:
         #     self._plotData("Fms1_trueHeading", t_0, t_max)
 
@@ -158,30 +165,49 @@ class PostProcessing:
         with open(name, "w") as f:
             f.write(json_raw)
 
-    def compareNumerical(self, key):
-        t_0 = self.events[key] -5
-        t_max = t_0 + self.times[key] + 5
+    def compareNumerical(self, key, type):
+        t_0 = self.events[key]
+        t_max = t_0 + self.times[key]
 
         defl = self._getDeflections(t_0, t_max)
-        x0 = self._getInitialCondition(key)
+        x0 = self._getInitialCondition(key, type)
 
-        sys_s = control.ss(A_s_h, B_s_h, C_s_h, D_s_h)
-        sys_a = control.ss(A_a_h, B_a_h, C_a_h, D_a_h)
-
-        T, yout, bla = control.forced_response(sys_s, defl["t"], \
+        if type == "symmetrical":
+            sys_s = control.ss(A_s_h, B_s_h, C_s_h, D_s_h)
+            T, yout, bla = control.forced_response(sys_s, defl["t"], \
             defl["delta_e"], X0 = x0)
 
-        self.plotAngles(key, t_plot=self.times[key], show=False)
-        plt.plot(T, yout[1, :], label="pitch numerical model")
-        plt.plot(T, yout[2, :], label="roll numerical model")
-        plt.legend()
-        plt.show()
+            self.plotAngles(key, t_plot=self.times[key], angles=["pitch", "aoa"], show=False)
+            plt.plot(T, yout[1, :], label="AoA numerical model")
+            plt.plot(T, yout[2, :], label="pitch numerical model")
+            plt.legend()
+            plt.show()
 
-        self.plotRates(key, t_plot=self.times[key], show=False, angles=["roll"])
-        plt.plot(T, yout[3, :], label="pitch rate numerical model")
-        plt.legend()
-        plt.show()
-        # # for i in range(yout.shape[0]):
+            self.plotRates(key, t_plot=self.times[key], show=False, angles=["pitch"])
+            plt.plot(T, yout[3, :], label="pitch rate numerical model")
+            plt.legend()
+            plt.show()
+        
+        elif type == "asymmetrical":
+            sys_a = control.ss(A_a_h, B_a_h, C_a_h, D_a_h)
+            inputs = np.vstack((defl["delta_a"], defl["delta_r"]))
+
+            T, yout, bla = control.forced_response(sys_a, defl["t"], inputs, X0=x0)
+            self.plotAngles(key, t_plot=self.times[key], angles = "roll", show=False)
+            # plt.plot(T, yout[1, :], label="pitch numerical model")
+            plt.plot(T, yout[1, :], label="roll numerical model")
+            plt.legend()
+            plt.show()
+
+            self.plotRates(key, t_plot=self.times[key], show=False, angles=["roll", "yaw"])
+            plt.plot(T, yout[2, :], label="roll rate numerical model")
+            plt.plot(T, yout[3, :], label="yaw rate numerical model")
+            plt.legend()
+            plt.show()
+        
+
+
+
 
     # def computeParams(self, key):
     #     Thalf, P = 0,0
@@ -202,7 +228,9 @@ if __name__ == "__main__":
     
     pp = PostProcessing("data/flight_data/flight_data.json", events_flight)
     # pp.plotAll()
-    pp.compareNumerical("phugoid")
+    pp.compareNumerical("ape_roll", type="asymmetrical")
+    pp.compareNumerical("spm", type="symmetrical")
+
     # pp.controlJSON("input.json")
 
 
