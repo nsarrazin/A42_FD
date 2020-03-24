@@ -10,7 +10,6 @@ from b42fd.validation.fuelmass import data
 import numpy as np
 from b42fd.numerical_model.Cit_par import *
 from b42fd.helpers import load_data
-from pathlib import Path
 
 M_e=9165*0.453592                     #empty aircraft weight in kg
 class TimeTool:
