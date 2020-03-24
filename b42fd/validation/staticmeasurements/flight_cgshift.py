@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from ambiance import Atmosphere
-from b42fd.numerical_model.Cit_par import M_ramp, c
+from b42fd.numerical_model.Cit_par import c
 from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
 from b42fd.consts import gamma,T0,lamb,g0,R,p0, rho0
 from b42fd.numerical_model.case import Case
@@ -13,7 +13,7 @@ print("Flight test data cg shift")
 #fixed value
 Ws = 60500 #[N] table B1 page 11 of assignment
 S = 30.
-
+M_ramp = 13491.5
 #from 20200310_V2
 alpha_deg = alpha_deg[13:15]
 de_deg = [-0.2,-0.8]

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from ambiance import Atmosphere
-from b42fd.numerical_model.Cit_par import M_ramp, c
+from b42fd.numerical_model.Cit_par import c
 from b42fd.data_processing.thrust_input import pressure, Mach, corrected_temp,sound_speed, true_airspeed
 from b42fd.consts import gamma,T0,lamb,g0,R,p0, rho0
 from b42fd.numerical_model.case import Case
@@ -26,7 +26,7 @@ fuelburnt_kg = fuelburnt_kg[:6]                             #fuel burnt lbs
 MFl=np.array([392,369,608,508,453,431])/7936.64             #fuel flow left engine (already converted to kg/s)
 MFr=np.array([450, 378,668, 548, 488, 480])/7936.64
 
-mramp_lbs = M_ramp
+mramp_lbs = 13491.5
 
 
 #density from ambiance package
@@ -40,7 +40,7 @@ Mlst = np.zeros(len(h_m))
 Relst = np.zeros(len(h_m))
 
 for i in range(len(h_m)):
-    Vc_ms=V_ms[i]
+    Vc_ms=V_ms[i] - 2*0.5144
     hp_m=h_m[i]
     Tm_K=TAT_K[i]
     p=pressure(hp_m, gamma,T0,lamb,g0,R,p0)
