@@ -178,12 +178,16 @@ class PostProcessing:
             defl["delta_e"], X0 = x0)
 
             self.plotAngles(key, t_plot=self.times[key], angles=["pitch", "aoa"], show=False)
+            plt.title(key + " - angles")
+
             plt.plot(T, yout[1, :], label="AoA numerical model")
             plt.plot(T, yout[2, :], label="pitch numerical model")
             plt.legend()
             plt.show()
 
             self.plotRates(key, t_plot=self.times[key], show=False, angles=["pitch"])
+            plt.title(key + " - rates")
+
             plt.plot(T, yout[3, :], label="pitch rate numerical model")
             plt.legend()
             plt.show()
@@ -194,19 +198,28 @@ class PostProcessing:
 
             T, yout, bla = control.forced_response(sys_a, defl["t"], inputs, X0=x0)
             self.plotAngles(key, t_plot=self.times[key], angles = "roll", show=False)
-            # plt.plot(T, yout[1, :], label="pitch numerical model")
+            plt.title(key + " - angles")
+
             plt.plot(T, yout[1, :], label="roll numerical model")
             plt.legend()
             plt.show()
 
+
             self.plotRates(key, t_plot=self.times[key], show=False, angles=["roll", "yaw"])
+            plt.title(key + " - rates")
+
             plt.plot(T, yout[2, :], label="roll rate numerical model")
             plt.plot(T, yout[3, :], label="yaw rate numerical model")
             plt.legend()
             plt.show()
-        
+    
+    def compareAll(self):
+        self.compareNumerical("phugoid", "symmetrical")
+        self.compareNumerical("spm", "symmetrical")
 
-
+        self.compareNumerical("dutchroll", "asymmetrical")
+        self.compareNumerical("ape_roll", "asymmetrical")
+        self.compareNumerical("ape_spiral", "asymmetrical")
 
 
     # def computeParams(self, key):
@@ -227,10 +240,12 @@ if __name__ == "__main__":
                      "ape_spiral" : 62*60+30}
     
     pp = PostProcessing("data/flight_data/flight_data.json", events_flight)
-    # pp.plotAll()
-    pp.compareNumerical("ape_roll", type="asymmetrical")
-    pp.compareNumerical("spm", type="symmetrical")
+    # # pp.plotAll()
+    # pp.compareNumerical("spm", type="symmetrical")
 
+    # pp.compareNumerical("ape_roll", type="asymmetrical")
+    # pp.compareNumerical("spm", type="symmetrical")
+    pp.compareAll()
     # pp.controlJSON("input.json")
 
 
