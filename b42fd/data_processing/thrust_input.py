@@ -125,18 +125,6 @@ MFr=np.array([470, 466, 455, 471, 448, 484, 469])*lbshr
 #input thrust data elevator trim curve
 input1= Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0)
 
-V_TAS=np.zeros(len(h))
-
-for i in range(len(h)):
-    Vc=V[i]
-    hp=h[i]
-    Tm=TAT[i]
-    p=pressure(hp, gamma,T0,lamb,g0,R,p0)
-    M=Mach(Vc,hp, gamma, rho0,p0, p)
-    T=corrected_temp(Tm,M,gamma)
-    a=sound_speed(gamma,R,T)
-    V_TAS[i]=true_airspeed(M,a)
-
 """======================================================================================
                              FOR REFERENCE DATA 
 ======================================================================================"""
