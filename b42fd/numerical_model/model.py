@@ -6,6 +6,69 @@ from math import pi, sin, cos
 import scipy.signal as signal
 
 
+#pulling coefficients using TimeTool
+
+from b42fd.analytical_model.time import TimeTool
+
+t= 1000    #time in seconds
+
+#for flight data 
+#need to put these input values before using TimeTool
+from b42fd.validation.fuelmass import data
+from b42fd.data_processing.stationarymeas_results import *
+
+m_pax=np.array([95,102,89,82,66,81,69,85,96])    #passenger weights in kg
+M_u=2640*0.453592                     #mass of fuel
+
+#stationary measurements
+Cm_de= -1.1941458222011172
+Cma= -0.5402088243290768
+
+CLa=4.371485054942859
+CD0=0.016
+e=0.6
+
+a=TimeTool(data,t,M_u,m_pax,CLa, CD0, e)
+
+#weight in N
+hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0 = a.altitude, a.true_airspeed, a.angle_of_attack, a.weight, a.mub, a.muc, a.CL, a.CD, a.CX0, a.CZ0
+print(hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0)
+
+
+#For reference data 
+
+from b42fd.helpers import load_data
+
+data=load_data("data/ref_data/ref_data.json")
+
+m_pax=np.array([95,92,74,66,61,75,78,86,68])
+M_e=9165*0.453592 
+M_u=4050*0.453592
+
+#stationary mesurements results 
+Cm_de= -1.0024724929977598
+Cma_ref= -0.4914080848028234
+ 
+CLa=4.662367336619402
+CD0=0.016
+e=0.88
+
+b=TimeTool(data,t,M_u,m_pax,CLa, CD0, e)
+#weight in N
+hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0 = b.altitude, b.true_airspeed, b.angle_of_attack, b.weight, b.mub, b.muc, b.CL, b.CD, b.CX0, b.CZ0
+print(hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0)
+
+
+
+#for reference data 
+e      = 0.8        # Oswald factor [ ]
+CD0    = 0.04        # Zero lift drag coefficient [ ]
+CLa    = 5.084       # Slope of CL-alpha curve [ ]
+
+# Longitudinal stability
+Cma    = -0.5626     # longitudinal stabilty [ ]
+Cmde   = -1.1642     # elevator effectiveness [ ]
+
 # Stationary flight condition
 
 hp0    =   2700          # pressure altitude in the stationary flight condition [m]
@@ -280,7 +343,7 @@ D_a_h = np.zeros((4, 2))
 if __name__ == '__main__':
     # print(np.linalg.eig(A_s_l)[0])
     # print(np.linalg.eig(A_a_l)[0])
-    print(np.linalg.eig(A_s_h)[0])
+    print("\n", np.linalg.eig(A_s_h)[0])
     print(np.linalg.eig(A_a_h)[0])
 
 
