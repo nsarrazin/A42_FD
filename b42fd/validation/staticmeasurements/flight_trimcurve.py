@@ -26,10 +26,38 @@ fuelburnt_kg = fuelburnt_lbs*0.45359237
 TAT_K = TAT_C+273.15
 de_rad_2=np.radians(de_deg)
 
+#density from ambiance package (not a standard package so install)
+atmospheres = Atmosphere(h_m)
+rho = atmospheres.density
+
+#To find true airspeed
+V_TAS=np.zeros(len(h))
+
+for i in range(len(h)):
+    Vc_ms=V_ms[i]
+    hp_m=h_m[i]
+    Tm_K=TAT_K[i]
+    p=pressure(hp_m, gamma,T0,lamb,g0,R,p0)
+    M=Mach(Vc_ms, gamma, rho0,p0, p)
+    T=corrected_temp(Tm_K,M,gamma)
+    a=sound_speed(gamma,R,T)
+    V_TAS[i]=true_airspeed(M,a)
+
+mass = mramp_kg - fuelburnt_kg
+
+W_s = 60500 #N
+W = mass*g0 #N
+
+V_EAS_ms = V_TAS * np.sqrt(rho/rho0)
+V_hat_e_ms = V_EAS_ms * np.sqrt(W_s/W)
 
 #plot trim curve
-plt.plot(alpha_deg,de_deg,'x')
-plt.xlabel('angle of attack [deg]')
+s = sorted(zip(V_hat_e_ms,de_deg))
+V_hat_e_ms,de_deg = map(list, zip(*s))
+
+plt.plot(V_hat_e_ms,de_deg,'-')
+plt.ylim(0.75,-1.25)
+plt.xlabel('Reduced equivalent airspeed [m/s]')
 plt.ylabel('elevator deflection [deg]')
 plt.show()
 
