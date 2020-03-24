@@ -28,7 +28,10 @@ de_rad_2=np.radians(de_deg)
 
 
 #plot trim curve
-plt.plot(alpha_deg,de_deg,'x')
+s = sorted(zip(alpha_deg,de_deg))
+alpha_deg,de_deg = map(list, zip(*s))
+
+plt.plot(alpha_deg,de_deg,'-')
 plt.xlabel('angle of attack [deg]')
 plt.ylabel('elevator deflection [deg]')
 plt.show()

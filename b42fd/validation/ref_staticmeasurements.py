@@ -60,6 +60,7 @@ for i in range(len(h)):
 """
 CL-CD and CL-a curves 
 1st set of values
+"""
 
 #take values from before
 indices = [0,1,2,3,4,5]
@@ -94,10 +95,10 @@ print('Cl_a =')
 print(CL_alpha_rad)     # 0.3522578695587925   [1/radian]
 
 
-
+"""
 trim curve
 2nd set of values
-
+"""
 
 #take values from before
 indices = [6,7,8,9,10,11,12]
@@ -107,7 +108,10 @@ alpha_deg_2 = np.take(alpha_deg,indices)
 de_deg_2 = np.array([0,-0.4,-0.9,-1.5,0.4,0.6,1]) 
 
 #plot trim curve
-plt.plot(alpha_deg_2,de_deg_2,'x')
+s = sorted(zip(alpha_deg_2,de_deg_2))
+alpha_deg_2,de_deg_2 = map(list, zip(*s))
+
+plt.plot(alpha_deg_2,de_deg_2,'-')
 plt.xlabel('angle of attack [deg]')
 plt.ylabel('elevator deflection [deg]')
 plt.show()
@@ -117,10 +121,10 @@ de_da = -(max(de_deg_2)-min(de_deg_2))/(max(alpha_deg_2)-min(alpha_deg_2))      
 print('de/dalpha =')
 print(de_da)
 
-
+"""
 Cm_delta, Cm_alpha
 shift in center of gravity = 3rd set of values
-
+"""
 
 indices = [13,14]
 hp_m_3 = np.take(h_m,indices)
@@ -191,7 +195,8 @@ plt.plot(CL,CD,'x')
 plt.xlabel('CL [-]')
 plt.ylabel('CD [-]')
 plt.show()
-"""
+
+
 """
 Elevator control force curve
 ref data
