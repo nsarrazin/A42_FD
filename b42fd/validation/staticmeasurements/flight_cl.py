@@ -38,7 +38,7 @@ for i in range(len(h_m)):
     hp_m=h_m[i]
     Tm_K=TAT_K[i]
     p=pressure(hp_m, gamma,T0,lamb,g0,R,p0)
-    M=Mach(Vc_ms,hp_m, gamma, rho0,p0, p)
+    M=Mach(Vc_ms,gamma, rho0,p0, p)
     print(M)
     T=corrected_temp(Tm_K,M,gamma)
     a=sound_speed(gamma,R,T)
