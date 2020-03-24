@@ -79,7 +79,6 @@ Remax = max(Relst)
 """
 CL-CD and CL-a curves 
 1st set of values
-"""
 
 #take values from before
 indices = [0,1,2,3,4,5]
@@ -121,10 +120,10 @@ print('Cl_a =')
 print(CL_alpha_rad)     # 0.3522578695587925   [1/radian]
 
 
-"""
+
 trim curve
 2nd set of values
-"""
+
 
 #take values from before
 indices = [6,7,8,9,10,11,12]
@@ -144,10 +143,10 @@ de_da = -(max(de_deg_2)-min(de_deg_2))/(max(alpha_deg_2)-min(alpha_deg_2))      
 print('de/dalpha =')
 print(de_da)
 
-"""
+
 Cm_delta, Cm_alpha
 shift in center of gravity = 3rd set of values
-"""
+
 
 indices = [13,14]
 hp_m_3 = np.take(h_m,indices)
@@ -241,7 +240,7 @@ plt.xlabel('CL^2 [-]')
 plt.ylabel('CD')
 plt.legend()
 plt.show()
-
+"""
 """
 Elevator control force curve
 ref data
@@ -262,9 +261,12 @@ W_4 = mass_4*g0 #N
 
 V_hat_e_ms = V_EAS_ms_4 * np.sqrt(W_s/W_4)
 
-plt.plot(V_hat_e_ms,Fe_N,'x')
-plt.ylim(90,-40)
-plt.hlines(0,np.min(V_hat_e_ms),np.max(V_hat_e_ms))
+s = sorted(zip(V_hat_e_ms,Fe_N))
+V_hat_e_ms,Fe_N = map(list, zip(*s))
+# print(V_hat_e_ms,Fe_N)
+plt.plot(V_hat_e_ms,Fe_N,'-')
+plt.ylim(90,-50)
+plt.hlines(0,np.min(V_hat_e_ms),np.max(V_hat_e_ms),linestyles="dashed")
 plt.xlabel("Reduced equivalent airspeed [m/s]")
 plt.ylabel("Measured elevator control force [N]")
 plt.show()
