@@ -18,11 +18,11 @@ kt=0.51444 #kts to m/s
 lbshr=0.000125998 #lbs/hr to kg/s
 
     
-def Mach(Vc, hp, gamma, rho0,p0, p):
+def Mach(Vc, gamma, rho0,p0, p):
     """input: Vc: caliberated airspeed
               hp: pressure altitude
        output: a :speed of sound"""
-    A=(gamma-1)/(gamma*2)*rho0/p0*(Vc**2)
+    A=(gamma-1)/(gamma*2)*rho0/p0*((Vc)**2)
     B=gamma/(gamma-1)
     C=1/B
     D=2/(gamma-1)
@@ -72,7 +72,7 @@ def Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0):
         MF1=MFl[i]
         MF2=MFr[i]
         p=pressure(hp, gamma,T0,lamb,g0,R,p0)
-        M=Mach(Vc,hp, gamma, rho0,p0, p)
+        M=Mach(Vc, gamma, rho0,p0, p)
         T=corrected_temp(Tm,M,gamma)
         T_isa=Atmosphere(hp).temperature
         Temp_diff=temp_diff(T,T_isa)
@@ -95,7 +95,7 @@ for i in range(len(h)):
     hp=h[i]
     Tm=TAT[i]
     p=pressure(hp, gamma,T0,lamb,g0,R,p0)
-    M=Mach(Vc,hp, gamma, rho0,p0, p)
+    M=Mach(Vc, gamma, rho0,p0, p)
     T=corrected_temp(Tm,M,gamma)
     a=sound_speed(gamma,R,T)
     V_TAS[i]=true_airspeed(M,a)"""
