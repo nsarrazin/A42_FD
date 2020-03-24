@@ -38,7 +38,7 @@ for i in range(len(h_m)):
     hp_m=h_m[i]
     Tm_K=TAT_K[i]
     p=pressure(hp_m, gamma,T0,lamb,g0,R,p0)
-    M=Mach(Vc_ms,hp_m, gamma, rho0,p0, p)
+    M=Mach(Vc_ms,gamma, rho0,p0, p)
     print(M)
     T=corrected_temp(Tm_K,M,gamma)
     a=sound_speed(gamma,R,T)
@@ -54,8 +54,7 @@ Machmax = max(Mlst)
 Remin = min(Relst)
 Remax = max(Relst)
 
-title = 'CL-alpha curve with Mach range: M =' + str(round(Machmin,2)) + ' to M =' + str(round(Machmax,2))
-subtitle = 'Reynoldsnumber range: Re = ' + str(round(Remin/10**6,1)) + ' * 10^6 to Re =' + str(round(Remax/10**6,1)) + ' * 10^6'
+
 
 #calculations
 mass_1 = mramp_kg - fuelburnt_kg
@@ -65,12 +64,17 @@ CL_alpha_deg = (CL[-1] - CL[0])/(alpha_deg[-1]-alpha_deg[0])        # in 1/degre
 CL_alpha_rad = (CL[-1] - CL[0])/(alpha_rad[-1]-alpha_rad[0])        # in 1/radian
 
 #CL-alpha plot
+title = 'CL-alpha curve clean configuration with Mach range: M =' + str(round(Machmin,2)) + ' to M =' + str(round(Machmax,2))
+subtitle = 'Reynoldsnumber range: Re = ' + str(round(Remin/10**6,1)) + r' * $10^6$ to Re =' + str(round(Remax/10**6,1)) + r' * $10^6$'
 
-plt.plot(alpha_deg,CL,'x',markersize=11)
+s = sorted(zip(alpha_deg,CL))
+alpha_degplt,CLplt = map(list, zip(*s))
+
+plt.plot(alpha_degplt,CLplt)
 plt.title(title,y=1.07,fontsize=16)
 plt.suptitle(subtitle,y=0.92,fontsize=16)
-plt.xlabel('angle of attack [deg]', fontsize = 14)
-plt.ylabel('CL [-]', fontsize = 14)
+plt.xlabel( r'$\alpha$ - angle of attack [deg]', fontsize = 14)
+plt.ylabel(r'$C_L$ [-]', fontsize = 14)
 plt.show()
 
 
