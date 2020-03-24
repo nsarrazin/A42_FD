@@ -39,24 +39,24 @@ print(hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0)
 
 from b42fd.helpers import load_data
 
-data=load_data("data/ref_data/ref_data.json")
-
-m_pax=np.array([95,92,74,66,61,75,78,86,68])
-M_e=9165*0.453592 
-M_u=4050*0.453592
-
-#stationary mesurements results 
-Cm_de= -1.0024724929977598
-Cma_ref= -0.4914080848028234
- 
-CLa=4.662367336619402
-CD0=0.016
-e=0.88
-
-b=TimeTool(data,t,M_u,m_pax,CLa, CD0, e)
-#weight in N
-hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0 = b.altitude, b.true_airspeed, b.angle_of_attack, b.weight, b.mub, b.muc, b.CL, b.CD, b.CX0, b.CZ0
-print(hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0)
+# data=load_data("data/ref_data/ref_data.json")
+#
+# m_pax=np.array([95,92,74,66,61,75,78,86,68])
+# M_e=9165*0.453592
+# M_u=4050*0.453592
+#
+# #stationary mesurements results
+# Cm_de= -1.0024724929977598
+# Cma_ref= -0.4914080848028234
+#
+# CLa=4.662367336619402
+# CD0=0.016
+# e=0.88
+#
+# b=TimeTool(data,t,M_u,m_pax,CLa, CD0, e)
+# #weight in N
+# hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0 = b.altitude, b.true_airspeed, b.angle_of_attack, b.weight, b.mub, b.muc, b.CL, b.CD, b.CX0, b.CZ0
+# print(hp0, V0, alph0, weight, mub, muc, CL, CD, CX0, CZ0)
 
 
 
@@ -66,7 +66,7 @@ CD0    = 0.04        # Zero lift drag coefficient [ ]
 CLa    = 5.084       # Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
-Cma    = -0.5626     # longitudinal stabilty [ ]
+# Cma    = -0.5626     # longitudinal stabilty [ ]
 Cmde   = -1.1642     # elevator effectiveness [ ]
 
 # Stationary flight condition
@@ -80,13 +80,13 @@ th0    =   .05          # pitch angle in the stationary flight condition [rad]
 m      =  5000           # mass [kg]
 
 # aerodynamic properties
-e      = 0.8         # Oswald factor [ ]
-CD0    = 0.04        # Zero lift drag coefficient [ ]
-CLa    = 5.084       # Slope of CL-alpha curve [ ]
+# e      = 0.8         # Oswald factor [ ]
+# CD0    = 0.04        # Zero lift drag coefficient [ ]
+# CLa    = 5.084       # Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
-Cma    = -0.5626     # longitudinal stabilty [ ]
-Cmde   = -1.1642     # elevator effectiveness [ ]
+# Cma    = -0.5626     # longitudinal stabilty [ ]
+# Cmde   = -1.1642     # elevator effectiveness [ ]
 
 # Aircraft geometry
 S      = 30.00	         # wing area [m^2]
@@ -333,7 +333,7 @@ C2_a_h[3, 0] = Cnb
 C2_a_h[3, 2] = Cnp * (b / (2*V0))
 C2_a_h[3, 3] = Cnr * (b / (2*V0))
 
-C3_a_h = np.array([[CYda, CYdr], [0, 0], [Clda, Cldr], [Cnda, Cndr]])
+C3_a_h = np.array([[-CYda, CYdr], [0, 0], [-Clda, Cldr], [-Cnda, Cndr]])
 
 A_a_h = -1 * np.linalg.inv(C1_a_h) @ C2_a_h
 B_a_h = -1 * np.linalg.inv(C1_a_h) @ C3_a_h
