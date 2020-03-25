@@ -47,16 +47,27 @@ def pressure(hp, gamma,T0,lamb,g0,R,p0):
     hp: pressure altitude
 
     output: T: pressure"""
-    return p0*(1+lamb*hp/T0)**(-g0/lamb/R)
+    
+    if hp>=0:
+        return p0*(1+lamb*hp/T0)**(-g0/lamb/R)
+        
+    else:
+        print("Pressure can not be determined for negative altitudes")
 
 def temp_diff(T,T_isa):
     return T-T_isa
 
 def sound_speed(gamma,R,T):
-    return np.sqrt(gamma*R*T)
+    if T>=0:
+        return np.sqrt(gamma*R*T)
+    else:
+        print("Sound speed can not be determined for negative temperatures")
 
 def true_airspeed(M,a):
-    return M*a
+    if M>=0 and a>=0:
+        return M*a
+    else:
+        None
 
 def Input(h,V,TAT,MFl,MFr, gamma,T0,lamb,g0,R,p0,rho0):
     "it returns a matrix of input data for computing thrust"
