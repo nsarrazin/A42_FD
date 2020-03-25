@@ -42,6 +42,8 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
     
     # Calculate aircraft cg before and after passgenger 3R moves
     x_cg_old = (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment1) / (M_e + fuel1+sum(m_pax))         #in inches
+    
+    print((M_e + fuel1+sum(m_pax))/2.20462*9.81)
     x_cg_new= (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment2 - (x_pax_cg_old- x_pax_cg_new)*m_shift) / (M_e + fuel2 + sum(m_pax))   #in inches
 
     return (x_cg_new-x_cg_old)*0.0254
@@ -109,10 +111,10 @@ Cm_a=get_Cm_a(de, a, Cm_de)
 
 print("\n Cm_a:", Cm_a)
 
-print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
-print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).rho)
-print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).altitude)
-print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
+print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa=CLa, CD0=CD0,  e=e).weight)
+print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa=CLa, CD0=CD0,  e=e).rho)
+print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa=CLa, CD0=CD0,  e=e).altitude)
+print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
 print("Cn           ", Cn)
 
 
@@ -165,10 +167,10 @@ print("\n Cm_de:", Cm_de)
 print("\n Cm_a:", Cm_a)
 
 
-print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
-print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).rho)
-print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).altitude)
-print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
+print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa=CLa, CD0=CD0,  e=e).weight)
+print("rho          ", TimeTool(data,t_start,M_u_kg,m_pax/2.20462, CLa=CLa, CD0=CD0,  e=e).rho)
+print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa=CLa, CD0=CD0,  e=e).altitude)
+print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax/2.20462, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
 print("Cn           ", Cn)
 
 
