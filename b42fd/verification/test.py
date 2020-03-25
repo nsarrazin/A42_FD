@@ -7,11 +7,11 @@ from b42fd.helpers import load_data
 import numpy as np
 
 
-t_phugoid    = 53*60
-t_spm        = 58*60
-t_dutchroll  = 60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
-t_ape_roll   = 57*60
-t_ape_spiral = 62*60
+t_phugoid=53*60+57
+t_spm    =60*60+35
+t_dutchroll=60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
+t_ape_roll=59*60+10
+t_ape_spiral=62*60+20
 
 
 A_s_phugoid, A_a_phugoid = get_state_space(t_phugoid)[0], get_state_space(t_phugoid)[4]
@@ -40,9 +40,14 @@ CLa = 4.371485054942859
 CD0 = 0.016
 e = 0.6
 
+short_period= Analytical_Eigenmotion(data, "short period motion", t=t_spm,M_u=M_u, m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e, Cma=Cma)
 phugoid= Analytical_Eigenmotion(data, "phugoid oscillation", t=t_phugoid, M_u=M_u,m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
 dutch_roll= Analytical_Eigenmotion(data, "dutch roll", t=t_phugoid, M_u=M_u, m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
 aperiodic_roll= Analytical_Eigenmotion(data, "aperiodic roll", t=t_ape_roll, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
 aperiodic_spiral=Analytical_Eigenmotion(data, "aperiodic spiral", t=t_ape_spiral, M_u=M_u, m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
-
+print("")
 print(phugoid.eigvalues)
+print(short_period.eigvalues)
+print(dutch_roll.eigvalues)
+print(aperiodic_roll.eigvalues)
+print(aperiodic_spiral.eigvalues)
