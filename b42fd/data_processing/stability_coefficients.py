@@ -109,11 +109,11 @@ Cm_a=get_Cm_a(de, a, Cm_de)
 
 print("\n Cm_a:", Cm_a)
 
-"""print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
+print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
 print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).rho)
 print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).altitude)
 print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
-print("Cn           ", Cn)"""
+print("Cn           ", Cn)
 
 
 from b42fd.helpers import load_data
@@ -165,11 +165,11 @@ print("\n Cm_de:", Cm_de)
 print("\n Cm_a:", Cm_a)
 
 
-"""print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
+print("\nweight     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).weight)
 print("rho          ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).rho)
 print("altitude     ", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).altitude)
 print("true airspeed", TimeTool(data,t_start,M_u_kg, m_pax, CLa=CLa, CD0=CD0,  e=e).true_airspeed)
-print("Cn           ", Cn)"""
+print("Cn           ", Cn)
 
 
 
