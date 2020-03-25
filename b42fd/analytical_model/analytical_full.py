@@ -43,15 +43,16 @@ class Analytical_Eigenmotion:
         eta=abs(eigenvalue.imag)     #imaginary part of eigenvalue
         zeta=abs(eigenvalue.real)   #real part of eigenvalue
         
-        half_t = -log(1 / 2) /zeta
+        #halving time for negative real part and doubling time for positive real part 
+        half_t = log(2) /zeta
 
         if eigenvalue.imag == 0:
             P = None
             damping_ratio= None
-            
+    
         else:
             P = (2*pi)/eta
-            damping_ratio=-eigenvalue.real/sqrt(eigenvalue.real**2+eigenvalue.imag**2)
+            damping_ratio=-eigenvalue.real/sqrt(eta**2+zeta**2)
 
         return damping_ratio, P, half_t.real
     
