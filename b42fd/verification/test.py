@@ -40,9 +40,9 @@ CLa = 4.371485054942859
 CD0 = 0.016
 e = 0.6
 
-phugoid= Analytical_Eigenmotion(data, "phugoid oscillation", t=t_phugoid, M_u=M_u,CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
-dutch_roll= Analytical_Eigenmotion(data, "dutch roll", t=t_phugoid, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
-aperiodic_roll= Analytical_Eigenmotion(data, "aperiodic roll", t=t_ape_roll, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
-aperiodic_spiral=Analytical_Eigenmotion(data, "aperiodic spiral", t=t_ape_spiral, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+phugoid= Analytical_Eigenmotion(data, "phugoid oscillation", t=t_phugoid, M_u=M_u,m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+dutch_roll= Analytical_Eigenmotion(data, "dutch roll", t=t_phugoid, M_u=M_u, m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+aperiodic_roll= Analytical_Eigenmotion(data, "aperiodic roll", t=t_ape_roll, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+aperiodic_spiral=Analytical_Eigenmotion(data, "aperiodic spiral", t=t_ape_spiral, M_u=M_u, m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
 
 print(phugoid.eigvalues)
