@@ -40,7 +40,7 @@ def get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg
         if fuel_left[i] <= fuel2 < fuel_left[i+1]:
             fuel_moment2 =(moment[i+1]-moment[i])/(fuel_left[i+1]-fuel_left[i])*(fuel2-fuel_left[i]) +moment[i]
     
-    # Calculate CoG for Passenger Shift
+    # Calculate aircraft cg before and after passgenger 3R moves
     x_cg_old = (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment1) / (M_e + fuel1+sum(m_pax))         #in inches
     x_cg_new= (M_e * M_e_arm+ np.dot(m_pax,pax_arm)+ fuel_moment2 - (x_pax_cg_old- x_pax_cg_new)*m_shift) / (M_e + fuel2 + sum(m_pax))   #in inches
 
