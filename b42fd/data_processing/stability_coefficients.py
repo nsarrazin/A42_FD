@@ -123,13 +123,13 @@ from b42fd.helpers import load_data
 
 data=load_data("data/ref_data/ref_data.json")
 
-m_pax=np.array([95,92,74,66,61,75,78,86,68])*2.20462
+m_pax=np.array([95,92,74,66,61,75,78,86,68])*2.20462   #lbs
 time=data["time"]["data"]
 
 t_start=51*60+2
 t_end=52*60+46
 
-fuel_mass0=4050
+fuel_mass0=4050  #lbs
 
 x_pax_cg_old=288  #inches
 x_pax_cg_new=134  #inches
@@ -139,7 +139,7 @@ M_u_kg=fuel_mass0*0.453592
 FU1=881
 FU2=910
 
-delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new, FU1, FU2)
+delta_cg_ref=get_cg_shift(t_start, t_end, time, fuel_mass0, m_pax, x_pax_cg_old, x_pax_cg_new, FU1, FU2)  #inputs in lbs and inches 
 
 print("\n-----------------REF DATA------------------------")
 print("\nshift in cg location in meters:", delta_cg_ref)
