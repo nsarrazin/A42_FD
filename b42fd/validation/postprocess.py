@@ -4,13 +4,6 @@ import json, control
 
 from b42fd.helpers import load_data, find_nearest
 from b42fd.numerical_model.model import get_state_space # A_s_h, B_s_h, C_s_h, D_s_h, A_a_h, B_a_h, C_a_h, D_a_h
-A_s_h, B_s_h, C_s_h, D_s_h, A_a_h, B_a_h, C_a_h, D_a_h = get_state_space(62*60)
-
-t_phugoid=53*60
-t_spm    =58*60
-t_dutchroll=60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
-t_ape_roll=57*60
-t_ape_spiral=62*60
 
 class PostProcessing:
     def __init__(self, path, events):
@@ -178,6 +171,7 @@ class PostProcessing:
 
         defl = self._getDeflections(t_0, t_max)
         x0 = self._getInitialCondition(key, type)
+        A_s_h, B_s_h, C_s_h, D_s_h, A_a_h, B_a_h, C_a_h, D_a_h = get_state_space(t_0)
 
         if type == "symmetrical":
             sys_s = control.ss(A_s_h, B_s_h, C_s_h, D_s_h)
