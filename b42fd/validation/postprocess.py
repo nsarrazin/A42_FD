@@ -11,10 +11,9 @@ class PostProcessing:
         self.events = events
         self.t = self.data["time"]["data"]
 
-        # self.times = (120, 30, 60, 60, 60)
         self.times = {"phugoid" : 120, 
                       "spm" : 30,
-                      "dutchroll" : 60, 
+                      "dutchroll" : 40, 
                       "ape_roll" : 60,
                       "ape_spiral" : 60}
 
@@ -72,8 +71,8 @@ class PostProcessing:
         t_max = t_0 + t_plot + 10 
 
 
-        plt.figure()
-
+        # plt.figure()
+# 
         if "roll" in angles:
             self._plotData("Ahrs1_Roll", t_0, t_max)
         if "pitch" in angles:
@@ -101,7 +100,7 @@ class PostProcessing:
         t_max = t_0 + t_plot + 10 
 
 
-        plt.figure()
+        # plt.figure()
 
         if "roll" in angles:
             self._plotData("Ahrs1_bRollRate", t_0, t_max)
@@ -123,7 +122,7 @@ class PostProcessing:
         t_0 = self.events[key_event] - 10
         t_max = t_0 + t_plot + 10
 
-        plt.figure()
+        # plt.figure()
 
         if "delta_a" in inputs:
             self._plotData("delta_a", t_0, t_max)
@@ -177,6 +176,8 @@ class PostProcessing:
             sys_s = control.ss(A_s_h, B_s_h, C_s_h, D_s_h)
             T, yout, bla = control.forced_response(sys_s, defl["t"], \
             defl["delta_e"], X0 = x0)
+            plt.figure(figsize=(10,6), dpi=140)
+
 
             self.plotAngles(key, t_plot=self.times[key], angles=["pitch", "aoa"], show=False)
             plt.title(key + " - angles")
@@ -184,36 +185,65 @@ class PostProcessing:
             plt.plot(T, yout[1, :], label="AoA numerical model")
             plt.plot(T, yout[2, :], label="pitch numerical model")
             plt.legend()
-            plt.show()
+            plt.tight_layout()
+
+            plt.savefig(key+"_angles.png")
+            plt.figure(figsize=(10,6), dpi=140)
 
             self.plotRates(key, t_plot=self.times[key], show=False, angles=["pitch"])
             plt.title(key + " - rates")
 
             plt.plot(T, yout[3, :], label="pitch rate numerical model")
             plt.legend()
-            plt.show()
-        
+            plt.savefig(key+"_rates.png")
+            plt.tight_layout()
+
+            plt.figure(figsize=(10,6), dpi=140)
+
+            plt.title(key + " - inputs")
+            plt.plot(defl["t"], defl["delta_e"], label="$\delta_e$")
+            plt.legend()
+            plt.xlabel("Time [s]")
+            plt.ylabel("Deflection [rad]")
+            plt.tight_layout()
+            plt.savefig(key+"_inputs.png")
+
         elif type == "asymmetrical":
             sys_a = control.ss(A_a_h, B_a_h, C_a_h, D_a_h)
             inputs = np.vstack((defl["delta_a"], defl["delta_r"]))
 
             T, yout, bla = control.forced_response(sys_a, defl["t"], inputs, X0=x0)
+            plt.figure(figsize=(10,6), dpi=140)
+
             self.plotAngles(key, t_plot=self.times[key], angles = "roll", show=False)
             plt.title(key + " - angles")
 
             plt.plot(T, yout[1, :], label="roll numerical model")
             plt.legend()
-            plt.show()
+            plt.tight_layout()
+            plt.savefig(key+"_angles.png")
 
-
+            plt.figure(figsize=(10,6), dpi=140)
             self.plotRates(key, t_plot=self.times[key], show=False, angles=["roll", "yaw"])
             plt.title(key + " - rates")
 
             plt.plot(T, yout[2, :], label="roll rate numerical model")
             plt.plot(T, yout[3, :], label="yaw rate numerical model")
             plt.legend()
-            plt.show()
-    
+            plt.tight_layout()
+            plt.savefig(key+"_rates.png")
+
+            plt.figure(figsize=(10,6), dpi=140)
+            plt.plot(defl["t"], defl["delta_a"], label="$\delta_a$")
+            plt.plot(defl["t"], defl["delta_r"], label="$\delta_r$")
+            plt.title(key + " - inputs")
+
+            plt.legend()
+            plt.xlabel("Time [s]")
+            plt.ylabel("Deflection [rad]")
+            plt.tight_layout()
+            plt.savefig(key+"_inputs.png")
+
     def compareAll(self):
         self.compareNumerical("phugoid", "symmetrical")
         self.compareNumerical("spm", "symmetrical")

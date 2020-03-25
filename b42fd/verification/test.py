@@ -7,12 +7,18 @@ from b42fd.helpers import load_data
 import numpy as np
 
 
-t_phugoid=53*60+57
-t_spm    =60*60+35
-t_dutchroll=60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
-t_ape_roll=59*60+10
-t_ape_spiral=62*60+20
+# t_phugoid=53*60+57
+# t_spm    =60*60+35
+# t_dutchroll=60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
+# t_ape_roll=59*60+10
+# t_ape_spiral=62*60+20
 
+
+t_phugoid=53*60
+t_spm    =58*60
+t_dutchroll=60*60   #there is another dutch roll in yawning direction. not sure if we had to use it. Time=61*60
+t_ape_roll=57*60
+t_ape_spiral=62*60
 
 A_s_phugoid, A_a_phugoid = get_state_space(t_phugoid)[0], get_state_space(t_phugoid)[4]
 A_s_spm, A_a_spm = get_state_space(t_spm)[0], get_state_space(t_spm)[4]
