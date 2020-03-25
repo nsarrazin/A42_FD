@@ -27,9 +27,9 @@ class TimeTool:
         self.theta=data["Ahrs1_Pitch"]["data"]
                         
         if t !=0:
-            self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0, self.fuel_mass_used, self.t=self.get_flight_conditions(t, M_u,m_pax, CLa, CD0, e)
+            self.altitude, self.true_airspeed, self.angle_of_attack, self.theta, self.weight, self.rho,self.mub, self.muc, self.CL, self.CD, self.CX0, self.CZ0, self.fuel_mass_used, self.t=self.get_parameters(t, M_u,m_pax, CLa, CD0, e)
         
-    def get_flight_conditions(self,t, M_u,m_pax,CLa, CD0, e):
+    def get_parameters(self,t, M_u,m_pax,CLa, CD0, e):
         """
         returns all parameters that are depended on time
 

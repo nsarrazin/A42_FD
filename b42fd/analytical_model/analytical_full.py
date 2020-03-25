@@ -43,15 +43,16 @@ class Analytical_Eigenmotion:
         eta=abs(eigenvalue.imag)     #imaginary part of eigenvalue
         zeta=abs(eigenvalue.real)   #real part of eigenvalue
         
-        half_t = -log(1 / 2) /zeta
+        #halving time for negative real part and doubling time for positive real part 
+        half_t = log(2) /zeta
 
         if eigenvalue.imag == 0:
             P = None
             damping_ratio= None
-            
+    
         else:
             P = (2*pi)/eta
-            damping_ratio=-eigenvalue.real/sqrt(eigenvalue.real**2+eigenvalue.imag**2)
+            damping_ratio=-eigenvalue.real/sqrt(eta**2+zeta**2)
 
         return damping_ratio, P, half_t.real
     
@@ -129,8 +130,8 @@ if __name__ == "__main__":
     M_u=2640*0.453592                     #mass of fuel
     
     #stationary mesurements results 
-    Cm_de= -1.1941458222011172
-    Cma= -0.5402088243290768
+    Cmde= -1.491241347862329
+    Cma= -0.6746091811758155
     
     CLa=4.371485054942859
     CD0=0.016
@@ -181,8 +182,8 @@ if __name__ == "__main__":
     
         
     #stationary mesurements results 
-    Cm_de= -1.0024724929977598
-    Cma= -0.4914080848028234
+    Cmde= -1.1737663762234354
+    Cma= -0.575375674619331
      
     CLa=4.662367336619402
     CD0=0.016

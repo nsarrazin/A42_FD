@@ -1,3 +1,6 @@
+"""
+OLD calculation now in stationarymeas_result
+
 import numpy as np
 import matplotlib.pyplot as plt
 from ambiance import Atmosphere
