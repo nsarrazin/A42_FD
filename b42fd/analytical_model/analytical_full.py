@@ -16,22 +16,22 @@ from pathlib import Path
 from b42fd.validation.fuelmass import data
 
 class Analytical_Eigenmotion:
-    def __init__(self,data,motion_type,t, M_u, CLa, CD0, e, Cma):
+    def __init__(self,data,motion_type,t, M_u, m_pax, CLa, CD0, e, Cma):
         
         if motion_type =="short period motion":
-            self.eigvalues, self.properties=self.get_eignval_spm(data,t, M_u, CLa, CD0, e, Cma) 
+            self.eigvalues, self.properties=self.get_eignval_spm(data,t, M_u, m_pax,CLa, CD0, e, Cma) 
         
         if motion_type=="phugoid oscillation":
-            self.eigvalues, self.properties=self.get_eigval_phu(data,t, M_u,CLa, CD0, e, Cma)
+            self.eigvalues, self.properties=self.get_eigval_phu(data,t, M_u,m_pax,CLa, CD0, e, Cma)
             
         if motion_type=="dutch roll":
-            self.eigvalues, self.properties=self.get_eigval_dutchroll(data,t, M_u,CLa, CD0, e)
+            self.eigvalues, self.properties=self.get_eigval_dutchroll(data,t, M_u,m_pax,CLa, CD0, e)
             
         if motion_type=="aperiodic roll":
-            self.eigvalues, self.properties=self.get_eigval_ape_roll(data,t, M_u,CLa, CD0, e)
+            self.eigvalues, self.properties=self.get_eigval_ape_roll(data,t, M_u,m_pax,CLa, CD0, e)
             
         if motion_type=="aperiodic spiral":
-            self.eigvalues, self.properties=self.get_eigval_ape_spiral(data,t, M_u,CLa, CD0, e)
+            self.eigvalues, self.properties=self.get_eigval_ape_spiral(data,t, M_u,m_pax,CLa, CD0, e)
     
     @staticmethod
     def cal_eigenvalues(A,B,C,V,c):
@@ -56,7 +56,7 @@ class Analytical_Eigenmotion:
 
         return damping_ratio, P, half_t.real
     
-    def get_eignval_spm(self,data, t,M_u, CLa, CD0, e, Cma):
+    def get_eignval_spm(self,data, t,M_u,m_pax, CLa, CD0, e, Cma):
         params=TimeTool(data, t,M_u, m_pax, CLa, CD0, e)
         muc, V0=params.muc, params.true_airspeed
         
@@ -69,7 +69,7 @@ class Analytical_Eigenmotion:
         
         return  eigval, properties
     
-    def get_eigval_phu(self,data, t, M_u, CLa, CD0, e, Cma):
+    def get_eigval_phu(self,data, t, M_u, m_pax,CLa, CD0, e, Cma):
         
         params=TimeTool(data, t, M_u,m_pax, CLa, CD0, e)
         muc, V0, CZ0=params.muc, params.true_airspeed, params.CZ0
@@ -82,7 +82,7 @@ class Analytical_Eigenmotion:
         properties= self.eigenvalue_properties(eigval)
         return eigval, properties
     
-    def get_eigval_dutchroll(self, data, t, M_u,CLa, CD0, e):
+    def get_eigval_dutchroll(self, data, t, M_u,m_pax,CLa, CD0, e):
         
 
         params=TimeTool(data,t, M_u,m_pax, CLa, CD0, e)
@@ -97,7 +97,7 @@ class Analytical_Eigenmotion:
         
         return eigval, properties
     
-    def get_eigval_ape_roll(self, data, t, M_u, CLa, CD0, e):
+    def get_eigval_ape_roll(self, data, t, M_u,m_pax, CLa, CD0, e):
         params=TimeTool(data,t, M_u,m_pax, CLa, CD0, e)
         mub, V0=params.mub, params.true_airspeed
         
@@ -105,7 +105,7 @@ class Analytical_Eigenmotion:
         
         return eig1, self.eigenvalue_properties(eig1)
     
-    def get_eigval_ape_spiral(self, data, t, M_u, CLa, CD0, e):
+    def get_eigval_ape_spiral(self, data, t, M_u,m_pax, CLa, CD0, e):
         params=TimeTool(data,t, M_u,m_pax, CLa, CD0, e)
         mub, V0, CL=params.mub, params.true_airspeed, params.CL
         eig2=complex((2*CL*(Clb*Cnr-Cnb*Clr))/(Clp*(CYb*Cnr+4*mub*Cnb)-Cnp*(CYb*Clr+4*mub*Clb))*V0/b,0)
@@ -138,13 +138,13 @@ if __name__ == "__main__":
     e=0.6
     
     
-    short_period= Analytical_Eigenmotion(data, "short period motion", t=t_spm,M_u=M_u, CLa=CLa, CD0=CD0,  e=e, Cma=Cma)
+    short_period= Analytical_Eigenmotion(data, "short period motion", t=t_spm,M_u=M_u, m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e, Cma=Cma)
     print("eigenvalues are :", short_period.eigvalues)
     print("eigenvalues properties (damping ratio, period, halving time):", short_period.properties)
     
     print("\n                    Phugoid Motion")
     
-    phugoid= Analytical_Eigenmotion(data, "phugoid oscillation", t=t_phugoid, M_u=M_u,CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+    phugoid= Analytical_Eigenmotion(data, "phugoid oscillation", t=t_phugoid, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
     print("eigenvalues:", phugoid.eigvalues)
     print("eigenvalues properties (damping ratio, period, halving time):", phugoid.properties)
     
@@ -152,19 +152,19 @@ if __name__ == "__main__":
     
     print("\n                     Dutch Roll")
     
-    dutch_roll= Analytical_Eigenmotion(data, "dutch roll", t=t_phugoid, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+    dutch_roll= Analytical_Eigenmotion(data, "dutch roll", t=t_phugoid, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
     print("eigenvalues for Dutch Roll:", dutch_roll.eigvalues)
     print("eigenvalues properties for Dutch Roll (damping ratio, period, halving time):", dutch_roll.properties)
     
     print("\n                     Aperiodic Roll")
     
-    aperiodic_roll= Analytical_Eigenmotion(data, "aperiodic roll", t=t_ape_roll, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+    aperiodic_roll= Analytical_Eigenmotion(data, "aperiodic roll", t=t_ape_roll, M_u=M_u, m_pax=m_pax,CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
     print("eigenvalues for aperiodic roll:", aperiodic_roll.eigvalues)
     print("eigenvalues properties for aperiodic roll(damping ratio, period, halving time):", aperiodic_roll.properties)
     
     print("\n                     Aperiodic Spiral")
      
-    aperiodic_spiral=Analytical_Eigenmotion(data, "aperiodic spiral", t=t_ape_spiral, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+    aperiodic_spiral=Analytical_Eigenmotion(data, "aperiodic spiral", t=t_ape_spiral, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
     print("eigenvalues :", aperiodic_spiral.eigvalues)
     print("eigenvalues properties (damping ratio, period, halving time):", aperiodic_spiral.properties)
     
@@ -194,13 +194,13 @@ if __name__ == "__main__":
     print("\n--------------------- Symmetric motions ---------------------")
     
     
-    short_period= Analytical_Eigenmotion(data, "short period motion", t=t_spm, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+    short_period= Analytical_Eigenmotion(data, "short period motion", t=t_spm, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
     print("eigenvalues are :", short_period.eigvalues)
     print("eigenvalues properties (damping ratio, period, halving time):", short_period.properties)
     
     print("\n                    Phugoid Motion")
     
-    phugoid= Analytical_Eigenmotion(data, "phugoid oscillation", t=t_phugoid, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+    phugoid= Analytical_Eigenmotion(data, "phugoid oscillation", t=t_phugoid, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
     print("eigenvalues:", phugoid.eigvalues)
     print("eigenvalues properties (damping ratio, period, halving time):", phugoid.properties)
     
@@ -208,18 +208,18 @@ if __name__ == "__main__":
     
     print("\n                     Dutch Roll")
     
-    dutch_roll= Analytical_Eigenmotion(data, "dutch roll", t=t_dutchroll, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+    dutch_roll= Analytical_Eigenmotion(data, "dutch roll", t=t_dutchroll, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
     print("eigenvalues for Dutch Roll:", dutch_roll.eigvalues)
     print("eigenvalues properties for Dutch Roll (damping ratio, period, halving time):", dutch_roll.properties)
     
     print("\n                     Aperiodic Roll")
     
-    aperiodic_roll= Analytical_Eigenmotion(data, "aperiodic roll", t=t_ape_roll, M_u=M_u, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
+    aperiodic_roll= Analytical_Eigenmotion(data, "aperiodic roll", t=t_ape_roll, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e,  Cma=Cma)
     print("eigenvalues for aperiodic roll:", aperiodic_roll.eigvalues)
     print("eigenvalues properties for aperiodic roll(damping ratio, period, halving time):", aperiodic_roll.properties)
     
     print("\n                     Aperiodic Spiral")
      
-    aperiodic_spiral=Analytical_Eigenmotion(data, "aperiodic spiral", t=t_ape_spiral, M_u=M_u, CLa=CLa, CD0=CD0,  e=e, Cma=Cma)
+    aperiodic_spiral=Analytical_Eigenmotion(data, "aperiodic spiral", t=t_ape_spiral, M_u=M_u,m_pax=m_pax, CLa=CLa, CD0=CD0,  e=e, Cma=Cma)
     print("eigenvalues :", aperiodic_spiral.eigvalues)
     print("eigenvalues properties (damping ratio, period, halving time):", aperiodic_spiral.properties)
