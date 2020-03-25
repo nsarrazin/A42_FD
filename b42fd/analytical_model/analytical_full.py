@@ -52,7 +52,7 @@ class Analytical_Eigenmotion:
     
         else:
             P = (2*pi)/eta
-            damping_ratio=-eigenvalue.real/sqrt(eigenvalue.real**2+eigenvalue.imag**2)
+            damping_ratio=-eigenvalue.real/sqrt(eta**2+zeta**2)
 
         return damping_ratio, P, half_t.real
     
