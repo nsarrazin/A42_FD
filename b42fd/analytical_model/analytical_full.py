@@ -49,7 +49,8 @@ class Analytical_Eigenmotion:
         
         if eigenvalue.imag == 0:
             P = None
-    
+            damping_ratio=None
+            
         else:
             P = (2*pi)/eta
     
