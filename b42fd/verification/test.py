@@ -16,16 +16,16 @@ t_ape_spiral=62*60+20
 
 A_s_phugoid, A_a_phugoid = get_state_space(t_phugoid)[0], get_state_space(t_phugoid)[4]
 A_s_spm, A_a_spm = get_state_space(t_spm)[0], get_state_space(t_spm)[4]
-A_s_dutchroll, A_a_dutchroll = get_state_space(t_dutchroll)[0], get_state_space(t_dutchroll)[0]
-A_s_ape_roll, A_a_ape_roll = get_state_space(t_ape_roll)[0], get_state_space(t_ape_roll)[0]
-A_s_ape_spiral, A_a_ape_spiral = get_state_space(t_phugoid)[0], get_state_space(t_phugoid)[0]
+A_s_dutchroll, A_a_dutchroll = get_state_space(t_dutchroll)[0], get_state_space(t_dutchroll)[4]
+A_s_ape_roll, A_a_ape_roll = get_state_space(t_ape_roll)[0], get_state_space(t_ape_roll)[4]
+A_s_ape_spiral, A_a_ape_spiral = get_state_space(t_ape_spiral)[0], get_state_space(t_ape_spiral)[4]
 
 eigs = np.linalg.eig
-print(eigs(A_s_phugoid)[0], eigs(A_a_phugoid)[0])
-print(eigs(A_s_spm)[0], eigs(A_a_spm)[0])
-print(eigs(A_s_dutchroll)[0], eigs(A_a_dutchroll)[0])
-print(eigs(A_s_ape_roll)[0], eigs(A_a_ape_roll)[0])
-print(eigs(A_s_ape_spiral)[0], eigs(A_a_ape_spiral)[0])
+print(eigs(A_s_phugoid)[0])
+print(eigs(A_s_spm)[0])
+print(eigs(A_a_dutchroll)[0])
+print(eigs(A_a_ape_roll)[0])
+print(eigs(A_a_ape_spiral)[0])
 
 
 m_pax = np.array([95, 102, 89, 82, 66, 81, 69, 85, 96])  # passenger weights in kg
